@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,17 +26,17 @@ namespace FondationBB_ARDIET_BUJOR.Model
         private Employe employeCreateur;
         private Statut unStatut;
         private Etat unEtat;
-        private List<Comportement> comportements;
-        private List<Soin> soinReçus;
+        private ObservableCollection<Comportement> comportements;
+        private ObservableCollection<Soin> soinReçus;
 
         public Animal()
         {
-            this.Comportements = new List<Comportement>();
-            this.SoinReçus = new List<Soin>();
+            this.Comportements = new ObservableCollection<Comportement>();
+            this.SoinReçus = new ObservableCollection<Soin>();
         }
 
         public Animal(int id, string nom, DateTime dateNaissance, string icad, Sexe unSexe, string annotation, DateTime dateArrivee, double poids, Race uneRace, Employe employeCreateur,
-            Statut unStatut, Etat unEtat, List<Comportement> comportements, List<Soin> soinReçus)
+            Statut unStatut, Etat unEtat, ObservableCollection<Comportement> comportements, ObservableCollection<Soin> soinReçus)
         {
             this.Id = id;
             this.Nom = nom;
@@ -196,7 +197,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        public List<Comportement> Comportements
+        public ObservableCollection<Comportement> Comportements
         {
             get
             {
@@ -209,7 +210,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        public List<Soin> SoinReçus
+        public ObservableCollection<Soin> SoinReçus
         {
             get
             {

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FondationBB_ARDIET_BUJOR")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7f57562dac447b2363ef5d458f332c61c106b0bd")]
 [assembly: System.Reflection.AssemblyProductAttribute("FondationBB_ARDIET_BUJOR")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FondationBB_ARDIET_BUJOR")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

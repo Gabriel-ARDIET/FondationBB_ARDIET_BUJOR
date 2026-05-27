@@ -12,17 +12,19 @@ namespace FondationBB_ARDIET_BUJOR.Model
         private string libelle;
         private decimal tarif;
         private int frequence;
+        private Date uneDate;
 
         public Soin()
         {
         }
 
-        public Soin(int id, string libelle, decimal tarif, int frequence)
+        public Soin(int id, string libelle, decimal tarif, int frequence, Date uneDate)
         {
             this.Id = id;
             this.Libelle = libelle;
             this.Tarif = tarif;
             this.Frequence = frequence;
+            this.UneDate = uneDate;
         }
 
         public int Id
@@ -74,6 +76,19 @@ namespace FondationBB_ARDIET_BUJOR.Model
             set
             {
                 this.frequence = value;
+            }
+        }
+
+        public Date UneDate
+        {
+            get
+            {
+                return this.uneDate;
+            }
+
+            set
+            {
+                this.uneDate = value;
             }
         }
     }

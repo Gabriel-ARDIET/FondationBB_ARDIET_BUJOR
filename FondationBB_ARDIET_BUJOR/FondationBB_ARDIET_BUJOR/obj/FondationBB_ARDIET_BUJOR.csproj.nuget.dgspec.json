@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\bibri\\source\\repos\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR.csproj": {}
+    "C:\\Users\\bibri\\source\\repos\\Gabriel-ARDIET\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR.csproj": {}
   },
   "projects": {
-    "C:\\Users\\bibri\\source\\repos\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR.csproj": {
+    "C:\\Users\\bibri\\source\\repos\\Gabriel-ARDIET\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\bibri\\source\\repos\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR.csproj",
+        "projectUniqueName": "C:\\Users\\bibri\\source\\repos\\Gabriel-ARDIET\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR.csproj",
         "projectName": "FondationBB_ARDIET_BUJOR",
-        "projectPath": "C:\\Users\\bibri\\source\\repos\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR.csproj",
+        "projectPath": "C:\\Users\\bibri\\source\\repos\\Gabriel-ARDIET\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR.csproj",
         "packagesPath": "C:\\Users\\bibri\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\bibri\\source\\repos\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\obj\\",
+        "outputPath": "C:\\Users\\bibri\\source\\repos\\Gabriel-ARDIET\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\FondationBB_ARDIET_BUJOR\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
