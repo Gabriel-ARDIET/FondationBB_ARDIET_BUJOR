@@ -7,32 +7,39 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         public MainWindow()
         {
             InitializeComponent();
-            // Au démarrage de la MainWindow, on charge le UserControl ListeAnimaux par défaut
-            ZoneContenu.Content = new ListeAnimaux();
+            ZoneContenu.Content = new UCConnexion();
+        }
+
+        /// <summary>
+        /// Méthode appelée suite à une authentification réussie
+        /// </summary>
+        public void ValiderConnexion()
+        {
+            MenuHeader.Visibility = Visibility.Visible;
+            ZoneContenu.Content = new UCListeAnimaux();
         }
 
         private void btnMenu_Click(object sender, RoutedEventArgs e)
         {
-            // On récupère le bouton qui a été cliqué
             var bouton = sender as System.Windows.Controls.Button;
+            if (bouton == null) return;
 
-            // On change le contenu selon le bouton cliqué
             switch (bouton.Name)
             {
                 case "btnAnimaux":
-                    ZoneContenu.Content = new ListeAnimaux();
+                    ZoneContenu.Content = new UCListeAnimaux();
                     break;
                 case "btnClients":
-                    ZoneContenu.Content = new ListeClients();
+                    ZoneContenu.Content = new UCListeClients();
                     break;
                 case "btnAdoptions":
-                    ZoneContenu.Content = new ListeAdoptions();
+                    ZoneContenu.Content = new UCListeAdoptions();
                     break;
                 case "btnDemandes":
-                    ZoneContenu.Content = new ListeDemandes();
+                    ZoneContenu.Content = new UCListeDemandes();
                     break;
                 case "btnStatistiques":
-                    ZoneContenu.Content = new Statistiques();
+                    ZoneContenu.Content = new UCStatistiques();
                     break;
             }
         }
@@ -47,9 +54,8 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
             if (result == MessageBoxResult.Yes)
             {
-                Connexion connexionWindow = new Connexion();
-                connexionWindow.Show();
-                this.Close();
+                MenuHeader.Visibility = Visibility.Collapsed;
+                ZoneContenu.Content = new UCConnexion();
             }
         }
     }

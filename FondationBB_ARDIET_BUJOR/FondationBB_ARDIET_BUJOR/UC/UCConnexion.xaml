@@ -1,17 +1,14 @@
-﻿<Window x:Class="FondationBB_ARDIET_BUJOR.Windows.Connexion"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FondationBB_ARDIET_BUJOR.Windows"
-        mc:Ignorable="d"
-        Title="Connexion" Height="720" Width="1280"
-        WindowStartupLocation="CenterScreen"
-        Background="#FFFFFF">
+﻿<UserControl x:Class="FondationBB_ARDIET_BUJOR.Windows.UCConnexion"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="720" d:DesignWidth="1280"
+             Background="#FFFFFF">
 
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="600">
-
             <TextBlock Text="AUTHENTIFICATION" 
                        FontSize="36" 
                        FontWeight="Bold" 
@@ -53,4 +50,4 @@
             </Border>
         </StackPanel>
     </Grid>
-</Window>
+</UserControl>

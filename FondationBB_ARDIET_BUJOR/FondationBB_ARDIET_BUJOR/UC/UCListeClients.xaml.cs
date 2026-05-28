@@ -4,9 +4,9 @@ using System.Windows.Data;
 
 namespace FondationBB_ARDIET_BUJOR.Windows
 {
-    public partial class ListeClients : UserControl
+    public partial class UCListeClients : UserControl
     {
-        public ListeClients()
+        public UCListeClients()
         {
             InitializeComponent();
         }

@@ -1,0 +1,127 @@
+﻿<UserControl x:Class="FondationBB_ARDIET_BUJOR.Windows.UCListeDemandes"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="720" d:DesignWidth="1280"
+             Background="#FFFFFF">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Margin="0,0,15,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                    <TextBlock Text="Nom client" FontWeight="SemiBold"/>
+                    <TextBox x:Name="txtFiltreNomClient" Height="30" Margin="0,0,0,5" TextChanged="FiltreDemande_Changed"/>
+
+                    <TextBlock Text="Prénom client" FontWeight="SemiBold"/>
+                    <TextBox x:Name="txtFiltrePrenomClient" Height="30" Margin="0,0,0,5" TextChanged="FiltreDemande_Changed"/>
+
+                    <TextBlock Text="Nom animal" FontWeight="SemiBold"/>
+                    <TextBox x:Name="txtFiltreNomAnimal" Height="30" TextChanged="FiltreDemande_Changed"/>
+                </StackPanel>
+
+                <DataGrid Grid.Row="1" x:Name="dgDemandes" ItemsSource="{Binding LesDemandes}" AutoGenerateColumns="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nom" Binding="{Binding ClientNom}" Width="*"/>
+                        <DataGridTextColumn Header="Prénom" Binding="{Binding ClientPrenom}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <StackPanel Grid.Column="1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+                    <Button x:Name="btnAjouter" ToolTip="Ajouter" FontFamily="Segoe MDL2 Assets" Content="&#xE109;" Width="40" Height="40" Margin="0,0,5,0" Click="BtnAjouter_Click"/>
+                    <Button x:Name="btnEditer" ToolTip="Éditer" FontFamily="Segoe MDL2 Assets" Content="&#xE104;" Width="40" Height="40" Margin="0,0,5,0" Click="BtnEditer_Click"/>
+                    <Button x:Name="BtnSupprimer" ToolTip="Supprimer" FontFamily="Segoe MDL2 Assets" Content="&#xE74D;" Width="40" Height="40" Click="BtnSupprimer_Click"/>
+                </StackPanel>
+
+                <Border Background="#F9F9F9" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1" Padding="20">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" BorderThickness="0" MaxHeight="520">
+                        <StackPanel DataContext="{Binding SelectedItem, ElementName=dgDemandes}">
+                            <TextBlock Text="Demande d’adoption" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="110"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Margin" Value="0,0,0,10"/>
+                                    </Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Height" Value="28"/>
+                                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                        <Setter Property="IsReadOnly" Value="True"/>
+                                        <Setter Property="Margin" Value="0,0,0,10"/>
+                                    </Style>
+                                </Grid.Resources>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Nom"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ClientNom}"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Prénom"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ClientPrenom}"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Demande"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding StatutDemande}"/>
+
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Adresse"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding AdresseEmail}" Foreground="#0056B3" TextDecorations="Underline"/>
+
+                                <TextBlock Grid.Row="4" Grid.Column="0" Text="Téléphone"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Telephone}"/>
+
+                                <TextBlock Grid.Row="5" Grid.Column="0" Text="Race"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding RaceSouhaitee}"/>
+
+                                <TextBlock Grid.Row="6" Grid.Column="0" Text="Âge précis"/>
+                                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding AgePrecis}"/>
+
+                                <TextBlock Grid.Row="7" Grid.Column="0" Text="Marge d’âge"/>
+                                <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="Entre" Margin="0,0,8,0"/>
+                                    <Border BorderBrush="Gray" BorderThickness="1" Height="28" Width="40" Background="#D9D9D9" Margin="0,0,10,0" CornerRadius="2">
+                                        <TextBlock Text="{Binding AgeMin}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+                                    </Border>
+                                    <TextBlock Text="et" Margin="0,0,10,0"/>
+                                    <Border BorderBrush="Gray" BorderThickness="1" Height="28" Width="40" Background="#D9D9D9" CornerRadius="2">
+                                        <TextBlock Text="{Binding AgeMax}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

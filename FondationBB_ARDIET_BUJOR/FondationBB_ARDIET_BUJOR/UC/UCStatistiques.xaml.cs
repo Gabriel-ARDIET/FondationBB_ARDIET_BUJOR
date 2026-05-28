@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace FondationBB_ARDIET_BUJOR.Windows
 {
     /// <summary>
-    /// Logique d'interaction pour ListeDemandes.xaml
+    /// Logique d'interaction pour Statistiques.xaml
     /// </summary>
-    public partial class ListeDemandes : Window
+    public partial class UCStatistiques : UserControl
     {
-        public ListeDemandes()
+        public UCStatistiques()
         {
             InitializeComponent();
         }
