@@ -2,11 +2,12 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 
+
 namespace FondationBB_ARDIET_BUJOR.Windows
 {
-    public partial class ListeClients : UserControl
+    public partial class ListeAdoptions : UserControl
     {
-        public ListeClients()
+        public ListeAdoptions()
         {
             InitializeComponent();
         }

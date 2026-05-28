@@ -25,8 +25,8 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         }
         private void btnConnexion_Click(object sender, RoutedEventArgs e)
         {
-            ListeAnimaux listeWindow = new ListeAnimaux();
-            listeWindow.Show();
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
             this.Close();
         }
     }
