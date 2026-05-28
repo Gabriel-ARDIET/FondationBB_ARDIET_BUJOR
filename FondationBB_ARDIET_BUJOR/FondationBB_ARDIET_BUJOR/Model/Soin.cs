@@ -12,19 +12,17 @@ namespace FondationBB_ARDIET_BUJOR.Model
         private string libelle;
         private decimal tarif;
         private int frequence;
-        private Date uneDate;
 
         public Soin()
         {
         }
 
-        public Soin(int id, string libelle, decimal tarif, int frequence, Date uneDate)
+        public Soin(int id, string libelle, decimal tarif, int frequence)
         {
             this.Id = id;
             this.Libelle = libelle;
             this.Tarif = tarif;
             this.Frequence = frequence;
-            this.UneDate = uneDate;
         }
 
         public int Id
@@ -49,6 +47,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
+                if (value.Length > 50)
+                    throw new ArgumentOutOfRangeException("Le libéllé doit faire moins de 50 caractères");
                 this.libelle = value;
             }
         }
@@ -62,6 +62,10 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("le tarif ne peut pas être négatif");
+                if (value >= 1000000)
+                    throw new ArgumentOutOfRangeException("le tarif doit être inférieur à 1 000 000");
                 this.tarif = value;
             }
         }
@@ -75,20 +79,9 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("la fréquence ne peut pas être négatif");
                 this.frequence = value;
-            }
-        }
-
-        public Date UneDate
-        {
-            get
-            {
-                return this.uneDate;
-            }
-
-            set
-            {
-                this.uneDate = value;
             }
         }
     }

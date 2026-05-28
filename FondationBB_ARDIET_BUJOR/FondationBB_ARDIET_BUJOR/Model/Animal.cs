@@ -16,27 +16,33 @@ namespace FondationBB_ARDIET_BUJOR.Model
     {
         private int id;
         private string nom;
-        private DateTime dateNaissance;
-        private string icad;
+        private DateTime? dateNaissance;
+        private string? icad;
         private Sexe unSexe;
-        private string annotation;
+        private string? annotation;
         private DateTime dateArrivee;
         private double poids;
         private Race uneRace;
-        private Employe employeCreateur;
-        private Statut unStatut;
-        private Etat unEtat;
+        private Employe? employeCreateur;
+        private Statut? unStatut;
+        private Etat? unEtat;
+        private Adoption? uneAdoption;
         private ObservableCollection<Comportement> comportements;
-        private ObservableCollection<Soin> soinReçus;
+        private ObservableCollection<Recoit> soinReçus;
+        private int idRace;
+        private int idCreateur;
+        private int? idStatut;
+        private int? idEtat;
+        private int? idAdoption;
 
         public Animal()
         {
             this.Comportements = new ObservableCollection<Comportement>();
-            this.SoinReçus = new ObservableCollection<Soin>();
+            this.SoinReçus = new ObservableCollection<Recoit>();
         }
 
-        public Animal(int id, string nom, DateTime dateNaissance, string icad, Sexe unSexe, string annotation, DateTime dateArrivee, double poids, Race uneRace, Employe employeCreateur,
-            Statut unStatut, Etat unEtat, ObservableCollection<Comportement> comportements, ObservableCollection<Soin> soinReçus)
+        public Animal(int id, string nom, DateTime? dateNaissance, string? icad, Sexe unSexe, string? annotation, DateTime dateArrivee, double poids, Race uneRace, Employe? employeCreateur,
+            Statut? unStatut, Etat? unEtat, ObservableCollection<Comportement> comportements, ObservableCollection<Recoit> soinReçus, Adoption uneAdoption)
         {
             this.Id = id;
             this.Nom = nom;
@@ -50,8 +56,29 @@ namespace FondationBB_ARDIET_BUJOR.Model
             this.EmployeCreateur = employeCreateur;
             this.UnStatut = unStatut;
             this.UnEtat = unEtat;
+            this.UneAdoption = uneAdoption;
             this.Comportements = comportements;
             this.SoinReçus = soinReçus;
+        }
+
+        public Animal(int id, string nom, DateTime dateNaissance, string icad, Sexe unSexe, string annotation,
+            DateTime dateArrivee, double poids, int idCreateur, int? idStatut, int? idEtat, int idRace, int? idAdoption)
+        {
+            this.Id = id;
+            this.Nom = nom;
+            this.DateNaissance = dateNaissance;
+            this.Icad = icad;
+            this.UnSexe = unSexe;
+            this.Annotation = annotation;
+            this.DateArrivee = dateArrivee;
+            this.Poids = poids;
+            this.Comportements = new ObservableCollection<Comportement>();
+            this.SoinReçus = new ObservableCollection<Recoit>();
+            this.IdCreateur = idCreateur;
+            this.IdStatut = idStatut;
+            this.IdEtat = idEtat;
+            this.IdRace = idRace;
+            this.IdAdoption = idAdoption;
         }
 
         public int Id
@@ -76,11 +103,13 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
+                if (value.Length > 50)
+                    throw new ArgumentOutOfRangeException("Le nom doit faire moins de 50 caractères");
                 this.nom = value;
             }
         }
 
-        public DateTime DateNaissance
+        public DateTime? DateNaissance
         {
             get
             {
@@ -93,7 +122,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        public string Icad
+        public string? Icad
         {
             get
             {
@@ -102,6 +131,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
+                if (value.Length == 15)
+                    throw new ArgumentOutOfRangeException("L'ICAD doit faire 15 caractères");
                 this.icad = value;
             }
         }
@@ -119,7 +150,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        public string Annotation
+        public string? Annotation
         {
             get
             {
@@ -154,11 +185,15 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException("Le poids doit être positif");
+                if (value >= 1000)
+                    throw new ArgumentOutOfRangeException("Le poids doit être inférieur à 1000");
                 this.poids = value;
             }
         }
 
-        public Employe EmployeCreateur
+        public Employe? EmployeCreateur
         {
             get
             {
@@ -171,7 +206,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        public Statut UnStatut
+        public Statut? UnStatut
         {
             get
             {
@@ -184,7 +219,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        public Etat UnEtat
+        public Etat? UnEtat
         {
             get
             {
@@ -210,7 +245,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        public ObservableCollection<Soin> SoinReçus
+        public ObservableCollection<Recoit> SoinReçus
         {
             get
             {
@@ -233,6 +268,84 @@ namespace FondationBB_ARDIET_BUJOR.Model
             set
             {
                 this.uneRace = value;
+            }
+        }
+
+        public int IdCreateur
+        {
+            get
+            {
+                return this.idCreateur;
+            }
+
+            set
+            {
+                this.idCreateur = value;
+            }
+        }
+
+        public int? IdStatut
+        {
+            get
+            {
+                return this.idStatut;
+            }
+
+            set
+            {
+                this.idStatut = value;
+            }
+        }
+
+        public int? IdEtat
+        {
+            get
+            {
+                return this.idEtat;
+            }
+
+            set
+            {
+                this.idEtat = value;
+            }
+        }
+
+        public int IdRace
+        {
+            get
+            {
+                return this.idRace;
+            }
+
+            set
+            {
+                this.idRace = value;
+            }
+        }
+
+        public Adoption? UneAdoption
+        {
+            get
+            {
+                return this.uneAdoption;
+            }
+
+            set
+            {
+                this.uneAdoption = value;
+            }
+        }
+
+        public int? IdAdoption
+        {
+            get
+            {
+                return this.idAdoption;
+            }
+
+            set
+            {
+                this.idAdoption = value;
             }
         }
     }

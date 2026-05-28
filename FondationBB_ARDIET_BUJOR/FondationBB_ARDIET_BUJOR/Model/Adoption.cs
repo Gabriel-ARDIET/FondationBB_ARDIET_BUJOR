@@ -14,6 +14,9 @@ namespace FondationBB_ARDIET_BUJOR.Model
         private Employe createur;
         private Personne adoptant;
         private Animal unAnimal;
+        private int idCreateur;
+        private int idAdoptant;
+        private int idAnimal;
 
         public Adoption()
         {
@@ -27,6 +30,16 @@ namespace FondationBB_ARDIET_BUJOR.Model
             this.Createur = createur;
             this.Adoptant = adoptant;
             this.UnAnimal = unAnimal;
+        }
+
+        public Adoption(int id, decimal frais, DateTime dateAdoption, int idCreateur, int idAdoptant, int idAnimal)
+        {
+            this.Id = id;
+            this.Frais = frais;
+            this.DateAdoption = dateAdoption;
+            this.IdCreateur = idCreateur;
+            this.IdAdoptant = idAdoptant;
+            this.IdAnimal = idAnimal;
         }
 
         public int Id
@@ -51,6 +64,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
+                if (value >= 1000000)
+                    throw new ArgumentOutOfRangeException("le tarif doit être inférieur à 1 000 000");
                 this.frais = value;
             }
         }
@@ -104,6 +119,45 @@ namespace FondationBB_ARDIET_BUJOR.Model
             set
             {
                 this.unAnimal = value;
+            }
+        }
+
+        public int IdCreateur
+        {
+            get
+            {
+                return this.idCreateur;
+            }
+
+            set
+            {
+                this.idCreateur = value;
+            }
+        }
+
+        public int IdAdoptant
+        {
+            get
+            {
+                return this.idAdoptant;
+            }
+
+            set
+            {
+                this.idAdoptant = value;
+            }
+        }
+
+        public int IdAnimal
+        {
+            get
+            {
+                return this.idAnimal;
+            }
+
+            set
+            {
+                this.idAnimal = value;
             }
         }
     }
