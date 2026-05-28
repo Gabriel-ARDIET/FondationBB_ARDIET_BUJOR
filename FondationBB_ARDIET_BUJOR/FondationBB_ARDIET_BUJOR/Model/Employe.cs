@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
@@ -12,7 +14,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
         Responsable,
         Bénévole
     }
-    public class Employe
+    public class Employe : ICrud<Employe>
     {
         private int id;
         private string nom;
@@ -102,6 +104,43 @@ namespace FondationBB_ARDIET_BUJOR.Model
             {
                 this.unRole = value;
             }
+        }
+
+        public int Create()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Employe> FindAll()
+        {
+            List<Employe> lesEmployes = new List<Employe>();
+            using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from boxs;"))
+            {
+                DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
+                foreach (DataRow dr in dt.Rows)
+                    lesEmployes.Add(new Employe((int)dr["id_employe"], (string)dr["nom_employe"], (string)dr["prenom_employe"],(string)dr["login_employe"], Role.Responsable));
+            }
+            return lesEmployes;
+        }
+
+        public List<Employe> FindBySelection(string criteres)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Read()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update()
+        {
+            throw new NotImplementedException();
         }
     }
 }
