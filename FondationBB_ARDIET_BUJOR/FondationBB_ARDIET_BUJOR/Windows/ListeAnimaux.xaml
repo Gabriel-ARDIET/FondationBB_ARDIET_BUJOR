@@ -31,15 +31,15 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Image Source="pack://application:,,,/Images/logo.png" Margin="20,10" Width="150"/>
+            <Image Source="/Images/logo.png" Margin="20,10" Width="150"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
-                <Button Content="Statistique" Style="{StaticResource HeaderButtonStyle}"/>
                 <Button Content="Animaux" Background="#003570" Style="{StaticResource HeaderButtonStyle}"/>
-                <Button Content="Clients" Style="{StaticResource HeaderButtonStyle}"/>
-                <Button Content="Adoptions" Style="{StaticResource HeaderButtonStyle}"/>
-                <Button Content="Demandes" Style="{StaticResource HeaderButtonStyle}"/>
-                <Button Content="Déconnexion" Background="#E60000" Margin="20,0,0,0" Style="{StaticResource HeaderButtonStyle}"/>
+                <Button x:Name="btnClients" Content="Clients" Style="{StaticResource HeaderButtonStyle}" Click="btnClients_Click"/>
+                <Button x:Name="btnAdoptions" Content="Adoptions" Style="{StaticResource HeaderButtonStyle}" Click="btnAdoptions_Click"/>
+                <Button x:Name="btnDemandes" Content="Demandes" Style="{StaticResource HeaderButtonStyle}" Click="btnDemandes_Click"/>
+                <Button x:Name="btnStatistiques" Content="Statistique" Style="{StaticResource HeaderButtonStyle}" Click="btnStatistiques_Click"/>
+                <Button x:Name="btnDeconnexion" Content="Déconnexion" Background="#E60000" Margin="20,0,0,0" Style="{StaticResource HeaderButtonStyle}" Click="btnDeconnexion_Click"/>
             </StackPanel>
         </Grid>
 

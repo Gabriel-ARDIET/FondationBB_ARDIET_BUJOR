@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FondationBB_ARDIET_BUJOR.Windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,51 +12,20 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TD3_BindingBDPension.Windows;
 
-namespace FondationBB_ARDIET_BUJOR.Windows
+
+namespace TD3_BindingBDPension.Windows
 {
-    /// <summary>
-    /// Logique d'interaction pour ListeAnimaux.xaml
-    /// </summary>
-    public partial class ListeAnimaux : Window
+    public partial class ListeAdoptions : Window
     {
-        public ListeAnimaux()
+        public ListeAdoptions()
         {
             InitializeComponent();
         }
 
-        private void FiltreAnimal_Changed(object sender, RoutedEventArgs e)
-        {
-            if (dgAnimaux.ItemsSource != null)
-            {
-                CollectionViewSource.GetDefaultView(dgAnimaux.ItemsSource).Refresh();
-            }
-        }
-
-        private void BtnSupprimer_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnAjouter_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnEditer_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void btnDeconnexion_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show(
-                "Êtes-vous sûr de vouloir vous déconnecter ?",
-                "Confirmation de déconnexion",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
+            if (MessageBox.Show("Êtes-vous sûr de vouloir vous déconnecter ?", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 Connexion listeWindow = new Connexion();
                 listeWindow.Show();
@@ -69,13 +39,13 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             listeWindow.Show();
             this.Close();
         }
-        private void btnAdoptions_Click(object sender, RoutedEventArgs e)
+
+        private void btnAnimaux_Click(object sender, RoutedEventArgs e)
         {
-            ListeAdoptions listeWindow = new ListeAdoptions();
+            ListeAnimaux listeWindow = new ListeAnimaux();
             listeWindow.Show();
             this.Close();
         }
-
         private void btnDemandes_Click(object sender, RoutedEventArgs e)
         {
             ListeDemandes listeWindow = new ListeDemandes();
@@ -88,6 +58,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             Statistiques listeWindow = new Statistiques();
             listeWindow.Show();
             this.Close();
-        } 
+        }
     }
 }
