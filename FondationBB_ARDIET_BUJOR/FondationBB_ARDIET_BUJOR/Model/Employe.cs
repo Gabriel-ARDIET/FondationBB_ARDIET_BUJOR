@@ -10,7 +10,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
     public enum Role
     {
         Responsable,
-        Benevole
+        Bénévole
     }
     public class Employe
     {
@@ -55,6 +55,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
+                if (value.Length > 100)
+                    throw new ArgumentOutOfRangeException("Le nom doit faire moins de 100 caractères");
                 this.nom = value;
             }
         }
@@ -68,6 +70,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
+                if (value.Length > 100)
+                    throw new ArgumentOutOfRangeException("Le prénom doit faire moins de 100 caractères");
                 this.prenom = value;
             }
         }
@@ -81,6 +85,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
+                if (value.Length > 50)
+                    throw new ArgumentOutOfRangeException("Le login doit faire moins de 50 caractères");
                 this.login = value;
             }
         }

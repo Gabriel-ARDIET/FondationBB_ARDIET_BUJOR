@@ -13,7 +13,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAIAAAACBgAAAAYAAAAAAAAAEAAACBAAAgg=</HashCode>
+      <HashCode>AACKAAAACAIAAAACBgAAAAYAAAAAAAAAEAAAKBAAgig=</HashCode>
       <FileName>Model\Adoption.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -26,8 +26,8 @@
     <Position X="8.25" Y="3.5" Width="3" />
     <AssociationLine Name="EmployeCreateur" Type="FondationBB_ARDIET_BUJOR.Model.Employe" ManuallyRouted="true">
       <Path>
-        <Point X="8.25" Y="3.688" />
-        <Point X="7.875" Y="3.688" />
+        <Point X="8.25" Y="3.76" />
+        <Point X="7.875" Y="3.76" />
         <Point X="7.875" Y="1.387" />
         <Point X="2.5" Y="1.387" />
       </Path>
@@ -36,7 +36,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AQACAIAEBACABBQCAQAQogEAAKAQAAAEEAAABAEAAgA=</HashCode>
+      <HashCode>AQAiAIAEBACAhxQCAYMQogECAKAQAgAEEAAAJAEAIiA=</HashCode>
       <FileName>Model\Animal.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -52,13 +52,6 @@
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAggA=</HashCode>
       <FileName>Model\Comportement.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="FondationBB_ARDIET_BUJOR.Model.Date">
-    <Position X="16.75" Y="5.25" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAEAAA=</HashCode>
-      <FileName>Model\Date.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Demande">
@@ -100,7 +93,7 @@
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Personne">
     <Position X="2.25" Y="8" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAiAgAAAAAAAAAAAAAQIAAAECAQIAAAEKAAAQCAIgM=</HashCode>
+      <HashCode>AAAiAgAAAAAAAAAAAAAQIAAAECAQIAAAEKEAAQCBIgM=</HashCode>
       <FileName>Model\Personne.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -118,12 +111,9 @@
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Soin">
     <Position X="14" Y="4.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAACQAAAAAAAAAAgAAAAIAAAAIAAAACAAACAAAAAgkA=</HashCode>
+      <HashCode>AAACQAAAAAAAAAAAAAAAAAAAAIAAAACAAACAAAAAgkA=</HashCode>
       <FileName>Model\Soin.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="UneDate" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Statut">
     <Position X="8.75" Y="0.5" Width="2" />
@@ -149,7 +139,7 @@
   <Enum Name="FondationBB_ARDIET_BUJOR.Model.Role">
     <Position X="0.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAACAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\Employe.cs</FileName>
     </TypeIdentifier>
   </Enum>
