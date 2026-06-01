@@ -376,19 +376,20 @@ namespace FondationBB_ARDIET_BUJOR.Model
         {
             int nb = 0;
             using (var cmdInsert = new NpgsqlCommand("insert into animal (i_cad_animal,nom_animal,id_race,sexe_animal,date_naissance_animal,poids_animal,date_arrivee_animal,anotation_animal,id_status,id_etat) values (@i_cad_animal,@nom_animal,@id_race,@sexe_animal,@date_naissance_animal,@poids_animal,@date_arrivee_animal,@anotation_animal,@id_status,@id_etat) RETURNING id_animal"))
-            //il faut aussi insert le soin et le comportement (voir le bouton ajouter pour voir tout ce qu'il faut)
+            //il faut aussi insert le soin et le comportement (voir le bouton ajouter pour voir tout ce qu'il faut) ATTENTION de bien tout modifier au niveau de l'XML Window animal au niveau du binding
             {
                 cmdInsert.Parameters.AddWithValue("i_cad_animal", this.Icad);
                 cmdInsert.Parameters.AddWithValue("nom_animal", this.Nom);
+                //On fait comment pour espece ?
                 cmdInsert.Parameters.AddWithValue("id_race", this.UneRace);
                 cmdInsert.Parameters.AddWithValue("sexe_animal", this.UnSexe);
                 cmdInsert.Parameters.AddWithValue("date_naissance_animal", this.DateNaissance);
                 cmdInsert.Parameters.AddWithValue("poids_animal", this.Poids);
                 cmdInsert.Parameters.AddWithValue("date_arrivee_animal", this.DateArrivee);
                 //cmdInsert.Parameters.AddWithValue("libelle_soin", this.SoinReçus); recus -> soins, (ne se trouve pas dans SoinReçus) comment faire pour prendre seulement libelle_soin?
-                //cmdInsert.Parameters.AddWithValue("libelle_comportement", this.SoinReçus); comment faire pour prendre juste la date ?
+                //cmdInsert.Parameters.AddWithValue("date_soin", this.SoinReçus); comment faire pour prendre juste la date ?
                 cmdInsert.Parameters.AddWithValue("anotation_animal", this.Annotation);
-                //cmdInsert.Parameters.AddWithValue("i_cad_animal", this.Comportements); animal_comportement -> comportement, (ne se trouve pas dans Comportements) comment faire pour prendre seulement libelle_comportement ?
+                //cmdInsert.Parameters.AddWithValue("libelle_comportement", this.Comportements); animal_comportement -> comportement, (ne se trouve pas dans Comportements) comment faire pour prendre seulement libelle_comportement ?
                 cmdInsert.Parameters.AddWithValue("id_status", this.UnStatut);
                 cmdInsert.Parameters.AddWithValue("id_etat", this.UnEtat);
                 

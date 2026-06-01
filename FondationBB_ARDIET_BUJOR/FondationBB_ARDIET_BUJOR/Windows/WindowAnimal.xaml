@@ -52,13 +52,13 @@
                 <TextBox x:Name="textEspece" Grid.Row="5" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Espece, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Content="Race" Grid.Row="6" Target="{Binding ElementName=textRace}"/>
-                <TextBox x:Name="textRace" Grid.Row="7" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Race, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox x:Name="textRace" Grid.Row="7" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding UneRace, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Content="Sexe" Grid.Row="8" Target="{Binding ElementName=textSexe}"/>
-                <TextBox x:Name="textSexe" Grid.Row="9" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Sexe, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox x:Name="textSexe" Grid.Row="9" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding UnSexe, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Content="Âge" Grid.Row="10" Target="{Binding ElementName=textAge}"/>
-                <TextBox x:Name="textAge" Grid.Row="11" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Age, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Date de naissance" Grid.Row="10" Target="{Binding ElementName=textDateNaissance}"/>
+                <TextBox x:Name="textDateNaissance" Grid.Row="11" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding DateNaissance, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Content="Poids" Grid.Row="12" Target="{Binding ElementName=textPoids}"/>
                 <TextBox x:Name="textPoids" Grid.Row="13" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Poids, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
@@ -81,34 +81,49 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Content="Soins reçus" Grid.Row="0" Target="{Binding ElementName=textSoins}"/>
+                <Label Content="Soins reçus" Grid.Row="0" Target="{Binding ElementName=dgSoins}"/>
                 <Grid Grid.Row="1" Margin="0,2,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="textSoins" Grid.Column="0" Background="#E0E0E0" AcceptsReturn="True" VerticalContentAlignment="Top" Text="{Binding SoinsRecus, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <DataGrid x:Name="dgSoins" 
+                              Grid.Column="0" 
+                              Background="#E0E0E0"
+                              AutoGenerateColumns="False" 
+                              CanUserAddRows="True"
+                              HeadersVisibility="Column"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              ItemsSource="{Binding SoinReçus, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Soin" Binding="{Binding NomSoin}" Width="*"/>
+                            <DataGridTextColumn Header="Date de soin" Binding="{Binding DateSoin, StringFormat=\{0:dd/MM/yyyy\}}" Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
                     <Button x:Name="btnAjouterSoin" Content="+" Grid.Column="1" Width="30" Margin="5,0,0,0" Background="#E0E0E0" FontWeight="Bold" FontSize="14"/>
                 </Grid>
 
-                <Label Content="Comportements de l'animal" Grid.Row="2" Target="{Binding ElementName=textComportements}"/>
-                <TextBox x:Name="textComportements" Grid.Row="3" Margin="0,2,0,10" Background="#E0E0E0" AcceptsReturn="True" VerticalContentAlignment="Top" Text="{Binding Comportements, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Annotations" Grid.Row="2" Target="{Binding ElementName=textAnnotations}"/>
+                <TextBox x:Name="textAnnotations" Grid.Row="3" Margin="0,2,0,10" Background="#E0E0E0" AcceptsReturn="True" VerticalContentAlignment="Top" Text="{Binding Annotation, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Content="Annotations comportementales" Grid.Row="4" Target="{Binding ElementName=textAnnotations}"/>
+                <Label Content="Comportements de l'animal" Grid.Row="4" Target="{Binding ElementName=textComportements}"/>
                 <Grid Grid.Row="5" Margin="0,2,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="textAnnotations" Grid.Column="0" Background="#E0E0E0" AcceptsReturn="True" VerticalContentAlignment="Top" Text="{Binding AnnotationsComportementales, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button x:Name="btnAjouterAnnotation" Content="+" Grid.Column="1" Width="30" Margin="5,0,0,0" Background="#E0E0E0" FontWeight="Bold" FontSize="14"/>
+
+                    <TextBox x:Name="textComportements" Grid.Column="0" Background="#E0E0E0" AcceptsReturn="True" VerticalContentAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" Text="{Binding Comportements, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button x:Name="btnAjouterComportement" Content="+" Grid.Column="1" Width="30" Margin="5,0,0,0" Background="#E0E0E0" FontWeight="Bold" FontSize="14"/>
                 </Grid>
 
                 <Label Content="Statut" Grid.Row="6" Target="{Binding ElementName=textStatut}"/>
-                <TextBox x:Name="textStatut" Grid.Row="7" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Statut, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox x:Name="textStatut" Grid.Row="7" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding UnStatut, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Content="État de santé" Grid.Row="8" Target="{Binding ElementName=textSante}"/>
-                <TextBox x:Name="textSante" Grid.Row="9" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding EtatSante, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox x:Name="textSante" Grid.Row="9" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding UnEtat, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </Grid>
 
