@@ -372,5 +372,62 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
             return lesAnimaux;
         }
+        public int Create()
+        {
+            int nb = 0;
+            using (var cmdInsert = new NpgsqlCommand("insert into animal (i_cad_animal,nom_animal,id_race,sexe_animal,date_naissance_animal,poids_animal,date_arrivee_animal,anotation_animal,id_status,id_etat) values (@i_cad_animal,@nom_animal,@id_race,@sexe_animal,@date_naissance_animal,@poids_animal,@date_arrivee_animal,@anotation_animal,@id_status,@id_etat) RETURNING id_animal"))
+            //il faut aussi insert le soin et le comportement (voir le bouton ajouter pour voir tout ce qu'il faut)
+            {
+                cmdInsert.Parameters.AddWithValue("i_cad_animal", this.Icad);
+                cmdInsert.Parameters.AddWithValue("nom_animal", this.Nom);
+                cmdInsert.Parameters.AddWithValue("id_race", this.UneRace);
+                cmdInsert.Parameters.AddWithValue("sexe_animal", this.UnSexe);
+                cmdInsert.Parameters.AddWithValue("date_naissance_animal", this.DateNaissance);
+                cmdInsert.Parameters.AddWithValue("poids_animal", this.Poids);
+                cmdInsert.Parameters.AddWithValue("date_arrivee_animal", this.DateArrivee);
+                //cmdInsert.Parameters.AddWithValue("libelle_soin", this.SoinReçus); recus -> soins, (ne se trouve pas dans SoinReçus) comment faire pour prendre seulement libelle_soin?
+                //cmdInsert.Parameters.AddWithValue("libelle_comportement", this.SoinReçus); comment faire pour prendre juste la date ?
+                cmdInsert.Parameters.AddWithValue("anotation_animal", this.Annotation);
+                //cmdInsert.Parameters.AddWithValue("i_cad_animal", this.Comportements); animal_comportement -> comportement, (ne se trouve pas dans Comportements) comment faire pour prendre seulement libelle_comportement ?
+                cmdInsert.Parameters.AddWithValue("id_status", this.UnStatut);
+                cmdInsert.Parameters.AddWithValue("id_etat", this.UnEtat);
+                
+                nb = DataAccess.ExecuteInsert(cmdInsert);
+            }
+            this.Id = nb;
+            return nb;
+        }
+        //inspirer de create pour faire la suite (update, delete, read)
+        /*public void Read()
+        {
+            using (var cmdSelect = new NpgsqlCommand("select * from  chiens  where idchien =@id;"))
+            {
+                cmdSelect.Parameters.AddWithValue("id", this.id);
+
+                DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
+                this.Nom = (String)dt.Rows[0]["nom"];
+                this.Poids = (double)dt.Rows[0]["poids"];
+
+            }
+
+        }
+        public int Update()
+        {
+            using (var cmdUpdate = new NpgsqlCommand("update chiens set nom =@nom ,  maitre = @maitre,  poids = @poids  where idchien =@id;"))
+            {
+                cmdUpdate.Parameters.AddWithValue("nom", this.Nom);
+                cmdUpdate.Parameters.AddWithValue("poids", this.Poids);
+                cmdUpdate.Parameters.AddWithValue("id", this.Id);
+                return DataAccess.ExecuteSet(cmdUpdate);
+            }
+        }
+        public int Delete()
+        {
+            using (var cmdUpdate = new NpgsqlCommand("delete from chiens  where idchien =@id;"))
+            {
+                cmdUpdate.Parameters.AddWithValue("id", this.Id);
+                return DataAccess.ExecuteSet(cmdUpdate);
+            }
+        }*/
     }
 }

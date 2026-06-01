@@ -21,7 +21,24 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         }
 
         private void BtnSupprimer_Click(object sender, RoutedEventArgs e) { }
-        private void BtnAjouter_Click(object sender, RoutedEventArgs e) { }
+        private void BtnAjouter_Click(object sender, RoutedEventArgs e) 
+        {
+            Animal unAnimal = new Animal();
+            WindowAnimal wAnimal = new WindowAnimal(unAnimal);
+            bool? result = wAnimal.ShowDialog();
+            if (result == true)
+            {
+                try
+                {
+                    unAnimal.Id = unAnimal.Create();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Le chien n'a pas pu être créé.", "Attention", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+            }
+        }
         private void BtnEditer_Click(object sender, RoutedEventArgs e) { }
         private bool RechercheMotClefAnimal_Animal(object obj)
         {

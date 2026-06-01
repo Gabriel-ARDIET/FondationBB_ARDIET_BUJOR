@@ -1,0 +1,120 @@
+﻿<Window x:Class="FondationBB_ARDIET_BUJOR.Windows.WindowAnimal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FondationBB_ARDIET_BUJOR.Windows"
+        mc:Ignorable="d"
+        Title="Gestion de l'Animal" Height="500" Width="850"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="15" x:Name="gridGlobal">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" x:Name="panelFormAnimal">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="I-CAD" Grid.Row="0" Target="{Binding ElementName=textIcad}"/>
+                <TextBox x:Name="textIcad" Grid.Row="1" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Icad, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Nom" Grid.Row="2" Target="{Binding ElementName=textNom}"/>
+                <TextBox x:Name="textNom" Grid.Row="3" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Nom, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Espèce" Grid.Row="4" Target="{Binding ElementName=textEspece}"/>
+                <TextBox x:Name="textEspece" Grid.Row="5" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Espece, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Race" Grid.Row="6" Target="{Binding ElementName=textRace}"/>
+                <TextBox x:Name="textRace" Grid.Row="7" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Race, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Sexe" Grid.Row="8" Target="{Binding ElementName=textSexe}"/>
+                <TextBox x:Name="textSexe" Grid.Row="9" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Sexe, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Âge" Grid.Row="10" Target="{Binding ElementName=textAge}"/>
+                <TextBox x:Name="textAge" Grid.Row="11" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Age, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Poids" Grid.Row="12" Target="{Binding ElementName=textPoids}"/>
+                <TextBox x:Name="textPoids" Grid.Row="13" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Poids, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Date d'arrivée" Grid.Row="14" Target="{Binding ElementName=textDateArrivee}"/>
+                <TextBox x:Name="textDateArrivee" Grid.Row="15" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding DateArrivee, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Soins reçus" Grid.Row="0" Target="{Binding ElementName=textSoins}"/>
+                <Grid Grid.Row="1" Margin="0,2,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="textSoins" Grid.Column="0" Background="#E0E0E0" AcceptsReturn="True" VerticalContentAlignment="Top" Text="{Binding SoinsRecus, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button x:Name="btnAjouterSoin" Content="+" Grid.Column="1" Width="30" Margin="5,0,0,0" Background="#E0E0E0" FontWeight="Bold" FontSize="14"/>
+                </Grid>
+
+                <Label Content="Comportements de l'animal" Grid.Row="2" Target="{Binding ElementName=textComportements}"/>
+                <TextBox x:Name="textComportements" Grid.Row="3" Margin="0,2,0,10" Background="#E0E0E0" AcceptsReturn="True" VerticalContentAlignment="Top" Text="{Binding Comportements, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Annotations comportementales" Grid.Row="4" Target="{Binding ElementName=textAnnotations}"/>
+                <Grid Grid.Row="5" Margin="0,2,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="textAnnotations" Grid.Column="0" Background="#E0E0E0" AcceptsReturn="True" VerticalContentAlignment="Top" Text="{Binding AnnotationsComportementales, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button x:Name="btnAjouterAnnotation" Content="+" Grid.Column="1" Width="30" Margin="5,0,0,0" Background="#E0E0E0" FontWeight="Bold" FontSize="14"/>
+                </Grid>
+
+                <Label Content="Statut" Grid.Row="6" Target="{Binding ElementName=textStatut}"/>
+                <TextBox x:Name="textStatut" Grid.Row="7" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Statut, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="État de santé" Grid.Row="8" Target="{Binding ElementName=textSante}"/>
+                <TextBox x:Name="textSante" Grid.Row="9" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding EtatSante, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="btnValider" Content="Valider" Width="150" Height="30" Margin="0,0,20,0" Background="#E0E0E0" IsDefault="True" Click="btnValider_Click"/>
+            <Button x:Name="btnAnnuler" Content="Annuler" Width="150" Height="30" Background="#E0E0E0" IsCancel="True" Click="btnAnnuler_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
