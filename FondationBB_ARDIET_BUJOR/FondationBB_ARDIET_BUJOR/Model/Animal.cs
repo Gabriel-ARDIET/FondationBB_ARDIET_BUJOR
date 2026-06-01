@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -347,6 +350,27 @@ namespace FondationBB_ARDIET_BUJOR.Model
             {
                 this.idAdoption = value;
             }
+        }
+        public List<Animal> FindAll()
+        {
+            List<Animal> lesAnimaux = new List<Animal>();
+            using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from  animal;"))
+            {
+                DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    DateOnly dateN = (DateOnly)dr["date_naissance_animal"];
+                    DateTime dtNaissance = dateN.ToDateTime(TimeOnly.MinValue);
+                    DateOnly dateA = (DateOnly)dr["date_arrivee_animal"];
+                    DateTime dtArrivee = dateA.ToDateTime(TimeOnly.MinValue);
+
+                    lesAnimaux.Add(new Animal((int)dr["id_animal"], (String)dr["nom_animal"], dtNaissance,
+                    (String)dr["i_cad_animal"], (Sexe)dr["sexe_animal"], (String)dr["anotation_animal"],
+                    dtArrivee, (double)dr["poids_animal"], (int)dr["id_employe"], (int)dr["id_status"],
+                    (int)dr["id_etat"], (int)dr["id_race"], (int)dr["id_adoption"]));
+                }
+            }
+            return lesAnimaux;
         }
     }
 }
