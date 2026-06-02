@@ -124,6 +124,8 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
                                 <Grid.Resources>
@@ -154,13 +156,13 @@
                                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Sexe"/>
                                 <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Sexe}"/>
 
-                                <TextBlock Grid.Row="5" Grid.Column="0" Text="Âge"/>
-                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Age}"/>
+                                <TextBlock Grid.Row="5" Grid.Column="0" Text="Date de naissance"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding DateNaissance}"/>
 
                                 <TextBlock Grid.Row="6" Grid.Column="0" Text="Poids"/>
                                 <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Poids}"/>
 
-                                <TextBlock Grid.Row="7" Grid.Column="0" Text="Arrivée" TextWrapping="Wrap"/>
+                                <TextBlock Grid.Row="7" Grid.Column="0" Text="Date Arrivée" TextWrapping="Wrap"/>
                                 <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding DateArrivee, StringFormat={}{0:dd/MM/yyyy}}"/>
 
                                 <TextBlock Grid.Row="8" Grid.Column="0" Text="Soins reçus"/>
@@ -169,11 +171,14 @@
                                 <TextBlock Grid.Row="9" Grid.Column="0" Text="Annotations" TextWrapping="Wrap"/>
                                 <TextBox Grid.Row="9" Grid.Column="1" Height="50" VerticalContentAlignment="Top" Padding="5,2" AcceptsReturn="True" Text="{Binding Annotations}"/>
 
-                                <TextBlock Grid.Row="10" Grid.Column="0" Text="Statut"/>
-                                <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Statut}"/>
+                                <TextBlock Grid.Row="10" Grid.Column="0" Text="Comprtement" TextWrapping="Wrap"/>
+                                <TextBox Grid.Row="10" Grid.Column="1" Height="50" VerticalContentAlignment="Top" Padding="5,2" AcceptsReturn="True" Text="{Binding Comprtement}"/>
 
-                                <TextBlock Grid.Row="11" Grid.Column="0" Text="État de santé"/>
-                                <TextBox Grid.Row="11" Grid.Column="1" Margin="0" Text="{Binding EtatSante}"/>
+                                <TextBlock Grid.Row="11" Grid.Column="0" Text="Statut"/>
+                                <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding Statut}"/>
+
+                                <TextBlock Grid.Row="12" Grid.Column="0" Text="État de santé"/>
+                                <TextBox Grid.Row="12" Grid.Column="1" Margin="0" Text="{Binding EtatSante}"/>
                             </Grid>
                         </StackPanel>
                     </ScrollViewer>

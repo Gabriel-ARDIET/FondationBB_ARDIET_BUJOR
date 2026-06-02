@@ -21,10 +21,10 @@ namespace FondationBB_ARDIET_BUJOR.Model
         private string nom;
         private DateTime? dateNaissance;
         private string? icad;
-        private Sexe unSexe;
+        private Sexe? unSexe;
         private string? annotation;
         private DateTime dateArrivee;
-        private double poids;
+        private double? poids;
         private Race uneRace;
         private Employe? employeCreateur;
         private Statut? unStatut;
@@ -42,6 +42,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
         {
             this.Comportements = new ObservableCollection<Comportement>();
             this.SoinReçus = new ObservableCollection<Recoit>();
+            this.DateArrivee = DateTime.Today;
         }
 
         public Animal(int id, string nom, DateTime? dateNaissance, string? icad, Sexe unSexe, string? annotation, DateTime dateArrivee, double poids, Race uneRace, Employe? employeCreateur,
@@ -140,7 +141,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        public Sexe UnSexe
+        public Sexe? UnSexe
         {
             get
             {
@@ -179,7 +180,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        public double Poids
+        public double? Poids
         {
             get
             {

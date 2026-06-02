@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FondationBB_ARDIET_BUJOR.Windows"
         mc:Ignorable="d"
-        Title="Gestion de l'Animal" Height="500" Width="850"
-        WindowStartupLocation="CenterScreen">
+        Title="Gestion de l'Animal" Height="650" Width="850"
+        WindowStartupLocation="CenterScreen"
+        Closing="Window_Closing">
 
     <Grid Margin="15" x:Name="gridGlobal">
         <Grid.RowDefinitions>
@@ -57,14 +58,16 @@
                 <Label Content="Sexe" Grid.Row="8" Target="{Binding ElementName=textSexe}"/>
                 <TextBox x:Name="textSexe" Grid.Row="9" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding UnSexe, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Content="Date de naissance" Grid.Row="10" Target="{Binding ElementName=textDateNaissance}"/>
-                <TextBox x:Name="textDateNaissance" Grid.Row="11" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding DateNaissance, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Date de naissance" Grid.Row="10" Target="{Binding ElementName=dateNaissancePicker}"/>
+                <DatePicker x:Name="dateNaissancePicker" Grid.Row="11" Margin="0,2,0,10" Height="25" 
+            SelectedDate="{Binding DateNaissance, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Content="Poids" Grid.Row="12" Target="{Binding ElementName=textPoids}"/>
                 <TextBox x:Name="textPoids" Grid.Row="13" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Poids, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Content="Date d'arrivée" Grid.Row="14" Target="{Binding ElementName=textDateArrivee}"/>
-                <TextBox x:Name="textDateArrivee" Grid.Row="15" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding DateArrivee, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Date d'arrivée" Grid.Row="14" Target="{Binding ElementName=dateArriveePicker}"/>
+                <DatePicker x:Name="dateArriveePicker" Grid.Row="15" Margin="0,2,0,10" Height="25" 
+            SelectedDate="{Binding DateArrivee, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
             <Grid Grid.Column="2">
@@ -89,34 +92,83 @@
                     </Grid.ColumnDefinitions>
 
                     <DataGrid x:Name="dgSoins" 
-                              Grid.Column="0" 
-                              Background="#E0E0E0"
-                              AutoGenerateColumns="False" 
-                              CanUserAddRows="True"
-                              HeadersVisibility="Column"
-                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                              ItemsSource="{Binding SoinReçus, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}">
+          Grid.Column="0" 
+          Background="#E0E0E0"
+          AutoGenerateColumns="False" 
+          CanUserAddRows="False" HeadersVisibility="Column"
+          ScrollViewer.VerticalScrollBarVisibility="Auto"
+          ItemsSource="{Binding SoinReçus, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Soin" Binding="{Binding NomSoin}" Width="*"/>
+                            <DataGridTextColumn Header="Soin" Binding="{Binding UnSoin.Libelle}" Width="*"/>
                             <DataGridTextColumn Header="Date de soin" Binding="{Binding DateSoin, StringFormat=\{0:dd/MM/yyyy\}}" Width="120"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <Button x:Name="btnAjouterSoin" Content="+" Grid.Column="1" Width="30" Margin="5,0,0,0" Background="#E0E0E0" FontWeight="Bold" FontSize="14"/>
+                    <StackPanel Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Top">
+                        <Button x:Name="btnAjouterSoin" 
+            Content="+" 
+            Width="30" 
+            Height="25"
+            Margin="0,0,0,5" 
+            Background="#E0E0E0" 
+            FontWeight="Bold" 
+            FontSize="14"
+            Click="btnAjouterSoin_Click"/>
+
+                        <Button x:Name="btnSupprimerSoin" 
+            Content="-" 
+            Width="30" 
+            Height="25"
+            Background="#E0E0E0" 
+            FontWeight="Bold" 
+            FontSize="14"
+            Click="btnSupprimerSoin_Click"/>
+                    </StackPanel>
                 </Grid>
 
                 <Label Content="Annotations" Grid.Row="2" Target="{Binding ElementName=textAnnotations}"/>
                 <TextBox x:Name="textAnnotations" Grid.Row="3" Margin="0,2,0,10" Background="#E0E0E0" AcceptsReturn="True" VerticalContentAlignment="Top" Text="{Binding Annotation, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Content="Comportements de l'animal" Grid.Row="4" Target="{Binding ElementName=textComportements}"/>
+                <Label Content="Comportements de l'animal" Grid.Row="4" Target="{Binding ElementName=dgComportements}"/>
                 <Grid Grid.Row="5" Margin="0,2,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox x:Name="textComportements" Grid.Column="0" Background="#E0E0E0" AcceptsReturn="True" VerticalContentAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" Text="{Binding Comportements, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button x:Name="btnAjouterComportement" Content="+" Grid.Column="1" Width="30" Margin="5,0,0,0" Background="#E0E0E0" FontWeight="Bold" FontSize="14"/>
+                    <DataGrid x:Name="dgComportements" 
+              Grid.Column="0" 
+              Background="#E0E0E0"
+              AutoGenerateColumns="False" 
+              CanUserAddRows="False" 
+              HeadersVisibility="Column"
+              ScrollViewer.VerticalScrollBarVisibility="Auto"
+              ItemsSource="{Binding Comportements, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Comportement" Binding="{Binding Libelle}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <StackPanel Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Top">
+                        <Button x:Name="btnAjouterComportement" 
+            Content="+" 
+            Width="30" 
+            Height="25"
+            Margin="0,0,0,5" 
+            Background="#E0E0E0" 
+            FontWeight="Bold" 
+            FontSize="14" 
+            Click="btnAjouterComportement_Click"/>
+
+                        <Button x:Name="btnSupprimerComportement" 
+            Content="-" 
+            Width="30" 
+            Height="25"
+            Background="#E0E0E0" 
+            FontWeight="Bold" 
+            FontSize="14" 
+            Click="btnSupprimerComportement_Click"/>
+                    </StackPanel>
                 </Grid>
 
                 <Label Content="Statut" Grid.Row="6" Target="{Binding ElementName=textStatut}"/>
