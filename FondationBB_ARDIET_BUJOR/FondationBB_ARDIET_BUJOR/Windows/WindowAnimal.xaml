@@ -172,10 +172,28 @@
                 </Grid>
 
                 <Label Content="Statut" Grid.Row="6" Target="{Binding ElementName=textStatut}"/>
-                <TextBox x:Name="textStatut" Grid.Row="7" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding UnStatut, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Grid Grid.Row="7" Margin="0,2,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="textStatut" Grid.Column="0" Background="#E0E0E0" Height="25" IsReadOnly="True" 
+             Text="{Binding UnStatut.Libelle, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button x:Name="btnEditerStatut" Content="Éditer" Grid.Column="1" Width="60" Height="25" Margin="5,0,0,0" 
+            Background="#E0E0E0" Click="btnEditerStatut_Click"/>
+                </Grid>
 
                 <Label Content="État de santé" Grid.Row="8" Target="{Binding ElementName=textSante}"/>
-                <TextBox x:Name="textSante" Grid.Row="9" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding UnEtat, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Grid Grid.Row="9" Margin="0,2,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="textSante" Grid.Column="0" Background="#E0E0E0" Height="25" IsReadOnly="True" 
+             Text="{Binding UnEtat.Libelle, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button x:Name="btnEditerEtat" Content="Éditer" Grid.Column="1" Width="60" Height="25" Margin="5,0,0,0" 
+            Background="#E0E0E0" Click="btnEditerEtat_Click"/>
+                </Grid>
             </Grid>
         </Grid>
 

@@ -355,49 +355,133 @@ namespace FondationBB_ARDIET_BUJOR.Model
         public List<Animal> FindAll()
         {
             List<Animal> lesAnimaux = new List<Animal>();
-            using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from  animal;"))
+
+            // Modification des colonnes sélectionnées pour correspondre à la structure réelle de votre BDD
+            string query = @"
+        SELECT a.*, 
+               r.libelle_race, r.taille_race, 
+               e.id_espece, e.libelle_espece
+        FROM animal a
+        INNER JOIN race r ON a.id_race = r.id_race
+        INNER JOIN espece e ON r.id_espece = e.id_espece;";
+
+            using (NpgsqlCommand cmdSelect = new NpgsqlCommand(query))
             {
                 DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
                 foreach (DataRow dr in dt.Rows)
                 {
-                    DateOnly dateN = (DateOnly)dr["date_naissance_animal"];
-                    DateTime dtNaissance = dateN.ToDateTime(TimeOnly.MinValue);
-                    DateOnly dateA = (DateOnly)dr["date_arrivee_animal"];
-                    DateTime dtArrivee = dateA.ToDateTime(TimeOnly.MinValue);
+                    DateTime dtNaissance = dr["date_naissance_animal"] != DBNull.Value ? ((DateOnly)dr["date_naissance_animal"]).ToDateTime(TimeOnly.MinValue) : DateTime.MinValue;
+                    DateTime dtArrivee = dr["date_arrivee_animal"] != DBNull.Value ? ((DateOnly)dr["date_arrivee_animal"]).ToDateTime(TimeOnly.MinValue) : DateTime.Today;
 
-                    lesAnimaux.Add(new Animal((int)dr["id_animal"], (String)dr["nom_animal"], dtNaissance,
-                    (String)dr["i_cad_animal"], (Sexe)dr["sexe_animal"], (String)dr["anotation_animal"],
-                    dtArrivee, (double)dr["poids_animal"], (int)dr["id_employe"], (int)dr["id_status"],
-                    (int)dr["id_etat"], (int)dr["id_race"], (int)dr["id_adoption"]));
+                    Sexe unSexeEnum = (dr["sexe_animal"].ToString() == "F") ? Sexe.Femelle : Sexe.Male;
+
+                    // 1. Instanciation de l'objet Espece (avec libelle_espece)
+                    int idEspece = Convert.ToInt32(dr["id_espece"]);
+                    string libelleEspece = dr["libelle_espece"].ToString();
+                    Espece lEspece = new Espece(idEspece, libelleEspece);
+
+                    // 2. Instanciation de l'objet Race (avec libelle_race et taille_race)
+                    int idRace = Convert.ToInt32(dr["id_race"]);
+                    string libelleRace = dr["libelle_race"].ToString();
+
+                    Taille tailleRaceEnum = Taille.Moyen;
+                    if (dr["taille_race"] != DBNull.Value)
+                    {
+                        Enum.TryParse(dr["taille_race"].ToString(), true, out tailleRaceEnum);
+                    }
+
+                    Race laRace = new Race(idRace, libelleRace, tailleRaceEnum, lEspece);
+
+                    // 3. Création de l'animal complet
+                    Animal nouvelAnimal = new Animal(
+                        Convert.ToInt32(dr["id_animal"]),
+                        dr["nom_animal"].ToString(),
+                        dtNaissance,
+                        dr["i_cad_animal"] != DBNull.Value ? dr["i_cad_animal"].ToString() : null,
+                        unSexeEnum,
+                        dr["annotation_animal"] != DBNull.Value ? dr["annotation_animal"].ToString() : null,
+                        dtArrivee,
+                        dr["poids_animal"] != DBNull.Value ? Convert.ToDouble(dr["poids_animal"]) : 0.0,
+                        Convert.ToInt32(dr["id_employe"]),
+                        dr["id_statut"] != DBNull.Value ? Convert.ToInt32(dr["id_statut"]) : null,
+                        dr["id_etat"] != DBNull.Value ? Convert.ToInt32(dr["id_etat"]) : null,
+                        idRace,
+                        dr["id_adoption"] != DBNull.Value ? Convert.ToInt32(dr["id_adoption"]) : null
+                    );
+
+                    // Liaison de l'objet Race à l'animal
+                    nouvelAnimal.UneRace = laRace;
+
+                    lesAnimaux.Add(nouvelAnimal);
                 }
             }
             return lesAnimaux;
         }
         public int Create()
         {
-            int nb = 0;
-            using (var cmdInsert = new NpgsqlCommand("insert into animal (i_cad_animal,nom_animal,id_race,sexe_animal,date_naissance_animal,poids_animal,date_arrivee_animal,anotation_animal,id_status,id_etat) values (@i_cad_animal,@nom_animal,@id_race,@sexe_animal,@date_naissance_animal,@poids_animal,@date_arrivee_animal,@anotation_animal,@id_status,@id_etat) RETURNING id_animal"))
-            //il faut aussi insert le soin et le comportement (voir le bouton ajouter pour voir tout ce qu'il faut) ATTENTION de bien tout modifier au niveau de l'XML Window animal au niveau du binding
+            int newId = 0;
+
+            // 1. Insertion de l'animal de base
+            string queryAnimal = @"INSERT INTO animal (i_cad_animal, nom_animal, id_race, sexe_animal, 
+                          date_naissance_animal, poids_animal, date_arrivee_animal, anotation_animal, id_status, id_etat) 
+                          VALUES (@i_cad_animal, @nom_animal, @id_race, @sexe_animal, 
+                          @date_naissance_animal, @poids_animal, @date_arrivee_animal, @anotation_animal, @id_status, @id_etat) 
+                          RETURNING id_animal;";
+
+            using (var cmdInsert = new NpgsqlCommand(queryAnimal))
             {
-                cmdInsert.Parameters.AddWithValue("i_cad_animal", this.Icad);
+                cmdInsert.Parameters.AddWithValue("i_cad_animal", (object)this.Icad ?? DBNull.Value);
                 cmdInsert.Parameters.AddWithValue("nom_animal", this.Nom);
-                //On fait comment pour espece ?
-                cmdInsert.Parameters.AddWithValue("id_race", this.UneRace);
-                cmdInsert.Parameters.AddWithValue("sexe_animal", this.UnSexe);
-                cmdInsert.Parameters.AddWithValue("date_naissance_animal", this.DateNaissance);
-                cmdInsert.Parameters.AddWithValue("poids_animal", this.Poids);
+                cmdInsert.Parameters.AddWithValue("id_race", this.UneRace != null ? this.UneRace.Id : this.IdRace);
+                cmdInsert.Parameters.AddWithValue("sexe_animal", this.UnSexe.HasValue ? (int)this.UnSexe.Value : DBNull.Value); // Converti en int ou string selon ton énumération en BDD
+                cmdInsert.Parameters.AddWithValue("date_naissance_animal", (object)this.DateNaissance ?? DBNull.Value);
+                cmdInsert.Parameters.AddWithValue("poids_animal", (object)this.Poids ?? DBNull.Value);
                 cmdInsert.Parameters.AddWithValue("date_arrivee_animal", this.DateArrivee);
-                //cmdInsert.Parameters.AddWithValue("libelle_soin", this.SoinReçus); recus -> soins, (ne se trouve pas dans SoinReçus) comment faire pour prendre seulement libelle_soin?
-                //cmdInsert.Parameters.AddWithValue("date_soin", this.SoinReçus); comment faire pour prendre juste la date ?
-                cmdInsert.Parameters.AddWithValue("anotation_animal", this.Annotation);
-                //cmdInsert.Parameters.AddWithValue("libelle_comportement", this.Comportements); animal_comportement -> comportement, (ne se trouve pas dans Comportements) comment faire pour prendre seulement libelle_comportement ?
-                cmdInsert.Parameters.AddWithValue("id_status", this.UnStatut);
-                cmdInsert.Parameters.AddWithValue("id_etat", this.UnEtat);
-                
-                nb = DataAccess.ExecuteInsert(cmdInsert);
+                cmdInsert.Parameters.AddWithValue("anotation_animal", (object)this.Annotation ?? DBNull.Value);
+                cmdInsert.Parameters.AddWithValue("id_status", this.UnStatut != null ? this.UnStatut.Id : (object)this.IdStatut ?? DBNull.Value);
+                cmdInsert.Parameters.AddWithValue("id_etat", this.UnEtat != null ? this.UnEtat.Id : (object)this.IdEtat ?? DBNull.Value);
+
+                newId = DataAccess.ExecuteInsert(cmdInsert); // Récupère le nouvel ID généré par le RETURNING
             }
-            this.Id = nb;
-            return nb;
+
+            this.Id = newId;
+
+            // 2. Insertion des soins reçus dans la table pivot 'recoit'
+            if (this.SoinReçus != null && this.SoinReçus.Count > 0)
+            {
+                foreach (var soinRecu in this.SoinReçus)
+                {
+                    string querySoin = "INSERT INTO recoit (id_soin, id_animal, date_soin, date_rappel) VALUES (@idSoin, @idAnimal, @dateSoin, @dateRappel);";
+                    using (var cmdSoin = new NpgsqlCommand(querySoin))
+                    {
+                        cmdSoin.Parameters.AddWithValue("idSoin", soinRecu.UnSoin?.Id ?? soinRecu.IdSoin);
+                        cmdSoin.Parameters.AddWithValue("idAnimal", this.Id); // Utilise le nouvel ID généré
+                        cmdSoin.Parameters.AddWithValue("dateSoin", soinRecu.DateSoin);
+                        cmdSoin.Parameters.AddWithValue("dateRappel", (object)soinRecu.DateRappel ?? DBNull.Value);
+
+                        DataAccess.ExecuteSet(cmdSoin); // Méthode pour exécuter sans retour
+                    }
+                }
+            }
+
+            // 3. Insertion des comportements dans la table pivot (ex: assoc_animal_comportement)
+            if (this.Comportements != null && this.Comportements.Count > 0)
+            {
+                foreach (var comp in this.Comportements)
+                {
+                    // Remplace 'animal_comportement' et les colonnes par les vrais noms de ta BDD
+                    string queryComp = "INSERT INTO animal_comportement (id_animal, id_comportement) VALUES (@idAnimal, @idComp);";
+                    using (var cmdComp = new NpgsqlCommand(queryComp))
+                    {
+                        cmdComp.Parameters.AddWithValue("idAnimal", this.Id);
+                        cmdComp.Parameters.AddWithValue("idComp", comp.Id); // Suppose que Comportement a une propriété Id
+
+                        DataAccess.ExecuteSet(cmdComp);
+                    }
+                }
+            }
+
+            return newId;
         }
         //inspirer de create pour faire la suite (update, delete, read)
         /*public void Read()
@@ -431,5 +515,24 @@ namespace FondationBB_ARDIET_BUJOR.Model
                 return DataAccess.ExecuteSet(cmdUpdate);
             }
         }*/
+        public string SoinsRecusResume
+        {
+            get
+            {
+                if (SoinReçus == null || !SoinReçus.Any()) return "Aucun soin enregistré";
+                // Joint les libellés des soins avec leur date
+                return string.Join(Environment.NewLine, SoinReçus.Select(s => $"- {s.UnSoin?.Libelle} ({s.DateSoin:dd/MM/yyyy})"));
+            }
+        }
+
+        public string ComportementsResume
+        {
+            get
+            {
+                if (Comportements == null || !Comportements.Any()) return "Aucun comportement enregistré";
+                // À ajuster selon la structure de ta classe Comportement (supposons qu'elle possède une propriété 'Libelle')
+                return string.Join(", ", Comportements.Select(c => c.Libelle));
+            }
+        }
     }
 }

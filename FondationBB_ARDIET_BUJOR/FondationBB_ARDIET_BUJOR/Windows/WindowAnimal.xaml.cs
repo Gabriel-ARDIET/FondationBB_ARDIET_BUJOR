@@ -144,5 +144,56 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 MessageBox.Show("Veuillez sélectionner un comportement dans le tableau pour le supprimer.", "Sélection manquante", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+        private void btnEditerStatut_Click(object sender, RoutedEventArgs e)
+        {
+            WindowAjoutSatut fenetreStatut = new WindowAjoutSatut();
+            fenetreStatut.Owner = this;
+
+            if (fenetreStatut.ShowDialog() == true)
+            {
+                Animal animalActuel = this.DataContext as Animal;
+                if (animalActuel != null)
+                {
+                    // Initialisation de l'objet s'il n'existe pas, ou remplacement direct
+                    if (animalActuel.UnStatut == null)
+                    {
+                        // Remplacez 'Statut' par le nom exact de votre classe modèle si différent
+                        animalActuel.UnStatut = new Statut();
+                    }
+
+                    // Écrase l'ancien statut par le nouveau libellé sélectionné
+                    animalActuel.UnStatut.Libelle = fenetreStatut.StatutSelectionne;
+
+                    // Forcer le rafraîchissement du Binding de la TextBox si votre modèle n'implémente pas INotifyPropertyChanged
+                    textStatut.GetBindingExpression(TextBox.TextProperty)?.UpdateTarget();
+                }
+            }
+        }
+
+        private void btnEditerEtat_Click(object sender, RoutedEventArgs e)
+        {
+            WindowAjoutEtat fenetreEtat = new WindowAjoutEtat();
+            fenetreEtat.Owner = this;
+
+            if (fenetreEtat.ShowDialog() == true)
+            {
+                Animal animalActuel = this.DataContext as Animal;
+                if (animalActuel != null)
+                {
+                    // Initialisation de l'objet s'il n'existe pas, ou remplacement direct
+                    if (animalActuel.UnEtat == null)
+                    {
+                        // Remplacez 'Etat' ou 'EtatSante' par le nom exact de votre classe modèle si différent
+                        animalActuel.UnEtat = new Etat();
+                    }
+
+                    // Écrase l'ancien état par le nouveau libellé sélectionné
+                    animalActuel.UnEtat.Libelle = fenetreEtat.EtatSelectionne;
+
+                    // Forcer le rafraîchissement du Binding de la TextBox si votre modèle n'implémente pas INotifyPropertyChanged
+                    textSante.GetBindingExpression(TextBox.TextProperty)?.UpdateTarget();
+                }
+            }
+        }
     }
 }

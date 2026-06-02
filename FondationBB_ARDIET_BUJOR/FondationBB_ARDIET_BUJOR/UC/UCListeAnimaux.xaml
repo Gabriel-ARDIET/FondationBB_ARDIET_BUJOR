@@ -70,7 +70,7 @@
                 </StackPanel>
 
                 <!-- DataGrid des Animaux -->
-                <DataGrid Grid.Row="1" x:Name="dgAnimaux" ItemsSource="{Binding Animal}" AutoGenerateColumns="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto">
+                <DataGrid Grid.Row="1" x:Name="dgAnimaux" ItemsSource="{Binding ListeDesAnimaux}" AutoGenerateColumns="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Image" Width="Auto">
                             <DataGridTemplateColumn.CellTemplate>
@@ -83,10 +83,11 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="I-CAD" Binding="{Binding ICAD}" Width="*"/>
+                        <DataGridTextColumn Header="I-CAD" Binding="{Binding Icad}" Width="*"/>
                         <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
-                        <DataGridTextColumn Header="Espèce" Binding="{Binding Espece}" Width="*"/>
-                        <DataGridTextColumn Header="Sexe" Binding="{Binding Sexe}" Width="*"/>
+                        <DataGridTextColumn Header="Espèce" Binding="{Binding UneRace.UneEspece.Libelle}" Width="*"/>
+                        <DataGridTextColumn Header="Race" Binding="{Binding UneRace.Libelle}" Width="*"/>
+                        <DataGridTextColumn Header="Sexe" Binding="{Binding UnSexe}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
@@ -142,22 +143,22 @@
                                 </Grid.Resources>
 
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="I-CAD"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ICAD}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Icad}"/>
 
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Nom"/>
                                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Nom}"/>
 
                                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Espèce"/>
-                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Espece}"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding UneRace.UneEspece.Libelle}"/>
 
                                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Race"/>
-                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Race}"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding UneRace.Libelle}"/>
 
                                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Sexe"/>
-                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Sexe}"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding UnSexe}"/>
 
                                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Date de naissance"/>
-                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding DateNaissance}"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding DateNaissance, StringFormat={}{0:dd/MM/yyyy}}"/>
 
                                 <TextBlock Grid.Row="6" Grid.Column="0" Text="Poids"/>
                                 <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Poids}"/>
@@ -166,19 +167,19 @@
                                 <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding DateArrivee, StringFormat={}{0:dd/MM/yyyy}}"/>
 
                                 <TextBlock Grid.Row="8" Grid.Column="0" Text="Soins reçus"/>
-                                <TextBox Grid.Row="8" Grid.Column="1" Height="50" VerticalContentAlignment="Top" Padding="5,2" AcceptsReturn="True" Text="{Binding SoinsRecus}"/>
+                                <TextBox Grid.Row="8" Grid.Column="1" Height="50" VerticalContentAlignment="Top" Padding="5,2" AcceptsReturn="True" Text="{Binding SoinsRecusResume, Mode=OneWay}"/>
 
                                 <TextBlock Grid.Row="9" Grid.Column="0" Text="Annotations" TextWrapping="Wrap"/>
-                                <TextBox Grid.Row="9" Grid.Column="1" Height="50" VerticalContentAlignment="Top" Padding="5,2" AcceptsReturn="True" Text="{Binding Annotations}"/>
+                                <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Annotation}"/>
 
                                 <TextBlock Grid.Row="10" Grid.Column="0" Text="Comprtement" TextWrapping="Wrap"/>
-                                <TextBox Grid.Row="10" Grid.Column="1" Height="50" VerticalContentAlignment="Top" Padding="5,2" AcceptsReturn="True" Text="{Binding Comprtement}"/>
+                                <TextBox Grid.Row="10" Grid.Column="1" Height="50" VerticalContentAlignment="Top" Padding="5,2" AcceptsReturn="True" Text="{Binding ComportementsResume, Mode=OneWay}"/>
 
                                 <TextBlock Grid.Row="11" Grid.Column="0" Text="Statut"/>
                                 <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding Statut}"/>
 
                                 <TextBlock Grid.Row="12" Grid.Column="0" Text="État de santé"/>
-                                <TextBox Grid.Row="12" Grid.Column="1" Margin="0" Text="{Binding EtatSante}"/>
+                                <TextBox Grid.Row="12" Grid.Column="1" Margin="0" Text="{Binding UnEtat.Libelle}"/>
                             </Grid>
                         </StackPanel>
                     </ScrollViewer>
