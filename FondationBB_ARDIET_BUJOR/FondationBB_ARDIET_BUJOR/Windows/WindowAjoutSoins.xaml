@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FondationBB_ARDIET_BUJOR.Windows"
         mc:Ignorable="d"
-        Title="Ajout de Soins" Height="550" Width="700" WindowStartupLocation="CenterScreen">
+        Title="Ajout de Soins" Height="550" Width="700" WindowStartupLocation="CenterScreen"
+        Closing="Window_Closing">
 
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
@@ -15,7 +16,7 @@
 
         <GroupBox Header="Sélectionnez le type de soin" Grid.Column="0" Margin="0,0,10,0" Padding="10">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel>
+                <StackPanel x:Name="stackSoins">
                     <RadioButton Content="Stérilisation" GroupName="Soins" Margin="0,5"/>
                     <RadioButton Content="Vaccination" GroupName="Soins" Margin="0,5"/>
                     <RadioButton Content="Identification (puce ICAD)" GroupName="Soins" Margin="0,5"/>
@@ -48,7 +49,10 @@
             <TextBlock Text="Date du soin :" FontWeight="Bold" Margin="0,0,0,5" Grid.Row="0"/>
             <DatePicker x:Name="dpDateSoin" Grid.Row="1" Height="30"/>
 
-            <Button Content="Enregistrer le soin" Grid.Row="3" Height="40" Background="Red" FontWeight="Bold"/>
+            <UniformGrid Grid.Row="3" Columns="2" Height="40">
+                <Button Content="Enregistrer" Background="Red" FontWeight="Bold" Margin="0,0,5,0" Click="btnEnregistrer_Click"/>
+                <Button Content="Annuler" Background="#E0E0E0" Margin="5,0,0,0" Click="btnAnnuler_Click"/>
+            </UniformGrid>
         </Grid>
 
     </Grid>
