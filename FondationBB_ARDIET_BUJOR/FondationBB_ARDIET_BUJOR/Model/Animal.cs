@@ -135,7 +135,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
-                if (value.Length == 15)
+                if (value.Length != 15)
                     throw new ArgumentOutOfRangeException("L'ICAD doit faire 15 caractères");
                 this.icad = value;
             }

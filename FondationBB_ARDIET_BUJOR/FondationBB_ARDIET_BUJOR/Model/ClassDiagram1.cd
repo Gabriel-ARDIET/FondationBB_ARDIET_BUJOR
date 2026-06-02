@@ -26,8 +26,8 @@
     <Position X="8.25" Y="3.5" Width="3" />
     <AssociationLine Name="EmployeCreateur" Type="FondationBB_ARDIET_BUJOR.Model.Employe" ManuallyRouted="true">
       <Path>
-        <Point X="8.25" Y="3.754" />
-        <Point X="7.875" Y="3.754" />
+        <Point X="8.25" Y="3.765" />
+        <Point X="7.875" Y="3.765" />
         <Point X="7.875" Y="1.692" />
         <Point X="2.5" Y="1.692" />
       </Path>
@@ -37,14 +37,14 @@
     </AssociationLine>
     <AssociationLine Name="UnEtat" Type="FondationBB_ARDIET_BUJOR.Model.Etat" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.25" Y="4.875" />
-        <Point X="11.625" Y="4.875" />
+        <Point X="11.25" Y="4.937" />
+        <Point X="11.625" Y="4.937" />
         <Point X="11.625" Y="1.696" />
         <Point X="12.25" Y="1.696" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AQAiAIAEBACAhxQCAYMQogECAKAQAgAEEAAAJAEAIiA=</HashCode>
+      <HashCode>AQAiAIAEBACAhxQCAYMQogECAKAQAkAEEAIAJAEAIiA=</HashCode>
       <FileName>Model\Animal.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -141,8 +141,8 @@
         <Point X="14.75" Y="9.276" />
         <Point X="14.75" Y="7.75" />
         <Point X="11.625" Y="7.75" />
-        <Point X="11.625" Y="7.938" />
-        <Point X="11.25" Y="7.938" />
+        <Point X="11.625" Y="8.138" />
+        <Point X="11.25" Y="8.138" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -150,8 +150,8 @@
       <FileName>Model\Animal_Comportement.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="UnAnimal" />
       <Property Name="UnComportement" />
+      <Property Name="UnAnimal" />
     </ShowAsAssociation>
   </Class>
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Recoit">
