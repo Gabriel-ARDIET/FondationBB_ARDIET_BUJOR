@@ -1,10 +1,12 @@
-﻿using System.Windows;
+﻿using FondationBB_ARDIET_BUJOR.Model;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace FondationBB_ARDIET_BUJOR.Windows
 {
     public partial class UCConnexion : UserControl
     {
+        public event EventHandler<Employe>? LoginReussi;
         public UCConnexion()
         {
             InitializeComponent();
@@ -12,26 +14,16 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void btnConnexion_Click(object sender, RoutedEventArgs e)
         {
-            if (Application.Current.MainWindow is MainWindow mainWindow)
+            List<Employe> lesEmployes = new Employe().FindAll();
+            Employe emp = lesEmployes.FirstOrDefault(em => em.Login == tbUserName.Text);
+            if (emp != null)
             {
-                mainWindow.ValiderConnexion();
+                LoginReussi?.Invoke(this, emp);
+            }
+            else
+            {
+                MessageBox.Show("Login ou mot de passe incorrect", "Erreur de connexion", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        //Exemple du cours :
-        /*public partial class ConnexionUC : UserControl
-        {
-            public event EventHandler LoginReussi;
-            public ConnexionUC()
-            { InitializeComponent(); }
-
-            private void BtnConnexion_Click(object sender, RoutedEventArgs e)
-            {
-                if (TxtLogin.Text == "admin" && TxtPassword.Password == "1234")
-                    LoginReussi?.Invoke(this, EventArgs.Empty);
-                else
-                    MessageBox.Show("Identifiants incorrects.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }*/
-
     }
 }

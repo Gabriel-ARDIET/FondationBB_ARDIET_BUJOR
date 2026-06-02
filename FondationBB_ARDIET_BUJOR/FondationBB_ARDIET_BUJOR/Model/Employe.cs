@@ -119,7 +119,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
         public List<Employe> FindAll()
         {
             List<Employe> lesEmployes = new List<Employe>();
-            using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from boxs;"))
+            using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from employe;"))
             {
                 DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
                 foreach (DataRow dr in dt.Rows)

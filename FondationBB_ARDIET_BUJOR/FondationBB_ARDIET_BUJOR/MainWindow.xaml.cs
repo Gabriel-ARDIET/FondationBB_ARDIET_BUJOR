@@ -1,21 +1,35 @@
-﻿using System.Windows;
+﻿using FondationBB_ARDIET_BUJOR.Model;
+using System.Data;
+using System.Windows;
 
 namespace FondationBB_ARDIET_BUJOR.Windows
 {
     public partial class MainWindow : Window
     {
+        private Employe employeConnecte;
         public MainWindow()
         {
             InitializeComponent();
-            ZoneContenu.Content = new UCConnexion();
+            MenuHeader.Visibility= Visibility.Collapsed;
+            ShowConnexion();
+        }
+
+        private void ShowConnexion()
+        {
+            UCConnexion connexion = new UCConnexion();
+            //on abonne la méthode ci-dessous auprès de l’evenement     
+            connexion.LoginReussi += ValiderConnexion;
+            ZoneContenu.Content = connexion;
         }
 
         /// <summary>
         /// Méthode appelée suite à une authentification réussie
         /// </summary>
-        public void ValiderConnexion()
+        public void ValiderConnexion(object? sender, Employe emp)
         {
+            employeConnecte = emp;
             MenuHeader.Visibility = Visibility.Visible;
+            TxtNomEmploye.Text = employeConnecte.Nom + " " + employeConnecte.Prenom;
             ZoneContenu.Content = new UCListeAnimaux();
         }
 
