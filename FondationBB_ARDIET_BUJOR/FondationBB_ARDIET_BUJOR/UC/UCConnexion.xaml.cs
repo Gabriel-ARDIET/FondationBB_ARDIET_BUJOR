@@ -17,5 +17,21 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 mainWindow.ValiderConnexion();
             }
         }
+        //Exemple du cours :
+        /*public partial class ConnexionUC : UserControl
+        {
+            public event EventHandler LoginReussi;
+            public ConnexionUC()
+            { InitializeComponent(); }
+
+            private void BtnConnexion_Click(object sender, RoutedEventArgs e)
+            {
+                if (TxtLogin.Text == "admin" && TxtPassword.Password == "1234")
+                    LoginReussi?.Invoke(this, EventArgs.Empty);
+                else
+                    MessageBox.Show("Identifiants incorrects.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }*/
+
     }
 }

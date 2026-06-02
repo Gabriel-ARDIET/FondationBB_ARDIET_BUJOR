@@ -1,0 +1,55 @@
+﻿<Window x:Class="FondationBB_ARDIET_BUJOR.Windows.WindowAjoutSoins"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FondationBB_ARDIET_BUJOR.Windows"
+        mc:Ignorable="d"
+        Title="Ajout de Soins" Height="550" Width="700" WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.5*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Header="Sélectionnez le type de soin" Grid.Column="0" Margin="0,0,10,0" Padding="10">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <RadioButton Content="Stérilisation" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Vaccination" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Identification (puce ICAD)" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Vermifuge" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Antiparasitaire externe" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Consultation générale" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Soins dentaires" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Bilan sanguin" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Soins post-opératoires" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Traitement antibiotique" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Radiographie" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Bilan senior" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Soins dermatologiques" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Intervention chirurgicale (légère)" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Nettoyage des oreilles" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Coupe des griffes" GroupName="Soins" Margin="0,5"/>
+                    <RadioButton Content="Test FIV / FeLV" GroupName="Soins" Margin="0,5"/>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+
+        <Grid Grid.Column="1" Margin="10,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Date du soin :" FontWeight="Bold" Margin="0,0,0,5" Grid.Row="0"/>
+            <DatePicker x:Name="dpDateSoin" Grid.Row="1" Height="30"/>
+
+            <Button Content="Enregistrer le soin" Grid.Row="3" Height="40" Background="Red" FontWeight="Bold"/>
+        </Grid>
+
+    </Grid>
+</Window>
