@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +9,7 @@ using System.Windows.Markup;
 
 namespace FondationBB_ARDIET_BUJOR.Model
 {
-    public class Personne
+    public class Personne : ICrud<Personne>
     {
         private int id;
         private string nom;
@@ -212,6 +214,43 @@ namespace FondationBB_ARDIET_BUJOR.Model
                     throw new ArgumentOutOfRangeException("le numéro doit être inférieur à 10 caractère");
                 this.numero = value;
             }
+        }
+
+        public int Create()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Read()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Personne> FindAll()
+        {
+            List<Personne> lesChiens = new List<Personne>();
+            using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from personne;"))
+            {
+                DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
+                foreach (DataRow dr in dt.Rows)
+                    lesChiens.Add(new Personne((int)dr["id_personne"]));
+            }
+            return lesChiens;
+        }
+
+        public List<Personne> FindBySelection(string criteres)
+        {
+            throw new NotImplementedException();
         }
     }
 }

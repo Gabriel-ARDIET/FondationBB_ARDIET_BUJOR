@@ -11,7 +11,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
         Bébé,
         Jeune,
         Adulte,
-        Vieux
+        Sénior
 
     }
     public class Demande
