@@ -18,6 +18,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
             // On lie la liste des races au ComboBox
             comboRace.ItemsSource = lesRacesDisponibles;
+            comboEspece.ItemsSource = Espece.FindAll();
 
             if (unAnimal is Animal animalActuel && animalActuel.UnSexe.HasValue)
             {
@@ -33,7 +34,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             // 1. Forcer la mise à jour des Bindings pour être sûr d'avoir les dernières valeurs saisies
             textIcad.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             textNom.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
-            textEspece.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            comboEspece.GetBindingExpression(ComboBox.SelectedValueProperty)?.UpdateSource();
             comboRace.GetBindingExpression(ComboBox.SelectedValueProperty)?.UpdateSource();
             textPoids.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             dateNaissancePicker.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
@@ -73,6 +74,12 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             {
                 textNom.Background = couleurErreur;
                 erreurs.Add("- Le nom de l'animal est obligatoire.");
+            }
+
+            if (comboEspece.SelectedValue == null)
+            {
+                comboEspece.Background = couleurErreur;
+                erreurs.Add("- L'espèce est obligatoire.");
             }
 
             // Race obligatoire

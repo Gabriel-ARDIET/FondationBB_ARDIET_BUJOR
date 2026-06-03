@@ -49,13 +49,16 @@
                 <Label Content="Nom *" Grid.Row="2" Target="{Binding ElementName=textNom}"/>
                 <TextBox x:Name="textNom" Grid.Row="3" Margin="0,2,0,10" Background="White" Height="25" Text="{Binding Nom, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Content="Espèce" Grid.Row="4" Target="{Binding ElementName=textEspece}"/>
-                <TextBox x:Name="textEspece" Grid.Row="5" Margin="0,2,0,10" Background="White" Height="25" Text="{Binding Espece, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Espèce" Grid.Row="4" Target="{Binding ElementName=comboEspece}"/>
+                <ComboBox Name="comboEspece" Grid.Row="5" Margin="0,2,0,10" Height="25"
+          DisplayMemberPath="Libelle" 
+          SelectedValuePath="Id"
+          SelectedValue="{Binding IdEspece, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Label Content="Race *" Grid.Row="6" Target="{Binding ElementName=comboRace}"/>
                 <ComboBox x:Name="comboRace" Grid.Row="7" Margin="0,2,0,10" Height="25"
-          DisplayMemberPath="LibelleRace" 
-          SelectedValuePath="IdRace"
+          DisplayMemberPath="Libelle" 
+          SelectedValuePath="Id"
           SelectedValue="{Binding IdRace, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Content="Sexe *" Grid.Row="8" Target="{Binding ElementName=panelSexe}"/>

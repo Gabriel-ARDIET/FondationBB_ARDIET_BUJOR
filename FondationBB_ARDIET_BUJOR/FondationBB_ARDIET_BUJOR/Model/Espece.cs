@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,6 +49,23 @@ namespace FondationBB_ARDIET_BUJOR.Model
                     throw new ArgumentOutOfRangeException("Le libéllé doit faire moins de 30 caractères");
                 this.libelle = value;
             }
+        }
+        public static List<Espece> FindAll()
+        {
+            List<Espece> liste = new List<Espece>();
+            string req = "SELECT id_espece, libelle_espece FROM espece";
+            NpgsqlCommand cmd = new NpgsqlCommand(req);
+
+            DataTable dt = DataAccess.ExecuteSelect(cmd);
+            foreach (DataRow row in dt.Rows)
+            {
+                liste.Add(new Espece
+                {
+                    Id = Convert.ToInt32(row["id_espece"]),
+                    Libelle = row["libelle_espece"].ToString()
+                });
+            }
+            return liste;
         }
     }
 }
