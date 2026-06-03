@@ -32,7 +32,7 @@
                 </StackPanel>
 
                 <DataGrid Grid.Row="1" x:Name="dgClients" AutoGenerateColumns="False" IsReadOnly="True" 
-                              VerticalScrollBarVisibility="Auto">
+                              VerticalScrollBarVisibility="Auto" ItemsSource="{Binding}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
                         <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" Width="*"/>

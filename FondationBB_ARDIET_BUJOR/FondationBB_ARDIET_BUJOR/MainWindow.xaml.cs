@@ -7,11 +7,13 @@ namespace FondationBB_ARDIET_BUJOR.Windows
     public partial class MainWindow : Window
     {
         private Employe employeConnecte;
+        public Data laData;
         public MainWindow()
         {
             InitializeComponent();
             MenuHeader.Visibility= Visibility.Collapsed;
             ShowConnexion();
+            laData = (Data)this.DataContext;
         }
 
         private void ShowConnexion()
@@ -29,7 +31,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         {
             employeConnecte = emp;
             MenuHeader.Visibility = Visibility.Visible;
-            TxtNomEmploye.Text = "Bienvenue" + employeConnecte.Nom + " " + employeConnecte.Prenom;
+            TxtNomEmploye.Text = "Bienvenue " + employeConnecte.Nom + " " + employeConnecte.Prenom;
             ZoneContenu.Content = new UCListeAnimaux();
         }
 
@@ -44,6 +46,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     ZoneContenu.Content = new UCListeAnimaux();
                     break;
                 case "btnClients":
+                    laData.ChargerPersonnes();
                     ZoneContenu.Content = new UCListeClients();
                     break;
                 case "btnAdoptions":

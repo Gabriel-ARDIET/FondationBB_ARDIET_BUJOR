@@ -4,8 +4,11 @@
         xmlns:Model="clr-namespace:FondationBB_ARDIET_BUJOR.Model" x:Class="FondationBB_ARDIET_BUJOR.Windows.MainWindow"
         Title="Fondation Brigitte Bardot" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen" Background="#FFFFFF">
+    <Window.DataContext>
+        <Model:Data/>
+     </Window.DataContext>
 
-    <Window.Resources>
+        <Window.Resources>
         <Style x:Key="HeaderButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="White"/>

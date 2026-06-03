@@ -152,8 +152,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
-                if (value.Length == 5)
-                    throw new ArgumentOutOfRangeException("Le code postal doit faire moins de 5 caractères");
+                if (value.Length > 10)
+                    throw new ArgumentOutOfRangeException("Le code postal doit faire moins de 10 caractères");
                 this.cp = value;
             }
         }
@@ -238,14 +238,26 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         public List<Personne> FindAll()
         {
-            List<Personne> lesChiens = new List<Personne>();
+            List<Personne> list = new List<Personne>();
             using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from personne;"))
             {
                 DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
                 foreach (DataRow dr in dt.Rows)
-                    lesChiens.Add(new Personne((int)dr["id_personne"]));
+                    list.Add(new Personne(
+                        (int)dr["id_personne"],
+                        (string)dr["nom_personne"],
+                        (string)dr["prenom_personne"],
+                        new DateTime((DateOnly)dr["date_naissance_personne"],TimeOnly.MinValue),
+                        (string)dr["telephone_personne"],
+                        (string)dr["rue_personne"],
+                        (string)dr["cp_personne"],
+                        (string)dr["ville_personne"],
+                        (string?)dr["mail_personne"],
+                        (string)dr["numero_personne"],
+                        new DateTime((DateOnly)dr["date_creation_personne"],TimeOnly.MinValue)
+                        ));
             }
-            return lesChiens;
+            return list;
         }
 
         public List<Personne> FindBySelection(string criteres)

@@ -13,7 +13,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AACKAAAACAIAAAACBgAAAAYAAAAAAAAAEAAAKBAAgig=</HashCode>
+      <HashCode>AASKAAAACAIAAAACBgAQCAYgAAEAAEAAEAAAKBAAgig=</HashCode>
       <FileName>Model\Adoption.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -21,6 +21,7 @@
       <Property Name="Adoptant" />
       <Property Name="UnAnimal" />
     </ShowAsAssociation>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Animal">
     <Position X="8.25" Y="3.5" Width="3" />

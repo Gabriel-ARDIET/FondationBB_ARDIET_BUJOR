@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FondationBB_ARDIET_BUJOR.Model
 {
-    public class Adoption
+    public class Adoption : ICrud<Adoption>
     {
         private int id;
         private decimal frais;
@@ -159,6 +161,50 @@ namespace FondationBB_ARDIET_BUJOR.Model
             {
                 this.idAnimal = value;
             }
+        }
+
+        public int Create()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Adoption> FindAll()
+        {
+            List<Adoption> list = new List<Adoption>();
+            using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from adoption;"))
+            {
+                DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
+                foreach (DataRow dr in dt.Rows)
+                    list.Add(new Adoption(
+                        (int)dr["id_adoption"],
+                        (decimal)dr["frais_adoption"],
+                        new DateTime((DateOnly)dr["date_adoption"], TimeOnly.MinValue),
+                        (int)dr["id_employe"],
+                        (int)dr["id_personne"],
+                        (int)dr["id_animal"]
+                        ));
+            }
+            return list;
+        }
+
+        public List<Adoption> FindBySelection(string criteres)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Read()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update()
+        {
+            throw new NotImplementedException();
         }
     }
 }
