@@ -9,7 +9,7 @@ using System.Windows.Markup;
 
 namespace FondationBB_ARDIET_BUJOR.Model
 {
-    public class Personne : ICrud<Personne>
+    public class Personne //: ICrud<Personne>
     {
         private int id;
         private string nom;
@@ -236,7 +236,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             throw new NotImplementedException();
         }
 
-        public List<Personne> FindAll()
+        /*public List<Personne> FindAll()
         {
             List<Personne> lesChiens = new List<Personne>();
             using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from personne;"))
@@ -246,7 +246,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
                     lesChiens.Add(new Personne((int)dr["id_personne"]));
             }
             return lesChiens;
-        }
+        }*/
 
         public List<Personne> FindBySelection(string criteres)
         {

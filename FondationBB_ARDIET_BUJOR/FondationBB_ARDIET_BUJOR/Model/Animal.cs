@@ -135,8 +135,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
-                if (value.Length != 15)
-                    throw new ArgumentOutOfRangeException("L'ICAD doit faire 15 caractères");
+                
                 this.icad = value;
             }
         }
@@ -419,69 +418,70 @@ namespace FondationBB_ARDIET_BUJOR.Model
         }
         public int Create()
         {
-            int newId = 0;
+            int idGenere = 0;
 
-            // 1. Insertion de l'animal de base
-            string queryAnimal = @"INSERT INTO animal (i_cad_animal, nom_animal, id_race, sexe_animal, 
-                          date_naissance_animal, poids_animal, date_arrivee_animal, anotation_animal, id_status, id_etat) 
-                          VALUES (@i_cad_animal, @nom_animal, @id_race, @sexe_animal, 
-                          @date_naissance_animal, @poids_animal, @date_arrivee_animal, @anotation_animal, @id_status, @id_etat) 
-                          RETURNING id_animal;";
+            // Requête SQL d'insertion conforme à ton modèle
+            string query = @"
+        INSERT INTO animal 
+        (id_race, nom_animal, date_naissance_animal, i_cad_animal, sexe_animal, annotation_animal, date_arrivee_animal, poids_animal) 
+        VALUES 
+        (@id_race, @nom, @dateNaiss, @icad, @sexe, @annotation, @dateArrivee, @poids) 
+        RETURNING id_animal;";
 
-            using (var cmdInsert = new NpgsqlCommand(queryAnimal))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(query, DataAccess.GetConnection()))
             {
-                cmdInsert.Parameters.AddWithValue("i_cad_animal", (object)this.Icad ?? DBNull.Value);
-                cmdInsert.Parameters.AddWithValue("nom_animal", this.Nom);
-                cmdInsert.Parameters.AddWithValue("id_race", this.UneRace != null ? this.UneRace.Id : this.IdRace);
-                cmdInsert.Parameters.AddWithValue("sexe_animal", this.UnSexe.HasValue ? (int)this.UnSexe.Value : DBNull.Value); // Converti en int ou string selon ton énumération en BDD
-                cmdInsert.Parameters.AddWithValue("date_naissance_animal", (object)this.DateNaissance ?? DBNull.Value);
-                cmdInsert.Parameters.AddWithValue("poids_animal", (object)this.Poids ?? DBNull.Value);
-                cmdInsert.Parameters.AddWithValue("date_arrivee_animal", this.DateArrivee);
-                cmdInsert.Parameters.AddWithValue("anotation_animal", (object)this.Annotation ?? DBNull.Value);
-                cmdInsert.Parameters.AddWithValue("id_status", this.UnStatut != null ? this.UnStatut.Id : (object)this.IdStatut ?? DBNull.Value);
-                cmdInsert.Parameters.AddWithValue("id_etat", this.UnEtat != null ? this.UnEtat.Id : (object)this.IdEtat ?? DBNull.Value);
+                // 1. Liaison de la race (ton code d'origine parfait)
+                int raceId = this.UneRace != null ? this.UneRace.Id : this.IdRace;
+                cmd.Parameters.AddWithValue("@id_race", raceId);
 
-                newId = DataAccess.ExecuteInsert(cmdInsert); // Récupère le nouvel ID généré par le RETURNING
-            }
+                cmd.Parameters.AddWithValue("@nom", this.Nom);
 
-            this.Id = newId;
+                // 2. Sexe : Conversion de ton énumération en chaîne "F" ou "M"
+                cmd.Parameters.AddWithValue("@sexe", this.UnSexe == Model.Sexe.Femelle ? "F" : "M");
 
-            // 2. Insertion des soins reçus dans la table pivot 'recoit'
-            if (this.SoinReçus != null && this.SoinReçus.Count > 0)
-            {
-                foreach (var soinRecu in this.SoinReçus)
+                // 3. CORRECTION DES TYPES AVANCÉS POUR POSTGRESQL
+                // Date d'arrivée : On force le type NpgsqlDbType.Date pour éviter que PostgreSQL ne le confonde avec un Timestamp
+                cmd.Parameters.Add("@dateArrivee", NpgsqlTypes.NpgsqlDbType.Date).Value = this.DateArrivee;
+
+                // Poids : Ton double? doit être envoyé sous forme de Decimal pour coller au type numeric(5,2) de la BDD
+                cmd.Parameters.Add("@poids", NpgsqlTypes.NpgsqlDbType.Numeric).Value = this.Poids.HasValue ? Convert.ToDecimal(this.Poids.Value) : (object)DBNull.Value;
+
+                // Date de naissance (optionnelle) : Forcée en type Date également
+                if (this.DateNaissance.HasValue)
+                    cmd.Parameters.Add("@dateNaiss", NpgsqlTypes.NpgsqlDbType.Date).Value = this.DateNaissance.Value;
+                else
+                    cmd.Parameters.Add("@dateNaiss", NpgsqlTypes.NpgsqlDbType.Date).Value = DBNull.Value;
+
+                // 4. Gestion des chaînes optionnelles (ton code d'origine)
+                // ICAD
+                if (!string.IsNullOrWhiteSpace(this.Icad))
+                    cmd.Parameters.AddWithValue("@icad", this.Icad);
+                else
+                    cmd.Parameters.AddWithValue("@icad", DBNull.Value);
+
+                // Annotation
+                if (!string.IsNullOrWhiteSpace(this.Annotation))
+                    cmd.Parameters.AddWithValue("@annotation", this.Annotation);
+                else
+                    cmd.Parameters.AddWithValue("@annotation", DBNull.Value);
+
+                // 5. SÉCURITÉ DE LA CONNEXION
+                // Si la connexion retournée par DataAccess n'est pas encore ouverte, on l'ouvre avant l'exécution
+                if (cmd.Connection.State != System.Data.ConnectionState.Open)
                 {
-                    string querySoin = "INSERT INTO recoit (id_soin, id_animal, date_soin, date_rappel) VALUES (@idSoin, @idAnimal, @dateSoin, @dateRappel);";
-                    using (var cmdSoin = new NpgsqlCommand(querySoin))
-                    {
-                        cmdSoin.Parameters.AddWithValue("idSoin", soinRecu.UnSoin?.Id ?? soinRecu.IdSoin);
-                        cmdSoin.Parameters.AddWithValue("idAnimal", this.Id); // Utilise le nouvel ID généré
-                        cmdSoin.Parameters.AddWithValue("dateSoin", soinRecu.DateSoin);
-                        cmdSoin.Parameters.AddWithValue("dateRappel", (object)soinRecu.DateRappel ?? DBNull.Value);
+                    cmd.Connection.Open();
+                }
 
-                        DataAccess.ExecuteSet(cmdSoin); // Méthode pour exécuter sans retour
-                    }
+                // Exécution et récupération de l'ID auto-incrémenté
+                object result = cmd.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                {
+                    idGenere = Convert.ToInt32(result);
+                    this.Id = idGenere; // Met à jour l'objet actuel
                 }
             }
 
-            // 3. Insertion des comportements dans la table pivot (ex: assoc_animal_comportement)
-            if (this.Comportements != null && this.Comportements.Count > 0)
-            {
-                foreach (var comp in this.Comportements)
-                {
-                    // Remplace 'animal_comportement' et les colonnes par les vrais noms de ta BDD
-                    string queryComp = "INSERT INTO animal_comportement (id_animal, id_comportement) VALUES (@idAnimal, @idComp);";
-                    using (var cmdComp = new NpgsqlCommand(queryComp))
-                    {
-                        cmdComp.Parameters.AddWithValue("idAnimal", this.Id);
-                        cmdComp.Parameters.AddWithValue("idComp", comp.Id); // Suppose que Comportement a une propriété Id
-
-                        DataAccess.ExecuteSet(cmdComp);
-                    }
-                }
-            }
-
-            return newId;
+            return idGenere;
         }
         //inspirer de create pour faire la suite (update, delete, read)
         /*public void Read()

@@ -43,31 +43,37 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Content="I-CAD" Grid.Row="0" Target="{Binding ElementName=textIcad}"/>
-                <TextBox x:Name="textIcad" Grid.Row="1" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Icad, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="I-CAD *" Grid.Row="0" Target="{Binding ElementName=textIcad}"/>
+                <TextBox x:Name="textIcad" Grid.Row="1" Margin="0,2,0,10" Background="White" Height="25" Text="{Binding Icad, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Content="Nom" Grid.Row="2" Target="{Binding ElementName=textNom}"/>
-                <TextBox x:Name="textNom" Grid.Row="3" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Nom, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Nom *" Grid.Row="2" Target="{Binding ElementName=textNom}"/>
+                <TextBox x:Name="textNom" Grid.Row="3" Margin="0,2,0,10" Background="White" Height="25" Text="{Binding Nom, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Content="Espèce" Grid.Row="4" Target="{Binding ElementName=textEspece}"/>
-                <TextBox x:Name="textEspece" Grid.Row="5" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Espece, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox x:Name="textEspece" Grid.Row="5" Margin="0,2,0,10" Background="White" Height="25" Text="{Binding Espece, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Content="Race" Grid.Row="6" Target="{Binding ElementName=textRace}"/>
-                <TextBox x:Name="textRace" Grid.Row="7" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding UneRace, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Race *" Grid.Row="6" Target="{Binding ElementName=comboRace}"/>
+                <ComboBox x:Name="comboRace" Grid.Row="7" Margin="0,2,0,10" Height="25"
+          DisplayMemberPath="LibelleRace" 
+          SelectedValuePath="IdRace"
+          SelectedValue="{Binding IdRace, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Content="Sexe" Grid.Row="8" Target="{Binding ElementName=textSexe}"/>
-                <TextBox x:Name="textSexe" Grid.Row="9" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding UnSexe, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Sexe *" Grid.Row="8" Target="{Binding ElementName=panelSexe}"/>
+                <Border x:Name="borderSexe" Grid.Row="9" Margin="0,2,0,10" Background="Transparent" CornerRadius="3">
+                    <StackPanel x:Name="panelSexe" Orientation="Horizontal" Height="25" VerticalAlignment="Center" Margin="5,0,0,0">
+                        <RadioButton x:Name="radioMale" Content="Mâle" Margin="0,0,20,0" GroupName="SexeGroup" Checked="RadioButton_Checked"/>
+                        <RadioButton x:Name="radioFemelle" Content="Femelle" GroupName="SexeGroup" Checked="RadioButton_Checked"/>
+                    </StackPanel>
+                </Border>
 
-                <Label Content="Date de naissance" Grid.Row="10" Target="{Binding ElementName=dateNaissancePicker}"/>
-                <DatePicker x:Name="dateNaissancePicker" Grid.Row="11" Margin="0,2,0,10" Height="25" 
-            SelectedDate="{Binding DateNaissance, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Date de naissance *" Grid.Row="10" Target="{Binding ElementName=dateNaissancePicker}"/>
+                <DatePicker x:Name="dateNaissancePicker" Grid.Row="11" Margin="0,2,0,10" Height="25" SelectedDate="{Binding DateNaissance, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Content="Poids" Grid.Row="12" Target="{Binding ElementName=textPoids}"/>
-                <TextBox x:Name="textPoids" Grid.Row="13" Margin="0,2,0,10" Background="#E0E0E0" Height="25" Text="{Binding Poids, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Poids *" Grid.Row="12" Target="{Binding ElementName=textPoids}"/>
+                <TextBox x:Name="textPoids" Grid.Row="13" Margin="0,2,0,10" Background="White" Height="25" Text="{Binding Poids, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Content="Date d'arrivée" Grid.Row="14" Target="{Binding ElementName=dateArriveePicker}"/>
-                <DatePicker x:Name="dateArriveePicker" Grid.Row="15" Margin="0,2,0,10" Height="25" 
-            SelectedDate="{Binding DateArrivee, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Date d'arrivée *" Grid.Row="14" Target="{Binding ElementName=dateArriveePicker}"/>
+                <DatePicker x:Name="dateArriveePicker" Grid.Row="15" Margin="0,2,0,10" Height="25" SelectedDate="{Binding DateArrivee, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
             <Grid Grid.Column="2">
@@ -171,28 +177,24 @@
                     </StackPanel>
                 </Grid>
 
-                <Label Content="Statut" Grid.Row="6" Target="{Binding ElementName=textStatut}"/>
+                <Label Content="Statut *" Grid.Row="6" Target="{Binding ElementName=textStatut}"/>
                 <Grid Grid.Row="7" Margin="0,2,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="textStatut" Grid.Column="0" Background="#E0E0E0" Height="25" IsReadOnly="True" 
-             Text="{Binding UnStatut.Libelle, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button x:Name="btnEditerStatut" Content="Éditer" Grid.Column="1" Width="60" Height="25" Margin="5,0,0,0" 
-            Background="#E0E0E0" Click="btnEditerStatut_Click"/>
+                    <TextBox x:Name="textStatut" Grid.Column="0" Background="White" Height="25" IsReadOnly="True" Text="{Binding UnStatut.Libelle, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button x:Name="btnEditerStatut" Content="Éditer" Grid.Column="1" Width="60" Height="25" Margin="5,0,0,0" Background="#E0E0E0" Click="btnEditerStatut_Click"/>
                 </Grid>
 
-                <Label Content="État de santé" Grid.Row="8" Target="{Binding ElementName=textSante}"/>
+                <Label Content="État de santé *" Grid.Row="8" Target="{Binding ElementName=textSante}"/>
                 <Grid Grid.Row="9" Margin="0,2,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="textSante" Grid.Column="0" Background="#E0E0E0" Height="25" IsReadOnly="True" 
-             Text="{Binding UnEtat.Libelle, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button x:Name="btnEditerEtat" Content="Éditer" Grid.Column="1" Width="60" Height="25" Margin="5,0,0,0" 
-            Background="#E0E0E0" Click="btnEditerEtat_Click"/>
+                    <TextBox x:Name="textSante" Grid.Column="0" Background="White" Height="25" IsReadOnly="True" Text="{Binding UnEtat.Libelle, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button x:Name="btnEditerEtat" Content="Éditer" Grid.Column="1" Width="60" Height="25" Margin="5,0,0,0" Background="#E0E0E0" Click="btnEditerEtat_Click"/>
                 </Grid>
             </Grid>
         </Grid>

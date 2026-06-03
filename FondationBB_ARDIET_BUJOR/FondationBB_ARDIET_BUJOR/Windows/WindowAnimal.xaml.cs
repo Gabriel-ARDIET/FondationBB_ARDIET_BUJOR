@@ -9,36 +9,137 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 {
     public partial class WindowAnimal : Window
     {
-        // Indicateur pour savoir si on ferme suite à une validation réussie
         private bool _donneesValidees = false;
 
-        public WindowAnimal(object unAnimal)
+        public WindowAnimal(object unAnimal, System.Collections.Generic.List<Race> lesRacesDisponibles)
         {
-            this.DataContext = unAnimal;
             InitializeComponent();
+            this.DataContext = unAnimal;
+
+            // On lie la liste des races au ComboBox
+            comboRace.ItemsSource = lesRacesDisponibles;
+
+            if (unAnimal is Animal animalActuel && animalActuel.UnSexe.HasValue)
+            {
+                if (animalActuel.UnSexe == Sexe.Male)
+                    radioMale.IsChecked = true;
+                else if (animalActuel.UnSexe == Sexe.Femelle)
+                    radioFemelle.IsChecked = true;
+            }
         }
 
         private void btnValider_Click(object sender, RoutedEventArgs e)
         {
-            bool ok = true;
-            foreach (UIElement uie in panelFormAnimal.Children)
+            // 1. Forcer la mise à jour des Bindings pour être sûr d'avoir les dernières valeurs saisies
+            textIcad.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            textNom.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            textEspece.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            comboRace.GetBindingExpression(ComboBox.SelectedValueProperty)?.UpdateSource();
+            textPoids.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            dateNaissancePicker.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
+            dateArriveePicker.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
+
+            // Récupération de l'objet Animal en cours
+            Animal animalActuel = this.DataContext as Animal;
+
+            // 2. Réinitialisation visuelle des champs (remise à blanc / transparent)
+            Brush couleurDefaut = Brushes.White;
+            textIcad.Background = couleurDefaut;
+            textNom.Background = couleurDefaut;
+            comboRace.Background = couleurDefaut;
+            borderSexe.Background = Brushes.Transparent;
+            dateNaissancePicker.Background = Brushes.Transparent;
+            textPoids.Background = couleurDefaut;
+            dateArriveePicker.Background = Brushes.Transparent;
+            textStatut.Background = couleurDefaut;
+            textSante.Background = couleurDefaut;
+
+            // Listes pour stocker les messages d'erreurs
+            System.Collections.Generic.List<string> erreurs = new System.Collections.Generic.List<string>();
+            Brush couleurErreur = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCDD2")); // Rouge pastel pour le fond
+
+            // 3. Vérifications des contraintes
+
+            // I-CAD : exactitude à 15 caractères
+            string icadText = textIcad.Text?.Trim();
+            if (string.IsNullOrEmpty(icadText) || icadText.Length != 15)
             {
-                if (uie is TextBox txt)
-                {
-                    var binding = txt.GetBindingExpression(TextBox.TextProperty);
-                    binding?.UpdateSource();
-                }
-                if (Validation.GetHasError(uie)) ok = false;
+                textIcad.Background = couleurErreur;
+                erreurs.Add("- Le champ I-CAD doit faire exactement 15 caractères.");
             }
 
-            if (ok)
+            // Nom obligatoire
+            if (string.IsNullOrEmpty(textNom.Text?.Trim()))
             {
-                _donneesValidees = true; // /!\ IMPORTANT : On indique que c'est validé
+                textNom.Background = couleurErreur;
+                erreurs.Add("- Le nom de l'animal est obligatoire.");
+            }
+
+            // Race obligatoire
+            if (comboRace.SelectedValue == null)
+            {
+                comboRace.Background = couleurErreur;
+                erreurs.Add("- La race de l'animal est obligatoire et doit être sélectionnée dans la liste.");
+            }
+
+            // Sexe obligatoire
+            if (radioMale.IsChecked != true && radioFemelle.IsChecked != true)
+            {
+                borderSexe.Background = couleurErreur;
+                erreurs.Add("- Le sexe de l'animal doit être sélectionné.");
+            }
+
+            // Date de naissance obligatoire
+            if (dateNaissancePicker.SelectedDate == null)
+            {
+                dateNaissancePicker.Background = couleurErreur;
+                erreurs.Add("- La date de naissance est obligatoire.");
+            }
+
+            // Poids obligatoire (et doit être un nombre valide)
+            if (string.IsNullOrEmpty(textPoids.Text?.Trim()))
+            {
+                textPoids.Background = couleurErreur;
+                erreurs.Add("- Le poids de l'animal est obligatoire.");
+            }
+            else if (!double.TryParse(textPoids.Text.Replace('.', ','), out _)) // Vérification basique du format numérique
+            {
+                textPoids.Background = couleurErreur;
+                erreurs.Add("- Le poids doit être un nombre valide.");
+            }
+
+            // Date d'arrivée obligatoire
+            if (dateArriveePicker.SelectedDate == null)
+            {
+                dateArriveePicker.Background = couleurErreur;
+                erreurs.Add("- La date d'arrivée est obligatoire.");
+            }
+
+            // Statut obligatoire
+            if (animalActuel?.UnStatut == null || string.IsNullOrEmpty(animalActuel.UnStatut.Libelle))
+            {
+                textStatut.Background = couleurErreur;
+                erreurs.Add("- Le statut de l'animal est obligatoire.");
+            }
+
+            // État de santé obligatoire
+            if (animalActuel?.UnEtat == null || string.IsNullOrEmpty(animalActuel.UnEtat.Libelle))
+            {
+                textSante.Background = couleurErreur;
+                erreurs.Add("- L'état de santé de l'animal est obligatoire.");
+            }
+
+            // 4. Traitement du résultat de la validation
+            if (erreurs.Count == 0)
+            {
+                _donneesValidees = true;
                 DialogResult = true;
             }
             else
             {
-                MessageBox.Show("Veuillez corriger les erreurs de saisie.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
+                // Construction du message d'erreur listant les éléments manquants
+                string messageComplet = "Impossible de valider le formulaire. Les erreurs suivantes ont été détectées :\n\n" + string.Join("\n", erreurs);
+                MessageBox.Show(messageComplet, "Erreurs de saisie", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -46,40 +147,29 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         {
 
         }
-
-        // Cet événement gère la croix ET le bouton annuler
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Si l'utilisateur a cliqué sur "Valider", on ferme directement sans poser de question
             if (_donneesValidees) return;
-
-            // Sinon, on demande confirmation
             MessageBoxResult result = MessageBox.Show("Annuler la saisie ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.No)
             {
-                e.Cancel = true; // Annule la fermeture de la fenêtre
+                e.Cancel = true;
             }
         }
         private void btnAjouterSoin_Click(object sender, RoutedEventArgs e)
         {
             WindowAjoutSoins fenetreSoins = new WindowAjoutSoins();
             fenetreSoins.Owner = this;
-
-            // Si l'utilisateur clique sur "Enregistrer le soin" et que le DialogResult est true
             if (fenetreSoins.ShowDialog() == true)
             {
-                // 1. Récupération de l'animal depuis le DataContext
                 Animal animalActuel = this.DataContext as Animal;
 
                 if (animalActuel != null)
                 {
-                    // 2. Création de la relation "Recoit" entre l'Animal et le Soin
                     Recoit nouveauSoinRecu = new Recoit();
                     nouveauSoinRecu.UnSoin = fenetreSoins.SoinSelectionne;
                     nouveauSoinRecu.DateSoin = fenetreSoins.DateSelectionnee;
-
-                    // 3. Ajout à la collection (la DataGrid se mettra à jour automatiquement !)
                     animalActuel.SoinReçus.Add(nouveauSoinRecu);
                 }
             }
@@ -88,36 +178,24 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         {
             WindowAjoutComportement fenetreComportement = new WindowAjoutComportement();
             fenetreComportement.Owner = this;
-
-            // Si l'utilisateur clique sur "Enregistrer" et que DialogResult est true
             if (fenetreComportement.ShowDialog() == true)
             {
-                // 1. Récupération de l'animal depuis le DataContext
                 Animal animalActuel = this.DataContext as Animal;
 
                 if (animalActuel != null)
                 {
-                    // 2. Création de l'objet Comportement
                     Comportement nouveauComportement = new Comportement();
-
-                    // /!\ Attention : Remplacez ".Libelle" par le nom exact de la propriété 
-                    // de votre classe Comportement (par exemple .Nom, .Libelle, etc.)
                     nouveauComportement.Libelle = fenetreComportement.ComportementSelectionne;
-
-                    // 3. Ajout à la collection
                     animalActuel.Comportements.Add(nouveauComportement);
                 }
             }
         }
         private void btnSupprimerSoin_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Vérification et récupération de la ligne sélectionnée dans le DataGrid
             if (dgSoins.SelectedItem is Recoit soinSelectionne)
             {
-                // 2. Récupération de l'animal depuis le DataContext
                 if (this.DataContext is Animal animalActuel)
                 {
-                    // 3. Suppression de l'élément (le DataGrid se mettra à jour si c'est une ObservableCollection)
                     animalActuel.SoinReçus.Remove(soinSelectionne);
                 }
             }
@@ -129,13 +207,10 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void btnSupprimerComportement_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Vérification et récupération de la ligne sélectionnée dans le DataGrid
             if (dgComportements.SelectedItem is Comportement comportementSelectionne)
             {
-                // 2. Récupération de l'animal depuis le DataContext
                 if (this.DataContext is Animal animalActuel)
                 {
-                    // 3. Suppression de l'élément
                     animalActuel.Comportements.Remove(comportementSelectionne);
                 }
             }
@@ -154,17 +229,11 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 Animal animalActuel = this.DataContext as Animal;
                 if (animalActuel != null)
                 {
-                    // Initialisation de l'objet s'il n'existe pas, ou remplacement direct
                     if (animalActuel.UnStatut == null)
                     {
-                        // Remplacez 'Statut' par le nom exact de votre classe modèle si différent
                         animalActuel.UnStatut = new Statut();
                     }
-
-                    // Écrase l'ancien statut par le nouveau libellé sélectionné
                     animalActuel.UnStatut.Libelle = fenetreStatut.StatutSelectionne;
-
-                    // Forcer le rafraîchissement du Binding de la TextBox si votre modèle n'implémente pas INotifyPropertyChanged
                     textStatut.GetBindingExpression(TextBox.TextProperty)?.UpdateTarget();
                 }
             }
@@ -180,18 +249,29 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 Animal animalActuel = this.DataContext as Animal;
                 if (animalActuel != null)
                 {
-                    // Initialisation de l'objet s'il n'existe pas, ou remplacement direct
                     if (animalActuel.UnEtat == null)
                     {
-                        // Remplacez 'Etat' ou 'EtatSante' par le nom exact de votre classe modèle si différent
                         animalActuel.UnEtat = new Etat();
                     }
-
-                    // Écrase l'ancien état par le nouveau libellé sélectionné
                     animalActuel.UnEtat.Libelle = fenetreEtat.EtatSelectionne;
-
-                    // Forcer le rafraîchissement du Binding de la TextBox si votre modèle n'implémente pas INotifyPropertyChanged
                     textSante.GetBindingExpression(TextBox.TextProperty)?.UpdateTarget();
+                }
+            }
+        }
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            // On récupère l'animal en cours d'édition
+            if (this.DataContext is Animal animalActuel)
+            {
+                // Si c'est le bouton mâle qui est coché
+                if (radioMale.IsChecked == true)
+                {
+                    animalActuel.UnSexe = Sexe.Male;
+                }
+                // Sinon si c'est le bouton femelle
+                else if (radioFemelle.IsChecked == true)
+                {
+                    animalActuel.UnSexe = Sexe.Femelle;
                 }
             }
         }
