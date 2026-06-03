@@ -54,7 +54,48 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         /// </summary>
         private bool FiltreCombine(object obj)
         {
-            return RechercheMotClefAnimal_Animal(obj) && RechercheMotClefAnimal_Espece(obj);
+            // 1. Vérification des filtres textuels (Nom, Espèce)
+            bool matchTextes = RechercheMotClefAnimal_Animal(obj) && RechercheMotClefAnimal_Espece(obj);
+            if (!matchTextes) return false;
+
+            Animal unAnimal = obj as Animal;
+            if (unAnimal == null) return false;
+
+            // --- LOGIQUE FILTRE SEXE ---
+            bool matchSexe = true;
+            if (rbMale.IsChecked == true)
+            {
+                matchSexe = unAnimal.UnSexe != null && string.Equals(unAnimal.UnSexe.ToString(), "Male", StringComparison.OrdinalIgnoreCase);
+            }
+            else if (rbFemelle.IsChecked == true)
+            {
+                matchSexe = unAnimal.UnSexe != null && string.Equals(unAnimal.UnSexe.ToString(), "Femelle", StringComparison.OrdinalIgnoreCase);
+            }
+
+            // --- LOGIQUE FILTRE STATUT (CORRIGÉE) ---
+            bool matchStatut = true;
+
+            // On récupère le texte du statut actuel de l'animal (ex: "En soin", "Adopté"...)
+            // Remplace '.ToString()' par '.Libelle' ou '.Nom' si UnStatut est un objet complexe
+            string statutAnimal = unAnimal.UnStatut != null ? unAnimal.UnStatut.ToString() : "";
+
+            if (rbAdopte.IsChecked == true)
+            {
+                // L'animal doit avoir explicitement le statut "Adopté"
+                matchStatut = string.Equals(statutAnimal, "Adopte", StringComparison.OrdinalIgnoreCase);
+            }
+            else if (rbAuRefuge.IsChecked == true)
+            {
+                // L'animal est considéré "Au refuge" s'il a l'un de ces statuts :
+                matchStatut = string.Equals(statutAnimal, "En soin", StringComparison.OrdinalIgnoreCase) ||
+                              string.Equals(statutAnimal, "Disponible", StringComparison.OrdinalIgnoreCase) ||
+                              string.Equals(statutAnimal, "Reserve", StringComparison.OrdinalIgnoreCase) ||
+                              string.Equals(statutAnimal, "Decede", StringComparison.OrdinalIgnoreCase);
+                // Note : Enlève "Décédé" de la liste ci-dessus si tu ne souhaites pas l'inclure dans les animaux "au refuge"
+            }
+
+            // L'animal doit valider les filtres de Sexe ET de Statut
+            return matchSexe && matchStatut;
         }
 
         private void FiltreAnimal_Changed(object sender, RoutedEventArgs e)
@@ -69,7 +110,14 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         private void BtnAjouter_Click(object sender, RoutedEventArgs e)
         {
             Animal unAnimal = new Animal();
-            WindowAnimal wAnimal = new WindowAnimal(unAnimal);
+
+            // 1. Récupérer la liste de toutes les races disponibles depuis la BDD
+            // Adaptez "new Race().FindAll()" selon le nom exact de votre méthode d'extraction de données
+            System.Collections.Generic.List<Race> racesDisponibles = new Race().FindAll();
+
+            // 2. Passer l'animal ET la liste des races au constructeur révisé
+            WindowAnimal wAnimal = new WindowAnimal(unAnimal, racesDisponibles);
+
             bool? result = wAnimal.ShowDialog();
 
             if (result == true)
@@ -83,7 +131,8 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("L'animal n'a pas pu être créé.", "Attention", MessageBoxButton.OK, MessageBoxImage.Error);
+                    // Affiche le message technique de l'exception (ex: message de Postgres)
+                    MessageBox.Show($"L'animal n'a pas pu être créé.\nDétails : {ex.Message}", "Attention", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

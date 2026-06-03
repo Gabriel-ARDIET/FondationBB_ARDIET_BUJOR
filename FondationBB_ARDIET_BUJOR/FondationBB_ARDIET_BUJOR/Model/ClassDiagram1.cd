@@ -90,7 +90,7 @@
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Espece">
     <Position X="13.5" Y="12.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAggA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAAAAAQAAAAAAAAAAAAAACAAAAAggA=</HashCode>
       <FileName>Model\Espece.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -107,12 +107,11 @@
       <HashCode>AAQiAgAAAAAAAAAAAAAQKAAgECEQIEAAEKEAAQCBIgM=</HashCode>
       <FileName>Model\Personne.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Race">
     <Position X="12.5" Y="8" Width="2" />
     <TypeIdentifier>
-      <HashCode>QAACAEAAAAAAAAAAAAIAAAACAAAAAAAAAACAAAAAggA=</HashCode>
+      <HashCode>QAACAEAAAAAAAAAAAAIQAAACAAAAAAAAAACAAAAAggA=</HashCode>
       <FileName>Model\Race.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

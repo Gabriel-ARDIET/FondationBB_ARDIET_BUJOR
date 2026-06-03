@@ -45,25 +45,32 @@
 
                         <!-- Filtres Sexe -->
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="Tous" Width="60" VerticalAlignment="Center"/>
+                                <RadioButton x:Name="rbSexeTous" GroupName="GroupeSexe" IsChecked="True" Click="FiltreAnimal_Changed"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                 <TextBlock Text="Mâle" Width="60" VerticalAlignment="Center"/>
-                                <CheckBox x:Name="chkMale" Click="FiltreAnimal_Changed"/>
+                                <RadioButton x:Name="rbMale" GroupName="GroupeSexe" Click="FiltreAnimal_Changed"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Femelle" Width="60" VerticalAlignment="Center"/>
-                                <CheckBox x:Name="chkFemelle" Click="FiltreAnimal_Changed"/>
+                                <RadioButton x:Name="rbFemelle" GroupName="GroupeSexe" Click="FiltreAnimal_Changed"/>
                             </StackPanel>
                         </StackPanel>
 
-                        <!-- Filtres Statut -->
                         <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="Tous" Width="80" VerticalAlignment="Center"/>
+                                <RadioButton x:Name="rbStatutTous" GroupName="GroupeStatut" IsChecked="True" Click="FiltreAnimal_Changed"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                 <TextBlock Text="Adopté" Width="80" VerticalAlignment="Center"/>
-                                <CheckBox x:Name="chkAdopte" Click="FiltreAnimal_Changed"/>
+                                <RadioButton x:Name="rbAdopte" GroupName="GroupeStatut" Click="FiltreAnimal_Changed"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Au refuge" Width="80" VerticalAlignment="Center"/>
-                                <CheckBox x:Name="chkAuRefuge" Click="FiltreAnimal_Changed"/>
+                                <RadioButton x:Name="rbAuRefuge" GroupName="GroupeStatut" Click="FiltreAnimal_Changed"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
@@ -103,9 +110,9 @@
 
                 <!-- Fiche détaillée -->
                 <Border Background="#F9F9F9" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1" Padding="20">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" BorderThickness="0" MaxHeight="450">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" BorderThickness="0" MaxHeight="400">
                         <StackPanel DataContext="{Binding SelectedItem, ElementName=dgAnimaux}">
-                            <TextBlock Text="Fiche animal" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
+                            <TextBlock Text="Fiche animal" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -126,19 +133,18 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
                                 <Grid.Resources>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="VerticalAlignment" Value="Center"/>
-                                        <Setter Property="Margin" Value="0,0,0,8"/>
+                                        <Setter Property="Margin" Value="0,0,0,5"/>
                                     </Style>
                                     <Style TargetType="TextBox">
-                                        <Setter Property="Height" Value="28"/>
+                                        <Setter Property="Height" Value="26"/>
                                         <Setter Property="VerticalContentAlignment" Value="Center"/>
                                         <Setter Property="IsReadOnly" Value="True"/>
-                                        <Setter Property="Margin" Value="0,0,0,8"/>
+                                        <Setter Property="Margin" Value="0,0,0,5"/>
                                     </Style>
                                 </Grid.Resources>
 
@@ -167,19 +173,19 @@
                                 <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding DateArrivee, StringFormat={}{0:dd/MM/yyyy}}"/>
 
                                 <TextBlock Grid.Row="8" Grid.Column="0" Text="Soins reçus"/>
-                                <TextBox Grid.Row="8" Grid.Column="1" Height="50" VerticalContentAlignment="Top" Padding="5,2" AcceptsReturn="True" Text="{Binding SoinsRecusResume, Mode=OneWay}"/>
+                                <TextBox Grid.Row="8" Grid.Column="1" Height="40" VerticalContentAlignment="Top" Padding="5,2" AcceptsReturn="True" Text="{Binding SoinsRecusResume, Mode=OneWay}"/>
 
                                 <TextBlock Grid.Row="9" Grid.Column="0" Text="Annotations" TextWrapping="Wrap"/>
                                 <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Annotation}"/>
 
                                 <TextBlock Grid.Row="10" Grid.Column="0" Text="Comprtement" TextWrapping="Wrap"/>
-                                <TextBox Grid.Row="10" Grid.Column="1" Height="50" VerticalContentAlignment="Top" Padding="5,2" AcceptsReturn="True" Text="{Binding ComportementsResume, Mode=OneWay}"/>
+                                <TextBox Grid.Row="10" Grid.Column="1" Height="40" VerticalContentAlignment="Top" Padding="5,2" AcceptsReturn="True" Text="{Binding ComportementsResume, Mode=OneWay}"/>
 
                                 <TextBlock Grid.Row="11" Grid.Column="0" Text="Statut"/>
-                                <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding Statut}"/>
+                                <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding UnStatut.Libelle}"/>
 
                                 <TextBlock Grid.Row="12" Grid.Column="0" Text="État de santé"/>
-                                <TextBox Grid.Row="12" Grid.Column="1" Margin="0" Text="{Binding UnEtat.Libelle}"/>
+                                <TextBox Grid.Row="12" Grid.Column="1" Margin="0,0,0,5" Text="{Binding UnEtat.Libelle}"/>
                             </Grid>
                         </StackPanel>
                     </ScrollViewer>

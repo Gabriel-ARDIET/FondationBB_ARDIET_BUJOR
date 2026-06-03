@@ -256,6 +256,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
                         (string)dr["numero_personne"],
                         new DateTime((DateOnly)dr["date_creation_personne"],TimeOnly.MinValue)
                         ));
+                        ));
             }
             return list;
         }
