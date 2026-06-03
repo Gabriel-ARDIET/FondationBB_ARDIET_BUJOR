@@ -10,7 +10,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
 {
     public class DataAccess
     {
-        private static readonly string connectionString;
+        private static string connectionString;
         private static NpgsqlConnection connection;
 
 
@@ -18,18 +18,22 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         static DataAccess()
         {
-            connectionString = "Host=srv-peda-new;Port=5433;Username=ardietg;Password=gEvSTK;Database=ardiet_bujor_s201;Options='-c search_path=ardiet_bujor_s201'";
+        }
+
+        public static bool TryConnect(string login, string mdp)
+        {
+            connectionString = "Host=srv-peda-new;Port=5433;Username="+login+";Password="+mdp+";Database=ardiet_bujor_s201;Options='-c search_path=ardiet_bujor_s201'";
             try
             {
                 connection = new NpgsqlConnection(connectionString);
+                return true;
             }
             catch (Exception ex)
             {
                 LogError.Log(ex, "Pb à la connexion  \n");
-                throw;
+                return false;
             }
         }
-
 
         // pour récupérer la connexion (et l'ouvrir si nécessaire)
         public static NpgsqlConnection GetConnection()

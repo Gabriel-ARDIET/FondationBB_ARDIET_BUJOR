@@ -14,6 +14,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void btnConnexion_Click(object sender, RoutedEventArgs e)
         {
+            DataAccess.TryConnect(tbUserName.Text, pbMDP.Password);
             List<Employe> lesEmployes = new Employe().FindAll();
             Employe emp = lesEmployes.FirstOrDefault(em => em.Login == tbUserName.Text);
             if (emp != null)
