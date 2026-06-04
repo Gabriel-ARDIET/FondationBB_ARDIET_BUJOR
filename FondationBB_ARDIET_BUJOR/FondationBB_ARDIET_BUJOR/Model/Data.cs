@@ -205,6 +205,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             LesAdoptions = new ObservableCollection<Adoption>(new Adoption().FindAll());
             ChargerAdoptions();
             ChargerAnimaux();
+            ChargerPersonnes();
             foreach (Adoption a in LesAdoptions)
             {
                 a.UnAnimal = LesAnimaux.FirstOrDefault(animal => animal.Id == a.IdAnimal);

@@ -210,8 +210,9 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             List<Recoit>soins = new List<Recoit>();
             foreach (Recoit r in ((Data)DataContext).LesSoinsReçus)
             {
-                if (r.IdAnimal == ((Animal)dgAnimaux.SelectedItem).Id)
-                    soins.Add(r);
+                if (dgAnimaux.SelectedItem != null)
+                    if (r.IdAnimal == ((Animal)dgAnimaux.SelectedItem).Id)
+                        soins.Add(r);
             }
             dgSoins.ItemsSource = soins;
             CollectionViewSource.GetDefaultView(dgSoins.ItemsSource).Refresh();
