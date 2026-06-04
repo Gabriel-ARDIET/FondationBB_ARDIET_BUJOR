@@ -17,7 +17,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             InitializeComponent();
 
             laData = (Data)Application.Current.MainWindow.DataContext;
-            this.DataContext = laData.LesAnimaux;
+            this.DataContext = laData;
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 try
                 {
                     unAnimal.Id = unAnimal.Create();
-                    ((ObservableCollection<Animal>)this.DataContext).Add(unAnimal);
+                    ((Data)this.DataContext).LesAnimaux.Add(unAnimal);
                 }
                 catch (Exception ex)
                 {
@@ -184,6 +184,17 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 return false;
 
             return unAnimal.UneRace.UneEspece.ToString().StartsWith(txtFiltreEspece.Text, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private void dgAnimaux_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<Soin>soins = new List<Soin>();
+            foreach (Recoit r in ((Data)DataContext).LesSoinsReçus)
+            {
+                if (r.IdAnimal == ((Animal)dgAnimaux.SelectedItem).Id)
+                    soins.Add(r.UnSoin);
+            }
+            CollectionViewSource.GetDefaultView(dgSoins.ItemsSource).Refresh();
         }
     }
 }

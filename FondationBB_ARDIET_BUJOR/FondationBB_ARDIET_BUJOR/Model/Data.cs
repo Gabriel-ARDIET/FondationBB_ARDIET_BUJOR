@@ -209,6 +209,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             {
                 a.UnAnimal = LesAnimaux.FirstOrDefault(animal => animal.Id == a.IdAnimal);
                 a.Adoptant = LesPersonnes.FirstOrDefault(personne => personne.Id == a.IdAdoptant);
+                a.Createur = LesEmployes.FirstOrDefault(employe => employe.Id == a.IdCreateur);
             }
         }
         public void ChargerAnimaux()
@@ -270,6 +271,11 @@ namespace FondationBB_ARDIET_BUJOR.Model
             if (LesSoinsReçus.Count != 0)
                 return;
             LesSoinsReçus = new ObservableCollection<Recoit>(new Recoit().FindAll());
+            foreach (Recoit r in LesSoinsReçus)
+            {
+                r.UnSoin = LesSoins.FirstOrDefault(soin => soin.Id == r.IdSoin);
+                r.UnAnimal = LesAnimaux.FirstOrDefault(animal => animal.Id == r.IdAnimal);
+            }
         }
         public void ChargerSoins()
         {

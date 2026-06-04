@@ -27,8 +27,8 @@
     <Position X="8.25" Y="3.5" Width="3" />
     <AssociationLine Name="EmployeCreateur" Type="FondationBB_ARDIET_BUJOR.Model.Employe" ManuallyRouted="true">
       <Path>
-        <Point X="8.25" Y="3.765" />
-        <Point X="7.875" Y="3.765" />
+        <Point X="8.25" Y="3.771" />
+        <Point X="7.875" Y="3.771" />
         <Point X="7.875" Y="1.692" />
         <Point X="2.5" Y="1.692" />
       </Path>
@@ -38,14 +38,14 @@
     </AssociationLine>
     <AssociationLine Name="UnEtat" Type="FondationBB_ARDIET_BUJOR.Model.Etat" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.25" Y="4.937" />
-        <Point X="11.625" Y="4.937" />
-        <Point X="11.625" Y="2.273" />
-        <Point X="12.25" Y="2.273" />
+        <Point X="11.25" Y="4.968" />
+        <Point X="11.625" Y="4.968" />
+        <Point X="11.625" Y="2.369" />
+        <Point X="12.25" Y="2.369" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AQAiAIAEBACAhxQCAYMQogECAKAQAkAEEAIAJAEAIiA=</HashCode>
+      <HashCode>AQAiAIAEBACAhxQCAYMQogECAKEQAkAEEAIAJAEAIiA=</HashCode>
       <FileName>Model\Animal.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -99,7 +99,7 @@
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Etat">
     <Position X="12.25" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAQCAAAAAAAAAAAAAAAQCAAgAAEAAEAAAACAAAAAggA=</HashCode>
+      <HashCode>AAQCAAAAAAAAAAAEAAAQCAAgAAEAAEAAAACAAAAAggA=</HashCode>
       <FileName>Model\Etat.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -134,7 +134,7 @@
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Statut">
     <Position X="8.75" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAQCAAAAAAAAAAAAAAAQCAAgAAEAAEAAAACAAAAAggA=</HashCode>
+      <HashCode>AAQCAAAAAAAAAAAEAAAQCAAgAAEAAEAAAACAAAAAggA=</HashCode>
       <FileName>Model\Statut.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -144,7 +144,7 @@
     <AssociationLine Name="UnAnimal" Type="FondationBB_ARDIET_BUJOR.Model.Animal" FixedToPoint="true">
       <Path>
         <Point X="16.75" Y="8.215" />
-        <Point X="11.25" Y="7.75" />
+        <Point X="11.25" Y="7.842" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>

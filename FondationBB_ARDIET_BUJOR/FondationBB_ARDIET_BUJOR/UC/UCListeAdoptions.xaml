@@ -38,7 +38,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Nom" Binding="{Binding Adoptant.Nom}" Width="*"/>
                         <DataGridTextColumn Header="Prénom" Binding="{Binding Adoptant.Prenom}" Width="*"/>
-                        <DataGridTextColumn Header="Nom animal adopté" Binding="{Binding UnAnimal.NomAnimal}" Width="*"/>
+                        <DataGridTextColumn Header="Nom animal adopté" Binding="{Binding UnAnimal.Nom}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
