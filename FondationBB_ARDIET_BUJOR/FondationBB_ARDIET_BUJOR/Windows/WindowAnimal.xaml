@@ -8,7 +8,25 @@
         Title="Gestion de l'Animal" Height="650" Width="850"
         WindowStartupLocation="CenterScreen"
         Closing="Window_Closing">
+    <Window.Resources>
+        <ControlTemplate x:Key="ValidationTemplate">
+            <DockPanel>
+                <Border BorderBrush="#EF5350" BorderThickness="1.5" CornerRadius="3">
+                    <AdornedElementPlaceholder x:Name="ControlCherche"/>
+                </Border>
+            </DockPanel>
+        </ControlTemplate>
 
+        <Style TargetType="TextBox">
+            <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationTemplate}"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationTemplate}"/>
+        </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationTemplate}"/>
+        </Style>
+    </Window.Resources>
     <Grid Margin="15" x:Name="gridGlobal">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -184,13 +202,13 @@
                 <ComboBox x:Name="cbStatut" Grid.Row="7"
           DisplayMemberPath="Libelle" 
           SelectedValuePath="Id" 
-          SelectedValue="{Binding UnStatut.Id, Mode=TwoWay}" />
+          SelectedValue="{Binding UnStatut.Id, Mode=TwoWay, ValidatesOnExceptions=True}" />
 
                 <Label Content="État de santé :" Grid.Row="8"/>
                 <ComboBox x:Name="cbEtat" Grid.Row="9"
           DisplayMemberPath="Libelle" 
           SelectedValuePath="Id" 
-          SelectedValue="{Binding UnEtat.Id, Mode=TwoWay}" />
+          SelectedValue="{Binding UnEtat.Id, Mode=TwoWay, ValidatesOnExceptions=True}" />
             </Grid>
         </Grid>
 

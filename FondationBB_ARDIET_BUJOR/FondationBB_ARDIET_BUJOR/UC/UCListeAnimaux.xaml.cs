@@ -18,73 +18,112 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
             laData = (Data)Application.Current.MainWindow.DataContext;
             this.DataContext = laData.LesAnimaux;
+
+            // CRUCIAL : On applique la fonction FiltreCombine à la vue par défaut du DataGrid
+            ICollectionView view = CollectionViewSource.GetDefaultView(laData.LesAnimaux);
+            if (view != null)
+            {
+                view.Filter = FiltreCombine;
+            }
         }
 
         /// <summary>
-        /// Combine tes deux filtres existants (Nom et Espèce) pour qu'ils fonctionnent ensemble
+        /// Combine absolument tous les filtres (Nom, Race/Espèce, Sexe et Statut/Disponibilité)
         /// </summary>
         private bool FiltreCombine(object obj)
         {
-            // 1. Vérification des filtres textuels (Nom, Espèce)
-            bool matchTextes = RechercheMotClefAnimal_Animal(obj) && RechercheMotClefAnimal_Espece(obj);
-            if (!matchTextes) return false;
-
             Animal unAnimal = obj as Animal;
             if (unAnimal == null) return false;
 
-            // --- LOGIQUE FILTRE SEXE ---
-            bool matchSexe = true;
+            // 1. --- FILTRE NOM ---
+            if (!RechercheMotClefAnimal_Nom(unAnimal)) return false;
+
+            // 2. --- FILTRE RACE --- (Adapté selon ton souhait "Recherche de race")
+            if (!RechercheMotClefAnimal_Race(unAnimal)) return false;
+
+            // 3. --- FILTRE SEXE ---
             if (rbMale.IsChecked == true)
             {
-                matchSexe = unAnimal.UnSexe != null && string.Equals(unAnimal.UnSexe.ToString(), "Male", StringComparison.OrdinalIgnoreCase);
+                string sexeStr = unAnimal.UnSexe?.ToString() ?? "";
+                if (!string.Equals(sexeStr, "Male", StringComparison.OrdinalIgnoreCase) &&
+                    !string.Equals(sexeStr, "Mâle", StringComparison.OrdinalIgnoreCase))
+                    return false;
             }
             else if (rbFemelle.IsChecked == true)
             {
-                matchSexe = unAnimal.UnSexe != null && string.Equals(unAnimal.UnSexe.ToString(), "Femelle", StringComparison.OrdinalIgnoreCase);
+                string sexeStr = unAnimal.UnSexe?.ToString() ?? "";
+                if (!string.Equals(sexeStr, "Femelle", StringComparison.OrdinalIgnoreCase))
+                    return false;
             }
 
-            // --- LOGIQUE FILTRE STATUT (CORRIGÉE) ---
-            bool matchStatut = true;
-
-            // On récupère le texte du statut actuel de l'animal (ex: "En soin", "Adopté"...)
-            // Remplace '.ToString()' par '.Libelle' ou '.Nom' si UnStatut est un objet complexe
-            string statutAnimal = unAnimal.UnStatut != null ? unAnimal.UnStatut.ToString() : "";
+            // 4. --- FILTRE STATUT / DISPONIBILITÉ ---
+            // Récupère la chaîne de caractères (Libelle ou ToString) représentant le statut
+            string statutAnimal = unAnimal.UnStatut?.Libelle ?? unAnimal.UnStatut?.ToString() ?? "";
 
             if (rbAdopte.IsChecked == true)
             {
-                // L'animal doit avoir explicitement le statut "Adopté"
-                matchStatut = string.Equals(statutAnimal, "Adopte", StringComparison.OrdinalIgnoreCase);
+                if (!string.Equals(statutAnimal, "Adopte", StringComparison.OrdinalIgnoreCase) &&
+                    !string.Equals(statutAnimal, "Adopté", StringComparison.OrdinalIgnoreCase))
+                    return false;
             }
             else if (rbAuRefuge.IsChecked == true)
             {
-                // L'animal est considéré "Au refuge" s'il a l'un de ces statuts :
-                matchStatut = string.Equals(statutAnimal, "En soin", StringComparison.OrdinalIgnoreCase) ||
-                              string.Equals(statutAnimal, "Disponible", StringComparison.OrdinalIgnoreCase) ||
-                              string.Equals(statutAnimal, "Reserve", StringComparison.OrdinalIgnoreCase) ||
-                              string.Equals(statutAnimal, "Decede", StringComparison.OrdinalIgnoreCase);
-                // Note : Enlève "Décédé" de la liste ci-dessus si tu ne souhaites pas l'inclure dans les animaux "au refuge"
+                // Un animal est au refuge s'il n'est pas "Adopté" et pas "Décédé" (ajuste selon tes besoins)
+                bool estAuRefuge = string.Equals(statutAnimal, "En soin", StringComparison.OrdinalIgnoreCase) ||
+                                   string.Equals(statutAnimal, "Disponible", StringComparison.OrdinalIgnoreCase) ||
+                                   string.Equals(statutAnimal, "Reserve", StringComparison.OrdinalIgnoreCase) ||
+                                   string.Equals(statutAnimal, "Réservé", StringComparison.OrdinalIgnoreCase);
+
+                if (!estAuRefuge) return false;
             }
 
-            // L'animal doit valider les filtres de Sexe ET de Statut
-            return matchSexe && matchStatut;
+            // Si l'animal passe toutes les étapes, il est affiché !
+            return true;
         }
 
         private void FiltreAnimal_Changed(object sender, RoutedEventArgs e)
         {
-            // Rafraîchit l'affichage du DataGrid dès qu'une lettre est tapée ou changée
+            // Rafraîchit l'affichage dès qu'un texte change ou qu'un bouton radio est cliqué
             if (dgAnimaux.ItemsSource != null)
             {
                 CollectionViewSource.GetDefaultView(dgAnimaux.ItemsSource).Refresh();
             }
         }
 
+        // --- SOUS-FONCTIONS DE RECHERCHE TEXTUELLE ---
+
+        private bool RechercheMotClefAnimal_Nom(Animal unAnimal)
+        {
+            if (string.IsNullOrEmpty(txtFiltreNom.Text))
+                return true;
+
+            if (unAnimal.Nom == null) return false;
+
+            return unAnimal.Nom.StartsWith(txtFiltreNom.Text, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool RechercheMotClefAnimal_Race(Animal unAnimal)
+        {
+            if (string.IsNullOrEmpty(txtFiltreEspece.Text))
+                return true;
+
+            // Sécurité si les objets liés sont null
+            if (unAnimal.UneRace == null) return false;
+
+            // On cherche d'abord dans le libellé de la Race, sinon subsidiairement dans l'Espèce
+            string raceLibelle = unAnimal.UneRace.Libelle ?? unAnimal.UneRace.ToString() ?? "";
+            string especeLibelle = unAnimal.UneRace.UneEspece?.Libelle ?? unAnimal.UneRace.UneEspece?.ToString() ?? "";
+
+            return raceLibelle.StartsWith(txtFiltreEspece.Text, StringComparison.OrdinalIgnoreCase) ||
+                   especeLibelle.StartsWith(txtFiltreEspece.Text, StringComparison.OrdinalIgnoreCase);
+        }
+
+        // --- BOUTONS D'ACTION (Ajouter, Éditer, Supprimer) ---
+
         private void BtnAjouter_Click(object sender, RoutedEventArgs e)
         {
             Animal unAnimal = new Animal();
-
-            // 2. Passage de l'animal et des 3 listes au constructeur de la fenêtre
             WindowAnimal wAnimal = new WindowAnimal(unAnimal);
-
             bool? result = wAnimal.ShowDialog();
 
             if (result == true)
@@ -103,87 +142,67 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void BtnEditer_Click(object sender, RoutedEventArgs e)
         {
-            // Code pour l'édition à venir
+            if (dgAnimaux.SelectedItem is Animal animalSelectionne)
+            {
+                // Ouvre la fenêtre d'édition en lui passant l'animal sélectionné
+                WindowAnimal wAnimal = new WindowAnimal(animalSelectionne);
+                bool? result = wAnimal.ShowDialog();
+
+                if (result == true)
+                {
+                    try
+                    {
+                        // Option A : Si tu as une méthode SQL pour sauvegarder les modifs, décommente la ligne suivante :
+                        // animalSelectionne.Update(); 
+
+                        // Option B : Si la modification en base de données est gérée directement à l'intérieur de 'WindowAnimal',
+                        // il suffit de forcer le rafraîchissement de l'affichage ici :
+                        FiltreAnimal_Changed(null, null);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erreur lors de la modification : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Veuillez sélectionner un animal à modifier.", "Sélection manquante", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void BtnSupprimer_Click(object sender, RoutedEventArgs e)
         {
-            // 1. On récupère l'animal sélectionné dans le DataGrid
             if (dgAnimaux.SelectedItem is Animal animalSelectionne)
             {
-                // 2. Fenêtre de confirmation pour éviter les fausses manipulations
                 MessageBoxResult result = MessageBox.Show(
                     $"Êtes-vous sûr de vouloir supprimer définitivement l'animal '{animalSelectionne.Nom}' (ICAD: {animalSelectionne.Icad}) ?",
-                    "Confirmation de suppression",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning
-                );
+                    "Confirmation de suppression", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
-                        // 3. Appel de la méthode Delete du modèle
                         int lignesAffectees = animalSelectionne.Delete();
-
                         if (lignesAffectees > 0)
                         {
-                            MessageBox.Show("L'animal a bien été supprimé de la base de données.", "Suppression réussie", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                            // 4. Mise à jour de l'interface graphique
-                            if (dgAnimaux.ItemsSource is System.Collections.ObjectModel.ObservableCollection<Animal> listeObservable)
+                            MessageBox.Show("L'animal a bien été supprimé.", "Suppression réussie", MessageBoxButton.OK, MessageBoxImage.Information);
+                            if (this.DataContext is ObservableCollection<Animal> listeObservable)
                             {
-                                // Si votre DataGrid est lié à une ObservableCollection, le retirer suffit à rafraîchir l'écran
                                 listeObservable.Remove(animalSelectionne);
                             }
-                            else
-                            {
-                                // Si c'est une List<Animal> classique, on recharge simplement le tableau depuis la base de données
-                                dgAnimaux.ItemsSource = new Animal().FindAll();
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("Aucune ligne n'a été modifiée en base de données. L'animal a peut-être déjà été supprimé.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                     catch (Exception ex)
                     {
-                        // Gestion des erreurs (perte de connexion, contrainte SQL imprévue...)
                         MessageBox.Show($"Une erreur est survenue lors de la suppression : {ex.Message}", "Erreur critique", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
             else
             {
-                // Si l'utilisateur clique sur le bouton sans avoir sélectionné de ligne
-                MessageBox.Show("Veuillez sélectionner un animal dans le tableau avant de cliquer sur supprimer.", "Sélection manquante", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Veuillez sélectionner un animal avant de cliquer sur supprimer.", "Sélection manquante", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-        }
-
-        private bool RechercheMotClefAnimal_Animal(object obj)
-        {
-            if (String.IsNullOrEmpty(txtFiltreNom.Text))
-                return true;
-
-            Animal unAnimal = obj as Animal;
-            // Sécurité anti-null au cas où le nom de l'animal soit vide en BDD
-            if (unAnimal == null || unAnimal.Nom == null) return false;
-
-            return unAnimal.Nom.StartsWith(txtFiltreNom.Text, StringComparison.OrdinalIgnoreCase);
-        }
-
-        private bool RechercheMotClefAnimal_Espece(object obj)
-        {
-            if (String.IsNullOrEmpty(txtFiltreEspece.Text))
-                return true;
-
-            Animal unAnimal = obj as Animal;
-            // Sécurité pour éviter le crash (NullReferenceException) si UneRace ou UneEspece n'est pas instanciée
-            if (unAnimal == null || unAnimal.UneRace == null || unAnimal.UneRace.UneEspece == null)
-                return false;
-
-            return unAnimal.UneRace.UneEspece.ToString().StartsWith(txtFiltreEspece.Text, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

@@ -43,10 +43,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             dateNaissancePicker.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
             dateArriveePicker.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
 
-            // Récupération de l'objet Animal en cours
             Animal animalActuel = this.DataContext as Animal;
-
-            // Dans WindowAnimal.xaml.cs -> btnValider_Click
 
             if (animalActuel != null)
             {
@@ -54,100 +51,118 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 animalActuel.UnEtat = cbEtat.SelectedItem as Etat;
                 animalActuel.UneRace = comboRace.SelectedItem as Race;
 
-                // CORRECTION : Utilisation de la vraie propriété "IdCreateur" de votre modèle Animal
                 if (MainWindow.EmployeConnecte != null)
                 {
                     animalActuel.IdCreateur = MainWindow.EmployeConnecte.Id;
                 }
-                animalActuel.UneRace.UneEspece = comboEspece.SelectedItem as Espece;
+                if (comboEspece.SelectedItem != null)
+                {
+                    animalActuel.UneRace.UneEspece = comboEspece.SelectedItem as Espece;
+                }
             }
 
-            // 2. Réinitialisation visuelle des champs
-            Brush couleurDefaut = Brushes.White;
-            textIcad.Background = couleurDefaut;
-            textNom.Background = couleurDefaut;
-            comboRace.Background = couleurDefaut;
+            // 2. Réinitialisation des erreurs précédentes
+            var bIcad = textIcad.GetBindingExpression(TextBox.TextProperty);
+            if (bIcad != null) Validation.ClearInvalid(bIcad);
+
+            var bNom = textNom.GetBindingExpression(TextBox.TextProperty);
+            if (bNom != null) Validation.ClearInvalid(bNom);
+
+            var bEspece = comboEspece.GetBindingExpression(ComboBox.SelectedValueProperty);
+            if (bEspece != null) Validation.ClearInvalid(bEspece);
+
+            var bRace = comboRace.GetBindingExpression(ComboBox.SelectedValueProperty);
+            if (bRace != null) Validation.ClearInvalid(bRace);
+
+            var bNaissance = dateNaissancePicker.GetBindingExpression(DatePicker.SelectedDateProperty);
+            if (bNaissance != null) Validation.ClearInvalid(bNaissance);
+
+            var bPoids = textPoids.GetBindingExpression(TextBox.TextProperty);
+            if (bPoids != null) Validation.ClearInvalid(bPoids);
+
+            var bArrivee = dateArriveePicker.GetBindingExpression(DatePicker.SelectedDateProperty);
+            if (bArrivee != null) Validation.ClearInvalid(bArrivee);
+
+            var bStatut = cbStatut.GetBindingExpression(ComboBox.SelectedValueProperty);
+            if (bStatut != null) Validation.ClearInvalid(bStatut);
+
+            var bEtat = cbEtat.GetBindingExpression(ComboBox.SelectedValueProperty);
+            if (bEtat != null) Validation.ClearInvalid(bEtat);
+
+            // Pour le sexe (Border), on remet transparent
             borderSexe.Background = Brushes.Transparent;
-            dateNaissancePicker.Background = Brushes.Transparent;
-            textPoids.Background = couleurDefaut;
-            dateArriveePicker.Background = Brushes.Transparent;
-            cbStatut.Background = couleurDefaut;
-            cbEtat.Background = couleurDefaut;
 
-            // Listes pour stocker les messages d'erreurs
-            System.Collections.Generic.List<string> erreurs = new List<string>();
-            Brush couleurErreur = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCDD2")); // Rouge pastel pour le fond
+            List<string> erreurs = new List<string>();
+            var rule = new ExceptionValidationRule();
 
-            // 3. Vérifications des contraintes
+            // 3. Vérifications des contraintes et marquage visuel
             string icadText = textIcad.Text?.Trim();
             if (string.IsNullOrEmpty(icadText) || icadText.Length != 15)
             {
-                textIcad.Background = couleurErreur;
+                if (bIcad != null) Validation.MarkInvalid(bIcad, new ValidationError(rule, bIcad, "I-CAD invalide", null));
                 erreurs.Add("- Le champ I-CAD doit faire exactement 15 caractères.");
             }
 
             if (string.IsNullOrEmpty(textNom.Text?.Trim()))
             {
-                textNom.Background = couleurErreur;
+                if (bNom != null) Validation.MarkInvalid(bNom, new ValidationError(rule, bNom, "Nom obligatoire", null));
                 erreurs.Add("- Le nom de l'animal est obligatoire.");
             }
 
             if (comboEspece.SelectedValue == null)
             {
-                comboEspece.Background = couleurErreur;
+                if (bEspece != null) Validation.MarkInvalid(bEspece, new ValidationError(rule, bEspece, "Espèce obligatoire", null));
                 erreurs.Add("- L'espèce est obligatoire.");
             }
 
             if (comboRace.SelectedValue == null)
             {
-                comboRace.Background = couleurErreur;
+                if (bRace != null) Validation.MarkInvalid(bRace, new ValidationError(rule, bRace, "Race obligatoire", null));
                 erreurs.Add("- La race de l'animal est obligatoire.");
             }
 
             if (radioMale.IsChecked != true && radioFemelle.IsChecked != true)
             {
-                borderSexe.Background = couleurErreur;
+                borderSexe.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCDD2"));
                 erreurs.Add("- Le sexe de l'animal doit être sélectionné.");
             }
 
             if (dateNaissancePicker.SelectedDate == null)
             {
-                dateNaissancePicker.Background = couleurErreur;
+                if (bNaissance != null) Validation.MarkInvalid(bNaissance, new ValidationError(rule, bNaissance, "Date de naissance obligatoire", null));
                 erreurs.Add("- La date de naissance est obligatoire.");
             }
 
             if (string.IsNullOrEmpty(textPoids.Text?.Trim()))
             {
-                textPoids.Background = couleurErreur;
+                if (bPoids != null) Validation.MarkInvalid(bPoids, new ValidationError(rule, bPoids, "Poids obligatoire", null));
                 erreurs.Add("- Le poids de l'animal est obligatoire.");
             }
             else if (!double.TryParse(textPoids.Text.Replace('.', ','), out _))
             {
-                textPoids.Background = couleurErreur;
+                if (bPoids != null) Validation.MarkInvalid(bPoids, new ValidationError(rule, bPoids, "Format du poids incorrect", null));
                 erreurs.Add("- Le poids doit être un nombre valide.");
             }
 
             if (dateArriveePicker.SelectedDate == null)
             {
-                dateArriveePicker.Background = couleurErreur;
+                if (bArrivee != null) Validation.MarkInvalid(bArrivee, new ValidationError(rule, bArrivee, "Date d'arrivée obligatoire", null));
                 erreurs.Add("- La date d'arrivée est obligatoire.");
             }
 
-            // MODIFICATION : Validation basée sur la sélection du ComboBox Statut
             if (cbStatut.SelectedItem == null)
             {
-                cbStatut.Background = couleurErreur;
+                if (bStatut != null) Validation.MarkInvalid(bStatut, new ValidationError(rule, bStatut, "Statut obligatoire", null));
                 erreurs.Add("- Le statut de l'animal est obligatoire.");
             }
 
-            // MODIFICATION : Validation basée sur la sélection du ComboBox État
             if (cbEtat.SelectedItem == null)
             {
-                cbEtat.Background = couleurErreur;
+                if (bEtat != null) Validation.MarkInvalid(bEtat, new ValidationError(rule, bEtat, "État obligatoire", null));
                 erreurs.Add("- L'état de santé de l'animal est obligatoire.");
             }
 
-            // 4. Traitement du résultat de la validation
+            // 4. Traitement du résultat
             if (erreurs.Count == 0)
             {
                 _donneesValidees = true;
@@ -256,6 +271,8 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void comboEspece_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (comboEspece.SelectedItem == null) return;
+
             List<Race> racesPossibles = new List<Race>();
             foreach (Race r in new Race().FindAll())
                 if (r.IdEspece == ((Espece)comboEspece.SelectedItem).Id)
