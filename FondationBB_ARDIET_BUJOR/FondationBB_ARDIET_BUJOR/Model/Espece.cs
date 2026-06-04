@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FondationBB_ARDIET_BUJOR.Model
 {
-    public class Espece
+    public class Espece : ICrud<Espece>
     {
         private int id;
         private string libelle;
@@ -50,22 +50,45 @@ namespace FondationBB_ARDIET_BUJOR.Model
                 this.libelle = value;
             }
         }
-        public static List<Espece> FindAll()
-        {
-            List<Espece> liste = new List<Espece>();
-            string req = "SELECT id_espece, libelle_espece FROM espece";
-            NpgsqlCommand cmd = new NpgsqlCommand(req);
 
-            DataTable dt = DataAccess.ExecuteSelect(cmd);
-            foreach (DataRow row in dt.Rows)
+        public int Create()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Espece> FindAll()
+        {
+            List<Espece> list = new List<Espece>();
+            using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from espece;"))
             {
-                liste.Add(new Espece
-                {
-                    Id = Convert.ToInt32(row["id_espece"]),
-                    Libelle = row["libelle_espece"].ToString()
-                });
+                DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
+                foreach (DataRow dr in dt.Rows)
+                    list.Add(new Espece(
+                        (int)dr["id_espece"],
+                        (string)dr["libelle_espece"]
+                        ));
             }
-            return liste;
+            return list;
+        }
+
+        public List<Espece> FindBySelection(string criteres)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Read()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update()
+        {
+            throw new NotImplementedException();
         }
     }
 }

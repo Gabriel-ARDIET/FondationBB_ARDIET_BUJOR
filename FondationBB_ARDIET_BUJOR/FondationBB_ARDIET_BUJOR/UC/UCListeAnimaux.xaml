@@ -77,7 +77,7 @@
                 </StackPanel>
 
                 <!-- DataGrid des Animaux -->
-                <DataGrid Grid.Row="1" x:Name="dgAnimaux" ItemsSource="{Binding ListeDesAnimaux}" AutoGenerateColumns="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto">
+                <DataGrid Grid.Row="1" x:Name="dgAnimaux" ItemsSource="{Binding}" AutoGenerateColumns="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Image" Width="Auto">
                             <DataGridTemplateColumn.CellTemplate>

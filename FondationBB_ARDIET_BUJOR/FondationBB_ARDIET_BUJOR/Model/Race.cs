@@ -14,12 +14,13 @@ namespace FondationBB_ARDIET_BUJOR.Model
         Moyen,
         Petit
     }
-    public class Race
+    public class Race : ICrud<Race>
     {
         private int id;
         private string libelle;
         private Taille uneTaille;
         private Espece uneEspece;
+        private int idEspece;
 
         public Race()
         {
@@ -31,6 +32,14 @@ namespace FondationBB_ARDIET_BUJOR.Model
             this.Libelle = libelle;
             this.UneTaille = uneTaille;
             this.UneEspece = uneEspece;
+        }
+
+        public Race(int id, string libelle, Taille uneTaille, int idEspece)
+        {
+            this.Id = id;
+            this.Libelle = libelle;
+            this.UneTaille = uneTaille;
+            this.IdEspece = idEspece;
         }
 
         public int Id
@@ -86,37 +95,60 @@ namespace FondationBB_ARDIET_BUJOR.Model
                 this.uneEspece = value;
             }
         }
-        public List<Race> FindAll()
+
+        public int IdEspece
         {
-            List<Race> lesRaces = new List<Race>();
-
-            string requete = "SELECT id_race, libelle_race, taille_race, id_espece FROM race ORDER BY libelle_race ASC";
-
-            // Création de la commande Npgsql
-            NpgsqlCommand cmd = new NpgsqlCommand(requete);
-
-            // Appel à votre classe DataAccess statique
-            DataTable dt = DataAccess.ExecuteSelect(cmd);
-
-            // On parcourt les lignes du DataTable
-            foreach (DataRow row in dt.Rows)
+            get
             {
-                Race r = new Race();
-                r.Id = Convert.ToInt32(row["id_race"]);
-                r.Libelle = row["libelle_race"].ToString();
-
-                // Conversion de la taille
-                if (Enum.TryParse(row["taille_race"].ToString(), true, out Taille t))
-                    r.UneTaille = t;
-
-                // Note : Ici vous ne récupérez que l'ID de l'espèce. 
-                // Si vous avez besoin de l'objet complet, il faudra faire un "new Espece { Id = ... }"
-                r.UneEspece = new Espece { Id = Convert.ToInt32(row["id_espece"]) };
-
-                lesRaces.Add(r);
+                return this.idEspece;
             }
 
-            return lesRaces;
+            set
+            {
+                this.idEspece = value;
+            }
+        }
+
+        public int Create()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Race> FindAll()
+        {
+            List<Race> list = new List<Race>();
+            using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from race;"))
+            {
+                DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
+                foreach (DataRow dr in dt.Rows)
+                    list.Add(new Race(
+                        (int)dr["id_race"],
+                        (string)dr["libelle_race"],
+                        EnumConverter.ConvertStringToTaille((string)dr["taille_race"]),
+                        (int)dr["id_espece"]
+                        ));
+            }
+            return list;
+        }
+
+        public List<Race> FindBySelection(string criteres)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Read()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update()
+        {
+            throw new NotImplementedException();
         }
     }
 }

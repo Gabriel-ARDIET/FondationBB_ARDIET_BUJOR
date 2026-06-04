@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FondationBB_ARDIET_BUJOR.Model
 {
-    public class Recoit
+    public class Recoit : ICrud<Recoit>
     {
         private Soin unSoin;
         private int idSoin;
@@ -126,6 +128,50 @@ namespace FondationBB_ARDIET_BUJOR.Model
             {
                 this.dateRappel = value;
             }
+        }
+
+        public int Create()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Read()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Recoit> FindAll()
+        {
+            {
+                List<Recoit> list = new List<Recoit>();
+                using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from recoit;"))
+                {
+                    DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
+                    foreach (DataRow dr in dt.Rows)
+                        list.Add(new Recoit(
+                            (int)dr["id_soin"],
+                            (int)dr["id_animal"],
+                            new DateTime((DateOnly)dr["date_soin"], TimeOnly.MinValue),
+                            dr["date_rappel"] == DBNull.Value ? null : new DateTime((DateOnly)dr["date_rappel"], TimeOnly.MinValue)
+                            ));
+                }
+                return list;
+            }
+        }
+
+        public List<Recoit> FindBySelection(string criteres)
+        {
+            throw new NotImplementedException();
         }
     }
 }

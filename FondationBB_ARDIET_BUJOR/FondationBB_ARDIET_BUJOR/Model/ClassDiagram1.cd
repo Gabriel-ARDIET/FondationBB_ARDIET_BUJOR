@@ -40,8 +40,8 @@
       <Path>
         <Point X="11.25" Y="4.937" />
         <Point X="11.625" Y="4.937" />
-        <Point X="11.625" Y="1.696" />
-        <Point X="12.25" Y="1.696" />
+        <Point X="11.625" Y="2.273" />
+        <Point X="12.25" Y="2.273" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -60,9 +60,10 @@
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Comportement">
     <Position X="17" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAggA=</HashCode>
+      <HashCode>AAQCAAAAAAAAAAAAAAAQCAAgAAEAAEAAAACAAAAAggA=</HashCode>
       <FileName>Model\Comportement.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Demande">
     <Position X="8" Y="13.5" Width="2.25" />
@@ -90,16 +91,18 @@
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Espece">
     <Position X="13.5" Y="12.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAQAAAAAAAAAAAAAACAAAAAggA=</HashCode>
+      <HashCode>AAQCAAAAAAAAAAAAAAAQCAAgAAEAAEAAAACAAAAAggA=</HashCode>
       <FileName>Model\Espece.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Etat">
     <Position X="12.25" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAggA=</HashCode>
+      <HashCode>AAQCAAAAAAAAAAAAAAAQCAAgAAEAAEAAAACAAAAAggA=</HashCode>
       <FileName>Model\Etat.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Personne">
     <Position X="2.25" Y="8" Width="2.25" />
@@ -107,11 +110,12 @@
       <HashCode>AAQiAgAAAAAAAAAAAAAQKAAgECEQIEAAEKEAAQCBIgM=</HashCode>
       <FileName>Model\Personne.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Race">
     <Position X="12.5" Y="8" Width="2" />
     <TypeIdentifier>
-      <HashCode>QAACAEAAAAAAAAAAAAIQAAACAAAAAAAAAACAAAAAggA=</HashCode>
+      <HashCode>QAQCAEAAAAAAAAAAAAIQCAAiAAEAAEAAAQCAAAEAggA=</HashCode>
       <FileName>Model\Race.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -122,44 +126,48 @@
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Soin">
     <Position X="14.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAACQAAAAAAAAAAAAAAAAAAAAIAAAACAAACAAAAAgkA=</HashCode>
+      <HashCode>AAQCQAAAAAAAAAAAAAAQCAAgAIEAAECAAACAAAAAgkA=</HashCode>
       <FileName>Model\Soin.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Statut">
     <Position X="8.75" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAggA=</HashCode>
+      <HashCode>AAQCAAAAAAAAAAAAAAAQCAAgAAEAAEAAAACAAAAAggA=</HashCode>
       <FileName>Model\Statut.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Animal_Comportement">
     <Position X="16.75" Y="6.25" Width="3" />
     <AssociationLine Name="UnAnimal" Type="FondationBB_ARDIET_BUJOR.Model.Animal" FixedToPoint="true">
       <Path>
-        <Point X="16.75" Y="7.75" />
+        <Point X="16.75" Y="8.215" />
         <Point X="11.25" Y="7.75" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AACAAAAAABAAAAAQAAAAAAAAAAAAAAAAAAQACAAEgAg=</HashCode>
+      <HashCode>AASAAAAAABAAAAAQAAAQCAAgAAEAAEAAAAQACAAEgAg=</HashCode>
       <FileName>Model\Animal_Comportement.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="UnComportement" />
       <Property Name="UnAnimal" />
     </ShowAsAssociation>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FondationBB_ARDIET_BUJOR.Model.Recoit">
     <Position X="12.75" Y="4" Width="2" />
     <TypeIdentifier>
-      <HashCode>AADAAAAAoAAAAKAAAAAAAAAAAAAAAAAAAAQACAAEwAg=</HashCode>
+      <HashCode>AATAAAAAoAAAAKAAAAAQCAAgAAEAAEAAAAQACAAEwAg=</HashCode>
       <FileName>Model\Recoit.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="UnSoin" />
       <Property Name="UnAnimal" />
     </ShowAsAssociation>
+    <Lollipop Position="0.2" />
   </Class>
   <Enum Name="FondationBB_ARDIET_BUJOR.Model.Sexe">
     <Position X="5.75" Y="8.5" Width="1.5" />

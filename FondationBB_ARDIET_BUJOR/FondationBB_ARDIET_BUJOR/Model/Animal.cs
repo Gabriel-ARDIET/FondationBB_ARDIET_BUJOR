@@ -24,7 +24,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
         private Sexe? unSexe;
         private string? annotation;
         private DateTime dateArrivee;
-        private double? poids;
+        private decimal? poids;
         private Race uneRace;
         private Employe? employeCreateur;
         private Statut? unStatut;
@@ -45,7 +45,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             this.DateArrivee = DateTime.Today;
         }
 
-        public Animal(int id, string nom, DateTime? dateNaissance, string? icad, Sexe unSexe, string? annotation, DateTime dateArrivee, double poids, Race uneRace, Employe? employeCreateur,
+        public Animal(int id, string nom, DateTime? dateNaissance, string? icad, Sexe unSexe, string? annotation, DateTime dateArrivee, decimal poids, Race uneRace, Employe? employeCreateur,
             Statut? unStatut, Etat? unEtat, ObservableCollection<Comportement> comportements, ObservableCollection<Recoit> soinReçus, Adoption uneAdoption)
         {
             this.Id = id;
@@ -66,7 +66,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
         }
 
         public Animal(int id, string nom, DateTime dateNaissance, string icad, Sexe unSexe, string annotation,
-            DateTime dateArrivee, double poids, int idCreateur, int? idStatut, int? idEtat, int idRace, int? idAdoption)
+            DateTime dateArrivee, decimal poids, int idCreateur, int? idStatut, int? idEtat, int idRace, int? idAdoption)
         {
             this.Id = id;
             this.Nom = nom;
@@ -179,7 +179,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        public double? Poids
+        public decimal? Poids
         {
             get
             {
@@ -353,68 +353,28 @@ namespace FondationBB_ARDIET_BUJOR.Model
         }
         public List<Animal> FindAll()
         {
-            List<Animal> lesAnimaux = new List<Animal>();
-
-            // Modification des colonnes sélectionnées pour correspondre à la structure réelle de votre BDD
-            string query = @"
-        SELECT a.*, 
-               r.libelle_race, r.taille_race, 
-               e.id_espece, e.libelle_espece
-        FROM animal a
-        INNER JOIN race r ON a.id_race = r.id_race
-        INNER JOIN espece e ON r.id_espece = e.id_espece;";
-
-            using (NpgsqlCommand cmdSelect = new NpgsqlCommand(query))
+            List<Animal> list = new List<Animal>();
+            using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from animal;"))
             {
                 DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
                 foreach (DataRow dr in dt.Rows)
-                {
-                    DateTime dtNaissance = dr["date_naissance_animal"] != DBNull.Value ? ((DateOnly)dr["date_naissance_animal"]).ToDateTime(TimeOnly.MinValue) : DateTime.MinValue;
-                    DateTime dtArrivee = dr["date_arrivee_animal"] != DBNull.Value ? ((DateOnly)dr["date_arrivee_animal"]).ToDateTime(TimeOnly.MinValue) : DateTime.Today;
-
-                    Sexe unSexeEnum = (dr["sexe_animal"].ToString() == "F") ? Sexe.Femelle : Sexe.Male;
-
-                    // 1. Instanciation de l'objet Espece (avec libelle_espece)
-                    int idEspece = Convert.ToInt32(dr["id_espece"]);
-                    string libelleEspece = dr["libelle_espece"].ToString();
-                    Espece lEspece = new Espece(idEspece, libelleEspece);
-
-                    // 2. Instanciation de l'objet Race (avec libelle_race et taille_race)
-                    int idRace = Convert.ToInt32(dr["id_race"]);
-                    string libelleRace = dr["libelle_race"].ToString();
-
-                    Taille tailleRaceEnum = Taille.Moyen;
-                    if (dr["taille_race"] != DBNull.Value)
-                    {
-                        Enum.TryParse(dr["taille_race"].ToString(), true, out tailleRaceEnum);
-                    }
-
-                    Race laRace = new Race(idRace, libelleRace, tailleRaceEnum, lEspece);
-
-                    // 3. Création de l'animal complet
-                    Animal nouvelAnimal = new Animal(
-                        Convert.ToInt32(dr["id_animal"]),
-                        dr["nom_animal"].ToString(),
-                        dtNaissance,
-                        dr["i_cad_animal"] != DBNull.Value ? dr["i_cad_animal"].ToString() : null,
-                        unSexeEnum,
-                        dr["annotation_animal"] != DBNull.Value ? dr["annotation_animal"].ToString() : null,
-                        dtArrivee,
-                        dr["poids_animal"] != DBNull.Value ? Convert.ToDouble(dr["poids_animal"]) : 0.0,
-                        Convert.ToInt32(dr["id_employe"]),
-                        dr["id_statut"] != DBNull.Value ? Convert.ToInt32(dr["id_statut"]) : null,
-                        dr["id_etat"] != DBNull.Value ? Convert.ToInt32(dr["id_etat"]) : null,
-                        idRace,
-                        dr["id_adoption"] != DBNull.Value ? Convert.ToInt32(dr["id_adoption"]) : null
-                    );
-
-                    // Liaison de l'objet Race à l'animal
-                    nouvelAnimal.UneRace = laRace;
-
-                    lesAnimaux.Add(nouvelAnimal);
-                }
+                    list.Add(new Animal(
+                        (int)dr["id_animal"],
+                        (string)dr["nom_animal"],
+                        new DateTime((DateOnly)dr["date_naissance_animal"], TimeOnly.MinValue),
+                        (string)dr["i_cad_animal"],
+                        EnumConverter.ConvertStringToSexe((string)dr["sexe_animal"]),
+                        dr["annotation_animal"].ToString(),
+                        new DateTime((DateOnly)dr["date_arrivee_animal"], TimeOnly.MinValue),
+                        (decimal)dr["poids_animal"],
+                        (int)dr["id_employe"],
+                        (int?)dr["id_statut"],
+                        (int?)dr["id_etat"],
+                        (int)dr["id_race"],
+                        dr["id_adoption"] is System.DBNull ? null : (int?)dr["id_adoption"]
+                        ));
             }
-            return lesAnimaux;
+            return list;
         }
         public int Create()
         {

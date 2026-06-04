@@ -10,43 +10,14 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 {
     public partial class UCListeAnimaux : UserControl
     {
-        // Déclaration de la liste observable globale qui stocke les animaux et alimente le DataGrid
-        public ObservableCollection<Animal> ListeDesAnimaux { get; set; }
+        private Data laData;
 
         public UCListeAnimaux()
         {
             InitializeComponent();
 
-            // Initialisation de la collection et chargement des données
-            ListeDesAnimaux = new ObservableCollection<Animal>();
-            ChargerDonnees();
-
-            // Rendre cette classe accessible au XAML pour le Binding ({Binding ListeDesAnimaux})
-            this.DataContext = this;
-        }
-
-        /// <summary>
-        /// Récupère les animaux depuis la BDD et configure les filtres de recherche
-        /// </summary>
-        private void ChargerDonnees()
-        {
-            ListeDesAnimaux.Clear();
-            Animal outilAnimal = new Animal();
-
-            // Appel de la méthode de base de données corrigée
-            var liste = outilAnimal.FindAll();
-
-            foreach (var animal in liste)
-            {
-                ListeDesAnimaux.Add(animal);
-            }
-
-            // Liaison de tes fonctions de recherche (Filtres) à la vue du DataGrid
-            ICollectionView view = CollectionViewSource.GetDefaultView(ListeDesAnimaux);
-            if (view != null)
-            {
-                view.Filter = new Predicate<object>(FiltreCombine);
-            }
+            laData = (Data)Application.Current.MainWindow.DataContext;
+            this.DataContext = laData.LesAnimaux;
         }
 
         /// <summary>
@@ -126,8 +97,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 {
                     unAnimal.Id = unAnimal.Create();
 
-                    // Rafraîchir instantanément l'interface graphique après l'ajout en BDD
-                    ChargerDonnees();
                 }
                 catch (Exception ex)
                 {

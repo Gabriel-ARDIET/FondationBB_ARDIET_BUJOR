@@ -43,6 +43,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             switch (bouton.Name)
             {
                 case "btnAnimaux":
+                    laData.ChargerAnimaux();
                     ZoneContenu.Content = new UCListeAnimaux();
                     break;
                 case "btnClients":
@@ -50,6 +51,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     ZoneContenu.Content = new UCListeClients();
                     break;
                 case "btnAdoptions":
+                    laData.ChargerAdoptions();
                     ZoneContenu.Content = new UCListeAdoptions();
                     break;
                 case "btnDemandes":

@@ -11,14 +11,14 @@ namespace FondationBB_ARDIET_BUJOR.Windows
     {
         private bool _donneesValidees = false;
 
-        public WindowAnimal(object unAnimal, System.Collections.Generic.List<Race> lesRacesDisponibles)
+        public WindowAnimal(object unAnimal, List<Race> lesRacesDisponibles)
         {
             InitializeComponent();
             this.DataContext = unAnimal;
 
             // On lie la liste des races au ComboBox
             comboRace.ItemsSource = lesRacesDisponibles;
-            comboEspece.ItemsSource = Espece.FindAll();
+            comboEspece.ItemsSource = new Espece().FindAll();
 
             if (unAnimal is Animal animalActuel && animalActuel.UnSexe.HasValue)
             {
@@ -56,7 +56,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             textSante.Background = couleurDefaut;
 
             // Listes pour stocker les messages d'erreurs
-            System.Collections.Generic.List<string> erreurs = new System.Collections.Generic.List<string>();
+            System.Collections.Generic.List<string> erreurs = new List<string>();
             Brush couleurErreur = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCDD2")); // Rouge pastel pour le fond
 
             // 3. Vérifications des contraintes

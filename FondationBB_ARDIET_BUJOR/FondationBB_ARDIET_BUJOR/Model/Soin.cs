@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FondationBB_ARDIET_BUJOR.Model
 {
-    public class Soin
+    public class Soin : ICrud<Soin>
     {
         private int id;
         private string libelle;
@@ -83,6 +85,50 @@ namespace FondationBB_ARDIET_BUJOR.Model
                     throw new ArgumentOutOfRangeException("la fréquence ne peut pas être négatif");
                 this.frequence = value;
             }
+        }
+
+        public int Create()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Soin> FindAll()
+        {
+            {
+                List<Soin> list = new List<Soin>();
+                using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from soin;"))
+                {
+                    DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
+                    foreach (DataRow dr in dt.Rows)
+                        list.Add(new Soin(
+                            (int)dr["id_soin"],
+                            (string)dr["libelle_espece"],
+                            (decimal)dr["tarif_soin"],
+                            dr["frequence_soin"] is DBNull ? 0 : (int)dr["frequence_soin"]
+                            ));
+                }
+                return list;
+            }
+        }
+
+        public List<Soin> FindBySelection(string criteres)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Read()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update()
+        {
+            throw new NotImplementedException();
         }
     }
 }
