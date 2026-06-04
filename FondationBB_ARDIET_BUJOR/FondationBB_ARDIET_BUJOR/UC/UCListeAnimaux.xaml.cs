@@ -82,13 +82,8 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         {
             Animal unAnimal = new Animal();
 
-            // 1. Récupération de TOUTES les données de référence depuis la BDD
-            List<Race> racesDisponibles = new Race().FindAll();
-            List<Statut> statutsDisponibles = new Statut().FindAll();
-            List<Etat> etatsDisponibles = new Etat().FindAll();
-
             // 2. Passage de l'animal et des 3 listes au constructeur de la fenêtre
-            WindowAnimal wAnimal = new WindowAnimal(unAnimal, racesDisponibles, statutsDisponibles, etatsDisponibles);
+            WindowAnimal wAnimal = new WindowAnimal(unAnimal);
 
             bool? result = wAnimal.ShowDialog();
 

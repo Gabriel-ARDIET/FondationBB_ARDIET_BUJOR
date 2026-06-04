@@ -53,7 +53,7 @@
                 <ComboBox Name="comboEspece" Grid.Row="5" Margin="0,2,0,10" Height="25"
           DisplayMemberPath="Libelle" 
           SelectedValuePath="Id"
-          SelectedValue="{Binding IdEspece, UpdateSourceTrigger=PropertyChanged}" />
+          SelectedValue="{Binding IdEspece, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="comboEspece_SelectionChanged" />
 
                 <Label Content="Race *" Grid.Row="6" Target="{Binding ElementName=comboRace}"/>
                 <ComboBox x:Name="comboRace" Grid.Row="7" Margin="0,2,0,10" Height="25"
