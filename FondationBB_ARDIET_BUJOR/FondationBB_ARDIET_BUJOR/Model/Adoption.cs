@@ -165,12 +165,35 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         public int Create()
         {
-            throw new NotImplementedException();
+            int nb = 0;
+
+            string sql = "INSERT INTO adoption (frais_adoption, date_adoption, id_employe, id_personne, id_animal) " +
+                         "VALUES (@frais, @date, @idEmploye, @idPersonne, @idAnimal) RETURNING id_adoption;";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sql))
+            {
+                cmd.Parameters.AddWithValue("@frais", this.Frais);
+                cmd.Parameters.AddWithValue("@date", DateOnly.FromDateTime(this.DateAdoption));
+                cmd.Parameters.AddWithValue("@idEmploye", this.IdCreateur);
+                cmd.Parameters.AddWithValue("@idPersonne", this.IdAdoptant);
+                cmd.Parameters.AddWithValue("@idAnimal", this.IdAnimal);
+
+                nb = DataAccess.ExecuteInsert(cmd);
+            }
+            this.Id = nb;
+            return nb;
         }
 
         public int Delete()
         {
-            throw new NotImplementedException();
+            string sql = "DELETE FROM adoption WHERE id_adoption = @id;";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sql))
+            {
+                cmd.Parameters.AddWithValue("@id", this.Id);
+
+                return DataAccess.ExecuteSet(cmd);
+            }
         }
 
         public List<Adoption> FindAll()
@@ -204,7 +227,21 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         public int Update()
         {
-            throw new NotImplementedException();
+            string sql = "UPDATE adoption SET frais_adoption = @frais, date_adoption = @date, " +
+                         "id_employe = @idEmploye, id_personne = @idPersonne, id_animal = @idAnimal " +
+                         "WHERE id_adoption = @id;";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sql))
+            {
+                cmd.Parameters.AddWithValue("@id", this.Id);
+                cmd.Parameters.AddWithValue("@frais", this.Frais);
+                cmd.Parameters.AddWithValue("@date", DateOnly.FromDateTime(this.DateAdoption));
+                cmd.Parameters.AddWithValue("@idEmploye", this.IdCreateur);
+                cmd.Parameters.AddWithValue("@idPersonne", this.IdAdoptant);
+                cmd.Parameters.AddWithValue("@idAnimal", this.IdAnimal);
+
+                return DataAccess.ExecuteSet(cmd);
+            }
         }
     }
 }
