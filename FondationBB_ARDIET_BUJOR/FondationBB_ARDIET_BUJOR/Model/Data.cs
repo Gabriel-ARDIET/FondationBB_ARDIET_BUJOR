@@ -271,6 +271,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
             if (LesSoinsReçus.Count != 0)
                 return;
             LesSoinsReçus = new ObservableCollection<Recoit>(new Recoit().FindAll());
+            ChargerAnimaux();
+            ChargerSoins();
             foreach (Recoit r in LesSoinsReçus)
             {
                 r.UnSoin = LesSoins.FirstOrDefault(soin => soin.Id == r.IdSoin);
@@ -282,13 +284,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
             if (LesSoins.Count != 0)
                 return;
             LesSoins = new ObservableCollection<Soin>(new Soin().FindAll());
-            ChargerAnimaux();
-            ChargerSoins();
-            foreach (Recoit r in LesSoinsReçus)
-            {
-                r.UnSoin = LesSoins.FirstOrDefault(soin => soin.Id == r.IdSoin);
-                r.UnAnimal = LesAnimaux.FirstOrDefault(animal => animal.Id == r.IdAnimal);
-            }
         }
         public void ChargerComportementsDesAnimaux()
         {

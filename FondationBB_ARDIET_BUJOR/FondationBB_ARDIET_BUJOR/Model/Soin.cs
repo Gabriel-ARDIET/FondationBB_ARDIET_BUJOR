@@ -107,7 +107,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
                     foreach (DataRow dr in dt.Rows)
                         list.Add(new Soin(
                             (int)dr["id_soin"],
-                            (string)dr["libelle_espece"],
+                            (string)dr["libelle_soin"],
                             (decimal)dr["tarif_soin"],
                             dr["frequence_soin"] is DBNull ? 0 : (int)dr["frequence_soin"]
                             ));

@@ -207,12 +207,13 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void dgAnimaux_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<Soin>soins = new List<Soin>();
+            List<Recoit>soins = new List<Recoit>();
             foreach (Recoit r in ((Data)DataContext).LesSoinsReçus)
             {
                 if (r.IdAnimal == ((Animal)dgAnimaux.SelectedItem).Id)
-                    soins.Add(r.UnSoin);
+                    soins.Add(r);
             }
+            dgSoins.ItemsSource = soins;
             CollectionViewSource.GetDefaultView(dgSoins.ItemsSource).Refresh();
         }
     }
