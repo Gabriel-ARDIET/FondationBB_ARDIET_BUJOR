@@ -409,30 +409,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
                 return DataAccess.ExecuteInsert(cmd);
             }
         }
-        //inspirer de create pour faire la suite (update, delete, read)
-        /*public void Read()
-        {
-            using (var cmdSelect = new NpgsqlCommand("select * from  chiens  where idchien =@id;"))
-            {
-                cmdSelect.Parameters.AddWithValue("id", this.id);
-
-                DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
-                this.Nom = (String)dt.Rows[0]["nom"];
-                this.Poids = (double)dt.Rows[0]["poids"];
-
-            }
-
-        }
-        public int Update()
-        {
-            using (var cmdUpdate = new NpgsqlCommand("update chiens set nom =@nom ,  maitre = @maitre,  poids = @poids  where idchien =@id;"))
-            {
-                cmdUpdate.Parameters.AddWithValue("nom", this.Nom);
-                cmdUpdate.Parameters.AddWithValue("poids", this.Poids);
-                cmdUpdate.Parameters.AddWithValue("id", this.Id);
-                return DataAccess.ExecuteSet(cmdUpdate);
-            }
-        }*/
         public int Delete()
         {
             // Chaîne de requêtes pour nettoyer les tables liées puis supprimer l'animal
