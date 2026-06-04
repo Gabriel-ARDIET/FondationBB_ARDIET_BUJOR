@@ -32,6 +32,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             employeConnecte = emp;
             MenuHeader.Visibility = Visibility.Visible;
             TxtNomEmploye.Text = "Bienvenue " + employeConnecte.Nom + " " + employeConnecte.Prenom;
+            laData.ChargerAnimaux();
             ZoneContenu.Content = new UCListeAnimaux();
         }
 

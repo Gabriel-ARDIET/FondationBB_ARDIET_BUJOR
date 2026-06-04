@@ -97,7 +97,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 try
                 {
                     unAnimal.Id = unAnimal.Create();
-
+                    ((ObservableCollection<Animal>)this.DataContext).Add(unAnimal);
                 }
                 catch (Exception ex)
                 {
