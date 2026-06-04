@@ -1,10 +1,10 @@
 ﻿<UserControl x:Class="FondationBB_ARDIET_BUJOR.Windows.UCListeClients"
-                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-                 mc:Ignorable="d" 
-                 d:DesignHeight="640" d:DesignWidth="1280" Background="#FFFFFF">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="640" d:DesignWidth="1280" Background="#FFFFFF">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -25,13 +25,14 @@
 
                 <StackPanel Grid.Row="0" Margin="0,0,0,10">
                     <TextBlock Text="Nom client" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtFiltreNom" Height="30" Margin="0,0,0,5"/>
+                    <TextBox x:Name="txtFiltreNom" Height="30" Margin="0,0,0,5" TextChanged="FiltreClient_Changed"/>
+
                     <TextBlock Text="Prénom client" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtFiltrePrenom" Height="30"/>
+                    <TextBox x:Name="txtFiltrePrenom" Height="30" TextChanged="FiltreClient_Changed"/>
                 </StackPanel>
 
                 <DataGrid Grid.Row="1" x:Name="dgClients" AutoGenerateColumns="False" IsReadOnly="True" 
-                              VerticalScrollBarVisibility="Auto" ItemsSource="{Binding}">
+                          VerticalScrollBarVisibility="Auto" ItemsSource="{Binding}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
                         <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" Width="*"/>
@@ -41,22 +42,49 @@
 
             <StackPanel Grid.Column="1">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-                    <Button FontFamily="Segoe MDL2 Assets" Content="&#xE109;" Width="40" Height="40" Margin="0,0,5,0"/>
-                    <Button FontFamily="Segoe MDL2 Assets" Content="&#xE104;" Width="40" Height="40" Margin="0,0,5,0"/>
-                    <Button FontFamily="Segoe MDL2 Assets" Content="&#xE74D;" Width="40" Height="40"/>
+                    <Button x:Name="BtnAjouterClient" FontFamily="Segoe MDL2 Assets" Content="&#xE109;" Width="40" Height="40" Margin="0,0,5,0" Click="BtnAjouterClient_Click"/>
+                    <Button x:Name="BtnEditerClient" FontFamily="Segoe MDL2 Assets" Content="&#xE104;" Width="40" Height="40" Margin="0,0,5,0" Click="BtnEditerClient_Click"/>
+                    <Button x:Name="BtnSupprimerClient" FontFamily="Segoe MDL2 Assets" Content="&#xE74D;" Width="40" Height="40" Click="BtnSupprimerClient_Click"/>
                 </StackPanel>
 
                 <Border Background="#F9F9F9" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1" Padding="20">
                     <StackPanel DataContext="{Binding SelectedItem, ElementName=dgClients}">
                         <TextBlock Text="Fiche client" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+
                         <TextBlock Text="Nom"/>
-                        <TextBox Text="{Binding Nom}" Margin="0,0,0,10"/>
+                        <TextBox Text="{Binding Nom}" Margin="0,0,0,10" IsReadOnly="True" Background="#F0F0F0"/>
+
                         <TextBlock Text="Prénom"/>
-                        <TextBox Text="{Binding Prenom}" Margin="0,0,0,10"/>
-                        <TextBlock Text="Adresse"/>
-                        <TextBox Text="{Binding Adresse}" Margin="0,0,0,10"/>
+                        <TextBox Text="{Binding Prenom}" Margin="0,0,0,10" IsReadOnly="True" Background="#F0F0F0"/>
+
+                        <TextBlock Text="Date de naissance"/>
+                        <TextBox Text="{Binding DateNaissance, StringFormat=\{0:dd/MM/yyyy\}}" Margin="0,0,0,10" IsReadOnly="True" Background="#F0F0F0"/>
+
+                        <TextBlock Text="N° &amp; Rue"/>
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding Numero}" IsReadOnly="True" Background="#F0F0F0" Margin="0,0,5,0"/>
+                            <TextBox Grid.Column="1" Text="{Binding Rue}" IsReadOnly="True" Background="#F0F0F0"/>
+                        </Grid>
+
+                        <TextBlock Text="CP &amp; Ville"/>
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding Cp}" IsReadOnly="True" Background="#F0F0F0" Margin="0,0,5,0"/>
+                            <TextBox Grid.Column="1" Text="{Binding Ville}" IsReadOnly="True" Background="#F0F0F0"/>
+                        </Grid>
+
                         <TextBlock Text="Téléphone"/>
-                        <TextBox Text="{Binding Telephone}" Margin="0,0,0,10"/>
+                        <TextBox Text="{Binding Telephone}" Margin="0,0,0,10" IsReadOnly="True" Background="#F0F0F0"/>
+
+                        <TextBlock Text="Adresse e-mail"/>
+                        <TextBox Text="{Binding Mail}" Margin="0,0,0,10" IsReadOnly="True" Background="#F0F0F0"/>
                     </StackPanel>
                 </Border>
             </StackPanel>

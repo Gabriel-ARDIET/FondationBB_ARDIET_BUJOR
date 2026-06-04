@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
@@ -22,7 +23,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
         private string ville;
         private string? mail;
         private DateTime dateCreation;
-
         public Personne()
         {
         }
@@ -122,8 +122,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
-                if (value.Length == 10)
-                    throw new ArgumentOutOfRangeException("le numéro de téléphone doit faire 10 caractère");
+                
                 this.telephone = value;
             }
         }
@@ -218,9 +217,49 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         public int Create()
         {
-            throw new NotImplementedException();
-        }
+            string query = "INSERT INTO personne (nom_personne, prenom_personne, date_naissance_personne, numero_personne, " +
+                           "rue_personne, cp_personne, ville_personne, telephone_personne, mail_personne, date_creation_personne) " +
+                           "VALUES (@nom, @prenom, @dateNais, @num, @rue, @cp, @ville, @tel, @mail, @dateCreat) " +
+                           "RETURNING id_personne;";
 
+            using (NpgsqlCommand cmd = new NpgsqlCommand(query))
+            {
+                cmd.Parameters.AddWithValue("@nom", Nom.Trim());
+                cmd.Parameters.AddWithValue("@prenom", Prenom.Trim());
+                cmd.Parameters.AddWithValue("@dateNais", (object)DateNaissance ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@num", Numero.Trim());
+                cmd.Parameters.AddWithValue("@rue", Rue.Trim());
+                cmd.Parameters.AddWithValue("@cp", Cp.Trim());
+                cmd.Parameters.AddWithValue("@ville", Ville.Trim());
+                cmd.Parameters.AddWithValue("@tel", Telephone.Trim());
+                cmd.Parameters.AddWithValue("@mail", (object)Mail?.Trim() ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@dateCreat", DateCreation);
+                return DataAccess.ExecuteInsert(cmd);
+            }
+        }
+        /*public int Create()
+        {
+            string query = @"INSERT INTO animal 
+                     (id_statut, id_race, id_etat, id_employe, nom_animal, date_naissance_animal, i_cad_animal, sexe_animal, date_arrivee_animal, poids_animal) 
+                     VALUES 
+                     (@id_statut, @id_race, @id_etat, @id_employe, @nom_animal, @date_naissance, @i_cad, @sexe, @date_arrivee, @poids) 
+                     RETURNING id_animal;";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(query))
+            {
+                cmd.Parameters.AddWithValue("@id_statut", UnStatut != null ? (object)UnStatut.Id : DBNull.Value);
+                cmd.Parameters.AddWithValue("@id_race", UneRace != null ? (object)UneRace.Id : DBNull.Value);
+                cmd.Parameters.AddWithValue("@id_etat", UnEtat != null ? (object)UnEtat.Id : DBNull.Value);
+                cmd.Parameters.AddWithValue("@id_employe", IdCreateur != 0 ? (object)IdCreateur : DBNull.Value);
+                cmd.Parameters.AddWithValue("@nom_animal", Nom ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@date_naissance", DateNaissance.HasValue ? (object)DateNaissance.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@i_cad", Icad ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@sexe", UnSexe == Sexe.Male ? "M" : "F");
+                cmd.Parameters.AddWithValue("@date_arrivee", DateArrivee);
+                cmd.Parameters.AddWithValue("@poids", Poids);
+                return DataAccess.ExecuteInsert(cmd);
+            }
+        }*/
         public void Read()
         {
             throw new NotImplementedException();
@@ -233,7 +272,13 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         public int Delete()
         {
-            throw new NotImplementedException();
+            string query = "DELETE FROM personne WHERE id_personne = @id";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(query))
+            {
+                cmd.Parameters.AddWithValue("@id", Id);
+                return DataAccess.ExecuteSet(cmd);
+            }
         }
 
         public List<Personne> FindAll()
@@ -248,18 +293,19 @@ namespace FondationBB_ARDIET_BUJOR.Model
                         (string)dr["nom_personne"],
                         (string)dr["prenom_personne"],
                         new DateTime((DateOnly)dr["date_naissance_personne"],TimeOnly.MinValue),
-                        (string)dr["telephone_personne"],
+                        (string)dr["numero_personne"],
                         (string)dr["rue_personne"],
                         (string)dr["cp_personne"],
                         (string)dr["ville_personne"],
-                        (string?)dr["mail_personne"],
-                        (string)dr["numero_personne"],
+                        (string)dr["telephone_personne"],
+                        (string?)dr["mail_personne"],                     
                         new DateTime((DateOnly)dr["date_creation_personne"],TimeOnly.MinValue)
                         ));
             }
             return list;
         }
-
+//public Personne(int id, string nom, string prenom, DateTime? dateNaissance, string numero, string rue, string cp, string ville, string telephone, string? mail, DateTime dateCreation)
+        
         public List<Personne> FindBySelection(string criteres)
         {
             throw new NotImplementedException();
