@@ -418,70 +418,34 @@ namespace FondationBB_ARDIET_BUJOR.Model
         }
         public int Create()
         {
-            int idGenere = 0;
+            // On prépare la requête en utilisant les vrais noms de colonnes de tes captures d'écran
+            string query = @"INSERT INTO animal 
+                     (id_statut, id_race, id_etat, nom_animal, date_naissance_animal, i_cad_animal, sexe_animal, date_arrivee_animal, poids_animal) 
+                     VALUES 
+                     (@id_statut, @id_race, @id_etat, @nom_animal, @date_naissance, @i_cad, @sexe, @date_arrivee, @poids) 
+                     RETURNING id_animal;";
 
-            // Requête SQL d'insertion conforme à ton modèle
-            string query = @"
-        INSERT INTO animal 
-        (id_race, nom_animal, date_naissance_animal, i_cad_animal, sexe_animal, annotation_animal, date_arrivee_animal, poids_animal) 
-        VALUES 
-        (@id_race, @nom, @dateNaiss, @icad, @sexe, @annotation, @dateArrivee, @poids) 
-        RETURNING id_animal;";
-
-            using (NpgsqlCommand cmd = new NpgsqlCommand(query, DataAccess.GetConnection()))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(query))
             {
-                // 1. Liaison de la race (ton code d'origine parfait)
-                int raceId = this.UneRace != null ? this.UneRace.Id : this.IdRace;
-                cmd.Parameters.AddWithValue("@id_race", raceId);
+                // 1. Récupération des IDs depuis les objets associés (avec sécurité anti-null)
+                cmd.Parameters.AddWithValue("@id_statut", UnStatut != null ? (object)UnStatut.Id : DBNull.Value);
+                cmd.Parameters.AddWithValue("@id_race", UneRace != null ? (object)UneRace.Id : DBNull.Value);
+                cmd.Parameters.AddWithValue("@id_etat", UnEtat != null ? (object)UnEtat.Id : DBNull.Value);
 
-                cmd.Parameters.AddWithValue("@nom", this.Nom);
+                // 2. Mapping des autres propriétés de l'animal
+                cmd.Parameters.AddWithValue("@nom_animal", Nom ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@date_naissance", DateNaissance.HasValue ? (object)DateNaissance.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@i_cad", Icad ?? (object)DBNull.Value);
 
-                // 2. Sexe : Conversion de ton énumération en chaîne "F" ou "M"
-                cmd.Parameters.AddWithValue("@sexe", this.UnSexe == Model.Sexe.Femelle ? "F" : "M");
+                // Convertit l'enum Sexe en 'M' ou 'F' comme attendu dans ta base
+                cmd.Parameters.AddWithValue("@sexe", UnSexe == Sexe.Male ? "M" : "F");
 
-                // 3. CORRECTION DES TYPES AVANCÉS POUR POSTGRESQL
-                // Date d'arrivée : On force le type NpgsqlDbType.Date pour éviter que PostgreSQL ne le confonde avec un Timestamp
-                cmd.Parameters.Add("@dateArrivee", NpgsqlTypes.NpgsqlDbType.Date).Value = this.DateArrivee;
+                cmd.Parameters.AddWithValue("@date_arrivee", DateArrivee);
+                cmd.Parameters.AddWithValue("@poids", Poids);
 
-                // Poids : Ton double? doit être envoyé sous forme de Decimal pour coller au type numeric(5,2) de la BDD
-                cmd.Parameters.Add("@poids", NpgsqlTypes.NpgsqlDbType.Numeric).Value = this.Poids.HasValue ? Convert.ToDecimal(this.Poids.Value) : (object)DBNull.Value;
-
-                // Date de naissance (optionnelle) : Forcée en type Date également
-                if (this.DateNaissance.HasValue)
-                    cmd.Parameters.Add("@dateNaiss", NpgsqlTypes.NpgsqlDbType.Date).Value = this.DateNaissance.Value;
-                else
-                    cmd.Parameters.Add("@dateNaiss", NpgsqlTypes.NpgsqlDbType.Date).Value = DBNull.Value;
-
-                // 4. Gestion des chaînes optionnelles (ton code d'origine)
-                // ICAD
-                if (!string.IsNullOrWhiteSpace(this.Icad))
-                    cmd.Parameters.AddWithValue("@icad", this.Icad);
-                else
-                    cmd.Parameters.AddWithValue("@icad", DBNull.Value);
-
-                // Annotation
-                if (!string.IsNullOrWhiteSpace(this.Annotation))
-                    cmd.Parameters.AddWithValue("@annotation", this.Annotation);
-                else
-                    cmd.Parameters.AddWithValue("@annotation", DBNull.Value);
-
-                // 5. SÉCURITÉ DE LA CONNEXION
-                // Si la connexion retournée par DataAccess n'est pas encore ouverte, on l'ouvre avant l'exécution
-                if (cmd.Connection.State != System.Data.ConnectionState.Open)
-                {
-                    cmd.Connection.Open();
-                }
-
-                // Exécution et récupération de l'ID auto-incrémenté
-                object result = cmd.ExecuteScalar();
-                if (result != null && result != DBNull.Value)
-                {
-                    idGenere = Convert.ToInt32(result);
-                    this.Id = idGenere; // Met à jour l'objet actuel
-                }
+                // Exécution de la requête via ton DataAccess (renvoie l'id_animal généré)
+                return DataAccess.ExecuteInsert(cmd);
             }
-
-            return idGenere;
         }
         //inspirer de create pour faire la suite (update, delete, read)
         /*public void Read()

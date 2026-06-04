@@ -111,12 +111,13 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         {
             Animal unAnimal = new Animal();
 
-            // 1. Récupérer la liste de toutes les races disponibles depuis la BDD
-            // Adaptez "new Race().FindAll()" selon le nom exact de votre méthode d'extraction de données
-            System.Collections.Generic.List<Race> racesDisponibles = new Race().FindAll();
+            // 1. Récupération de TOUTES les données de référence depuis la BDD
+            List<Race> racesDisponibles = new Race().FindAll();
+            List<Statut> statutsDisponibles = new Statut().FindAll();
+            List<Etat> etatsDisponibles = new Etat().FindAll();
 
-            // 2. Passer l'animal ET la liste des races au constructeur révisé
-            WindowAnimal wAnimal = new WindowAnimal(unAnimal, racesDisponibles);
+            // 2. Passage de l'animal et des 3 listes au constructeur de la fenêtre
+            WindowAnimal wAnimal = new WindowAnimal(unAnimal, racesDisponibles, statutsDisponibles, etatsDisponibles);
 
             bool? result = wAnimal.ShowDialog();
 
@@ -125,13 +126,10 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 try
                 {
                     unAnimal.Id = unAnimal.Create();
-
-                    // Rafraîchir instantanément l'interface graphique après l'ajout en BDD
                     ChargerDonnees();
                 }
                 catch (Exception ex)
                 {
-                    // Affiche le message technique de l'exception (ex: message de Postgres)
                     MessageBox.Show($"L'animal n'a pas pu être créé.\nDétails : {ex.Message}", "Attention", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
