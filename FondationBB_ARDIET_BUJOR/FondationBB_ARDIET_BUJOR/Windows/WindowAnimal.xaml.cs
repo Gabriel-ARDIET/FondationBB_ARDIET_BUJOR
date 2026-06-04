@@ -12,16 +12,16 @@ namespace FondationBB_ARDIET_BUJOR.Windows
     {
         private bool _donneesValidees = false;
 
-        public WindowAnimal(object unAnimal, List<Race> lesRacesDisponibles, List<Statut> lesStatutsDisponibles, List<Etat> lesEtatsDisponibles)
+        public WindowAnimal(object unAnimal)
         {
             InitializeComponent();
             this.DataContext = unAnimal;
 
             // Liaison des collections aux ComboBox
-            comboRace.ItemsSource = lesRacesDisponibles;
             comboEspece.ItemsSource = new Espece().FindAll();
-            cbStatut.ItemsSource = lesStatutsDisponibles;  // NOUVEAU
-            cbEtat.ItemsSource = lesEtatsDisponibles;      // NOUVEAU
+            comboRace.ItemsSource = new Race().FindAll();
+            cbStatut.ItemsSource = new Statut().FindAll();
+            cbEtat.ItemsSource = new Etat().FindAll();
 
             if (unAnimal is Animal animalActuel && animalActuel.UnSexe.HasValue)
             {
@@ -52,6 +52,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 animalActuel.UnStatut = cbStatut.SelectedItem as Statut;
                 animalActuel.UnEtat = cbEtat.SelectedItem as Etat;
                 animalActuel.UneRace = comboRace.SelectedItem as Race;
+                animalActuel.UneRace.UneEspece = comboEspece.SelectedItem as Espece;
             }
 
             // 2. Réinitialisation visuelle des champs
@@ -244,6 +245,15 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     animalActuel.UnSexe = Sexe.Femelle;
                 }
             }
+        }
+
+        private void comboEspece_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<Race> racesPossibles = new List<Race>();
+            foreach (Race r in new Race().FindAll())
+                if (r.IdEspece == ((Espece)comboEspece.SelectedItem).Id)
+                    racesPossibles.Add(r);
+            comboRace.ItemsSource = racesPossibles;
         }
     }
 }
