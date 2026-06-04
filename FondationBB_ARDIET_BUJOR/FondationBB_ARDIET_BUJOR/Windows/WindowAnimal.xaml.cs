@@ -12,7 +12,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
     {
         private bool _donneesValidees = false;
 
-        public WindowAnimal(object unAnimal, List<Race> lesRacesDisponibles)
+        public WindowAnimal(object unAnimal, List<Race> lesRacesDisponibles, List<Statut> lesStatutsDisponibles, List<Etat> lesEtatsDisponibles)
         {
             InitializeComponent();
             this.DataContext = unAnimal;
@@ -20,6 +20,8 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             // Liaison des collections aux ComboBox
             comboRace.ItemsSource = lesRacesDisponibles;
             comboEspece.ItemsSource = new Espece().FindAll();
+            cbStatut.ItemsSource = lesStatutsDisponibles;  // NOUVEAU
+            cbEtat.ItemsSource = lesEtatsDisponibles;      // NOUVEAU
 
             if (unAnimal is Animal animalActuel && animalActuel.UnSexe.HasValue)
             {

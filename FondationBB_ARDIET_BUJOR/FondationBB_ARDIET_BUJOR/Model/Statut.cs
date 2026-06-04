@@ -38,25 +38,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        /// <summary>
-        /// Récupère tous les statuts de la base de données
-        /// </summary>
-        public List<Statut> FindAll()
-        {
-            List<Statut> liste = new List<Statut>();
-            using (NpgsqlCommand cmd = new NpgsqlCommand("SELECT id_statut, libelle_statut FROM statut ORDER BY libelle_statut"))
-            {
-                DataTable dt = DataAccess.ExecuteSelect(cmd);
-                foreach (DataRow row in dt.Rows)
-                {
-                    liste.Add(new Statut(
-                        Convert.ToInt32(row["id_statut"]),
-                        row["libelle_statut"].ToString()
-                    ));
-                }
-            }
-        }
-
         public int Create()
         {
             throw new NotImplementedException();

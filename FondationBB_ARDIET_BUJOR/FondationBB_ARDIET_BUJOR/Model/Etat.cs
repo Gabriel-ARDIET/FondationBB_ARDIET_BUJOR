@@ -38,24 +38,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        /// <summary>
-        /// Récupère tous les états de la base de données
-        /// </summary>
-        public List<Etat> FindAll()
-        {
-            List<Etat> liste = new List<Etat>();
-            using (NpgsqlCommand cmd = new NpgsqlCommand("SELECT id_etat, libelle_etat FROM etat ORDER BY libelle_etat"))
-            {
-                DataTable dt = DataAccess.ExecuteSelect(cmd);
-                foreach (DataRow row in dt.Rows)
-                {
-                    liste.Add(new Etat(
-                        Convert.ToInt32(row["id_etat"]),
-                        row["libelle_etat"].ToString()
-                    ));
-                }
-            }
-        }
 
         public int Create()
         {
