@@ -99,21 +99,21 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         public List<Soin> FindAll()
         {
+            List<Soin> list = new List<Soin>();
+            using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from soin;"))
             {
-                List<Soin> list = new List<Soin>();
-                using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from soin;"))
+                DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
+                foreach (DataRow dr in dt.Rows)
                 {
-                    DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
-                    foreach (DataRow dr in dt.Rows)
-                        list.Add(new Soin(
-                            (int)dr["id_soin"],
-                            (string)dr["libelle_espece"],
-                            (decimal)dr["tarif_soin"],
-                            dr["frequence_soin"] is DBNull ? 0 : (int)dr["frequence_soin"]
-                            ));
+                    list.Add(new Soin(
+                        (int)dr["id_soin"],
+                        (string)dr["libelle_soin"],
+                        (decimal)dr["tarif_soin"],
+                        dr["frequence_soin"] is DBNull ? 0 : (int)dr["frequence_soin"]
+                    ));
                 }
-                return list;
             }
+            return list;
         }
 
         public List<Soin> FindBySelection(string criteres)
