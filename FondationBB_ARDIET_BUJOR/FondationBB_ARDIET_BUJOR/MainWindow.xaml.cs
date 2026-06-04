@@ -6,12 +6,15 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 {
     public partial class MainWindow : Window
     {
-        private Employe employeConnecte;
+        // MODIFICATION : Remplacement du champ privé par une propriété statique publique
+        public static Employe? EmployeConnecte { get; private set; }
+
         public Data laData;
+
         public MainWindow()
         {
             InitializeComponent();
-            MenuHeader.Visibility= Visibility.Collapsed;
+            MenuHeader.Visibility = Visibility.Collapsed;
             ShowConnexion();
             laData = (Data)this.DataContext;
         }
@@ -19,7 +22,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         private void ShowConnexion()
         {
             UCConnexion connexion = new UCConnexion();
-            //on abonne la méthode ci-dessous auprès de l’evenement     
             connexion.LoginReussi += ValiderConnexion;
             ZoneContenu.Content = connexion;
         }
@@ -29,9 +31,11 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         /// </summary>
         public void ValiderConnexion(object? sender, Employe emp)
         {
-            employeConnecte = emp;
+            // MODIFICATION : On stocke l'employé dans la propriété statique
+            EmployeConnecte = emp;
+
             MenuHeader.Visibility = Visibility.Visible;
-            TxtNomEmploye.Text = "Bienvenue " + employeConnecte.Nom + " " + employeConnecte.Prenom;
+            TxtNomEmploye.Text = "Bienvenue " + EmployeConnecte.Nom + " " + EmployeConnecte.Prenom;
             laData.ChargerAnimaux();
             ZoneContenu.Content = new UCListeAnimaux();
         }
@@ -75,7 +79,10 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             if (result == MessageBoxResult.Yes)
             {
                 MenuHeader.Visibility = Visibility.Collapsed;
-                ZoneContenu.Content = new UCConnexion();
+
+                // MODIFICATION : Réinitialisation de l'employé et appel propre de ShowConnexion
+                EmployeConnecte = null;
+                ShowConnexion();
             }
         }
     }

@@ -378,11 +378,11 @@ namespace FondationBB_ARDIET_BUJOR.Model
         }
         public int Create()
         {
-            // On prépare la requête en utilisant les vrais noms de colonnes de tes captures d'écran
+            // MODIFICATION : Ajout de la colonne id_employe et de son paramètre @id_employe
             string query = @"INSERT INTO animal 
-                     (id_statut, id_race, id_etat, nom_animal, date_naissance_animal, i_cad_animal, sexe_animal, date_arrivee_animal, poids_animal) 
+                     (id_statut, id_race, id_etat, id_employe, nom_animal, date_naissance_animal, i_cad_animal, sexe_animal, date_arrivee_animal, poids_animal) 
                      VALUES 
-                     (@id_statut, @id_race, @id_etat, @nom_animal, @date_naissance, @i_cad, @sexe, @date_arrivee, @poids) 
+                     (@id_statut, @id_race, @id_etat, @id_employe, @nom_animal, @date_naissance, @i_cad, @sexe, @date_arrivee, @poids) 
                      RETURNING id_animal;";
 
             using (NpgsqlCommand cmd = new NpgsqlCommand(query))
@@ -391,6 +391,9 @@ namespace FondationBB_ARDIET_BUJOR.Model
                 cmd.Parameters.AddWithValue("@id_statut", UnStatut != null ? (object)UnStatut.Id : DBNull.Value);
                 cmd.Parameters.AddWithValue("@id_race", UneRace != null ? (object)UneRace.Id : DBNull.Value);
                 cmd.Parameters.AddWithValue("@id_etat", UnEtat != null ? (object)UnEtat.Id : DBNull.Value);
+
+                // MODIFICATION : Liaison du paramètre SQL avec la propriété IdCreateur de l'objet
+                cmd.Parameters.AddWithValue("@id_employe", IdCreateur != 0 ? (object)IdCreateur : DBNull.Value);
 
                 // 2. Mapping des autres propriétés de l'animal
                 cmd.Parameters.AddWithValue("@nom_animal", Nom ?? (object)DBNull.Value);

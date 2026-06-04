@@ -46,12 +46,19 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             // Récupération de l'objet Animal en cours
             Animal animalActuel = this.DataContext as Animal;
 
-            // NOUVEAU : On applique directement les objets sélectionnés aux propriétés de l'animal
+            // Dans WindowAnimal.xaml.cs -> btnValider_Click
+
             if (animalActuel != null)
             {
                 animalActuel.UnStatut = cbStatut.SelectedItem as Statut;
                 animalActuel.UnEtat = cbEtat.SelectedItem as Etat;
                 animalActuel.UneRace = comboRace.SelectedItem as Race;
+
+                // CORRECTION : Utilisation de la vraie propriété "IdCreateur" de votre modèle Animal
+                if (MainWindow.EmployeConnecte != null)
+                {
+                    animalActuel.IdCreateur = MainWindow.EmployeConnecte.Id;
+                }
             }
 
             // 2. Réinitialisation visuelle des champs
