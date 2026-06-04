@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Animation;
 
 namespace FondationBB_ARDIET_BUJOR.Model
 {
@@ -203,8 +204,9 @@ namespace FondationBB_ARDIET_BUJOR.Model
             if (LesAdoptions.Count != 0)
                 return;
             LesAdoptions = new ObservableCollection<Adoption>(new Adoption().FindAll());
-            ChargerAdoptions();
+            ChargerEmployes();
             ChargerAnimaux();
+            ChargerPersonnes();
             foreach (Adoption a in LesAdoptions)
             {
                 a.UnAnimal = LesAnimaux.FirstOrDefault(animal => animal.Id == a.IdAnimal);
@@ -303,6 +305,71 @@ namespace FondationBB_ARDIET_BUJOR.Model
             if (LesComportements.Count != 0)
                 return;
             LesComportements = new ObservableCollection<Comportement>(new Comportement().FindAll());
+        }
+
+        public void SupprimerAnimal(Animal a)
+        {
+            if (a == null) return;
+
+            this.LesAnimaux.Remove(a);
+
+            foreach (Adoption ad in this.LesAdoptions.ToList())
+                if (ad.IdAnimal == a.Id)
+                    this.SupprimerAdoption(ad);
+
+            foreach (Recoit r in this.LesSoinsReçus.ToList())
+                if (r.IdAnimal == a.Id)
+                    this.SupprimerRecoit(r);
+
+            foreach (Animal_Comportement ac in this.LesComportementsDesAnimaux.ToList())
+                if (ac.IdAnimal == a.Id)
+                    this.SupprimerAnimalComportement(ac);
+
+            a.Delete();
+        }
+
+        public void SupprimerPersonne(Personne p)
+        {
+            if (p == null) return;
+
+            this.LesPersonnes.Remove(p);
+
+            foreach (Adoption ad in this.LesAdoptions.ToList())
+            {
+                if (ad.IdAdoptant == p.Id)
+                {
+                    this.SupprimerAdoption(ad);
+                }
+            }
+
+            p.Delete();
+        }
+
+        public void SupprimerAdoption(Adoption ad)
+        {
+            if (ad == null) return;
+
+            this.LesAdoptions.Remove(ad);
+
+            ad.Delete();
+        }
+
+        public void SupprimerRecoit(Recoit r)
+        {
+            if (r == null) return;
+
+            this.LesSoinsReçus.Remove(r);
+
+            r.Delete();
+        }
+
+        public void SupprimerAnimalComportement(Animal_Comportement ac)
+        {
+            if (ac == null) return;
+
+            this.LesComportementsDesAnimaux.Remove(ac);
+
+            ac.Delete();
         }
     }
 }

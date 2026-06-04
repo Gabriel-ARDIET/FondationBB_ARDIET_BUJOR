@@ -30,8 +30,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
         private Statut? unStatut;
         private Etat? unEtat;
         private Adoption? uneAdoption;
-        private ObservableCollection<Comportement> comportements;
-        private ObservableCollection<Recoit> soinReçus;
         private int idRace;
         private int idCreateur;
         private int? idStatut;
@@ -40,13 +38,11 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         public Animal()
         {
-            this.Comportements = new ObservableCollection<Comportement>();
-            this.SoinReçus = new ObservableCollection<Recoit>();
             this.DateArrivee = DateTime.Today;
         }
 
         public Animal(int id, string nom, DateTime? dateNaissance, string? icad, Sexe unSexe, string? annotation, DateTime dateArrivee, decimal poids, Race uneRace, Employe? employeCreateur,
-            Statut? unStatut, Etat? unEtat, ObservableCollection<Comportement> comportements, ObservableCollection<Recoit> soinReçus, Adoption uneAdoption)
+            Statut? unStatut, Etat? unEtat, Adoption uneAdoption)
         {
             this.Id = id;
             this.Nom = nom;
@@ -61,8 +57,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
             this.UnStatut = unStatut;
             this.UnEtat = unEtat;
             this.UneAdoption = uneAdoption;
-            this.Comportements = comportements;
-            this.SoinReçus = soinReçus;
         }
 
         public Animal(int id, string nom, DateTime dateNaissance, string icad, Sexe unSexe, string annotation,
@@ -76,13 +70,38 @@ namespace FondationBB_ARDIET_BUJOR.Model
             this.Annotation = annotation;
             this.DateArrivee = dateArrivee;
             this.Poids = poids;
-            this.Comportements = new ObservableCollection<Comportement>();
-            this.SoinReçus = new ObservableCollection<Recoit>();
             this.IdCreateur = idCreateur;
             this.IdStatut = idStatut;
             this.IdEtat = idEtat;
             this.IdRace = idRace;
             this.IdAdoption = idAdoption;
+        }
+        public Animal Copy()
+        {
+            Animal autre = (Animal)this.MemberwiseClone();
+            autre.DateNaissance = new DateTime(this.DateNaissance.Value.Ticks);
+            autre.DateArrivee = new DateTime(this.DateArrivee.Ticks);
+            return autre;
+        }
+        public void UpdateFrom(Animal a)
+        {
+            this.Nom = a.Nom;
+            this.DateNaissance = a.DateNaissance;
+            this.Icad = a.Icad;
+            this.UnSexe = a.UnSexe;
+            this.Annotation = a.Annotation;
+            this.DateArrivee = a.DateArrivee;
+            this.Poids = a.Poids;
+            this.IdCreateur = a.IdCreateur;
+            this.EmployeCreateur = a.EmployeCreateur;
+            this.IdStatut = a.IdStatut;
+            this.UnStatut = a.UnStatut;
+            this.IdEtat = a.IdEtat;
+            this.UnEtat = a.UnEtat;
+            this.IdRace = a.IdRace;
+            this.UneRace = a.UneRace;
+            this.IdAdoption = a.IdAdoption;
+            this.UneAdoption = a.UneAdoption;
         }
 
         public int Id
@@ -231,32 +250,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
             set
             {
                 this.unEtat = value;
-            }
-        }
-
-        public ObservableCollection<Comportement> Comportements
-        {
-            get
-            {
-                return this.comportements;
-            }
-
-            set
-            {
-                this.comportements = value;
-            }
-        }
-
-        public ObservableCollection<Recoit> SoinReçus
-        {
-            get
-            {
-                return this.soinReçus;
-            }
-
-            set
-            {
-                this.soinReçus = value;
             }
         }
 
@@ -448,25 +441,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
                 // Utilisation de votre méthode DataAccess existante
                 return DataAccess.ExecuteSet(cmdDelete);
-            }
-        }
-        public string SoinsRecusResume
-        {
-            get
-            {
-                if (SoinReçus == null || !SoinReçus.Any()) return "Aucun soin enregistré";
-                // Joint les libellés des soins avec leur date
-                return string.Join(Environment.NewLine, SoinReçus.Select(s => $"- {s.UnSoin?.Libelle} ({s.DateSoin:dd/MM/yyyy})"));
-            }
-        }
-
-        public string ComportementsResume
-        {
-            get
-            {
-                if (Comportements == null || !Comportements.Any()) return "Aucun comportement enregistré";
-                // À ajuster selon la structure de ta classe Comportement (supposons qu'elle possède une propriété 'Libelle')
-                return string.Join(", ", Comportements.Select(c => c.Libelle));
             }
         }
     }

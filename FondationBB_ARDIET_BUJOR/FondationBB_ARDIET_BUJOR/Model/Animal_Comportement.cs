@@ -22,7 +22,9 @@ namespace FondationBB_ARDIET_BUJOR.Model
         public Animal_Comportement(Comportement unComportement, Animal unAnimal)
         {
             this.UnComportement = unComportement;
+            this.IdComportement = unComportement.Id;
             this.UnAnimal = unAnimal;
+            this.IdAnimal = unAnimal.Id;
         }
 
         public Animal_Comportement(int idComportement, int idAnimal)

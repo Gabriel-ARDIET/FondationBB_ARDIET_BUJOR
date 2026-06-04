@@ -99,7 +99,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         public List<Soin> FindAll()
         {
-            {
                 List<Soin> list = new List<Soin>();
                 using (NpgsqlCommand cmdSelect = new NpgsqlCommand("select * from soin;"))
                 {
@@ -112,10 +111,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
                             dr["frequence_soin"] is DBNull ? 0 : (int)dr["frequence_soin"]
                             ));
                 }
-            }
             return list;
-        }
-
+        }  
         public List<Soin> FindBySelection(string criteres)
         {
             throw new NotImplementedException();

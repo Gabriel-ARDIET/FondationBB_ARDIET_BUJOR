@@ -24,7 +24,9 @@ namespace FondationBB_ARDIET_BUJOR.Model
         public Recoit(Soin unSoin, Animal unAnimal, DateTime dateSoin, DateTime? dateRappel)
         {
             this.UnSoin = unSoin;
+            this.IdSoin = unSoin.Id;
             this.UnAnimal = unAnimal;
+            this.IdAnimal = unAnimal.Id;
             this.DateSoin = dateSoin;
             this.DateRappel = dateRappel;
         }
@@ -41,7 +43,9 @@ namespace FondationBB_ARDIET_BUJOR.Model
         {
             this.dateRappel = null; // Initialisé à null car absent des paramètres
             this.UnSoin = unSoin;
+            this.IdSoin = unSoin.Id;
             this.UnAnimal = unAnimal;
+            this.IdAnimal = unAnimal.Id;
             this.DateSoin = dateSoin;
         }
 
