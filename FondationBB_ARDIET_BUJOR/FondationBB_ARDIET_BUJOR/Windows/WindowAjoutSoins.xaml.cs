@@ -1,8 +1,6 @@
 ﻿using FondationBB_ARDIET_BUJOR.Model;
 using System;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace FondationBB_ARDIET_BUJOR.Windows
 {
@@ -11,48 +9,56 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         public Soin SoinSelectionne { get; private set; }
         public DateTime DateSelectionnee { get; private set; }
 
-        // Indicateur de validation
         private bool _donneesValidees = false;
 
         public WindowAjoutSoins()
         {
             InitializeComponent();
             dpDateSoin.SelectedDate = DateTime.Now;
+
+            // Chargement dynamique des soins depuis la base PostgreSQL
+            try
+            {
+                cbSoins.ItemsSource = new Soin().FindAll();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur lors du chargement des soins : " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnEnregistrer_Click(object sender, RoutedEventArgs e)
         {
-            RadioButton radioCoche = stackSoins.Children.OfType<RadioButton>().FirstOrDefault(r => r.IsChecked == true);
+            // Récupération directe de l'objet Soin sélectionné dans le ComboBox
+            Soin soinChoisi = cbSoins.SelectedItem as Soin;
 
-            if (radioCoche == null || dpDateSoin.SelectedDate == null)
+            if (soinChoisi == null || dpDateSoin.SelectedDate == null)
             {
-                MessageBox.Show("Veuillez remplir tous les champs.", "Sélection manquante", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Veuillez sélectionner un soin et une date.", "Sélection manquante", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            SoinSelectionne = new Soin { Libelle = radioCoche.Content.ToString() };
+            // On stocke l'instance complète (avec son ID, tarif, etc.)
+            SoinSelectionne = soinChoisi;
             DateSelectionnee = dpDateSoin.SelectedDate.Value;
 
-            _donneesValidees = true; // /!\ IMPORTANT : On signale que c'est enregistré
+            _donneesValidees = true;
             this.DialogResult = true;
         }
 
         private void btnAnnuler_Click(object sender, RoutedEventArgs e)
         {
-            this.Close(); // Déclenchera automatiquement l'événement Window_Closing
+            this.Close();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Si validé, on ferme sans demander
             if (_donneesValidees) return;
 
-            // Déclenché par la croix ou le bouton Annuler
             MessageBoxResult result = MessageBox.Show("Annuler la saisie ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
             if (result == MessageBoxResult.No)
             {
-                e.Cancel = true; // Bloque la fermeture
+                e.Cancel = true;
             }
         }
     }

@@ -112,8 +112,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
                             dr["frequence_soin"] is DBNull ? 0 : (int)dr["frequence_soin"]
                             ));
                 }
-                return list;
             }
+            return list;
         }
 
         public List<Soin> FindBySelection(string criteres)

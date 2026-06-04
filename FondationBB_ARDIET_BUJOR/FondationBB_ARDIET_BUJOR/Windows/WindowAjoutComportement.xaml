@@ -5,36 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FondationBB_ARDIET_BUJOR.Windows"
         mc:Ignorable="d"
-        Title="Ajout de Comportement" Height="500" Width="400" WindowStartupLocation="CenterScreen"
+        Title="Ajout de Comportement" 
+        Width="400" 
+        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         Closing="Window_Closing">
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <GroupBox Header="Sélectionnez un comportement" Grid.Row="0" Margin="0,0,0,15" Padding="10">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel x:Name="stackComportements">
-                    <RadioButton Content="Sociable avec les adultes" GroupName="Comportements" Margin="0,5"/>
-                    <RadioButton Content="Sociable avec les enfants" GroupName="Comportements" Margin="0,5"/>
-                    <RadioButton Content="Sociable avec les chiens" GroupName="Comportements" Margin="0,5"/>
-                    <RadioButton Content="Sociable avec les chats" GroupName="Comportements" Margin="0,5"/>
-                    <RadioButton Content="Timide" GroupName="Comportements" Margin="0,5"/>
-                    <RadioButton Content="Peureux" GroupName="Comportements" Margin="0,5"/>
-                    <RadioButton Content="Agressif" GroupName="Comportements" Margin="0,5"/>
-                    <RadioButton Content="Joueur" GroupName="Comportements" Margin="0,5"/>
-                    <RadioButton Content="Calme" GroupName="Comportements" Margin="0,5"/>
-                    <RadioButton Content="Destructeur" GroupName="Comportements" Margin="0,5"/>
-                    <RadioButton Content="Propre" GroupName="Comportements" Margin="0,5"/>
-                    <RadioButton Content="Non propre" GroupName="Comportements" Margin="0,5"/>
-                </StackPanel>
-            </ScrollViewer>
+            <ComboBox x:Name="cbComportements" 
+                      Height="30" 
+                      VerticalAlignment="Center"
+                      DisplayMemberPath="Libelle" />
         </GroupBox>
 
         <UniformGrid Grid.Row="1" Columns="2" Height="40">
-            <Button Content="Enregistrer" Background="Red" FontWeight="Bold" Margin="0,0,5,0" Click="btnEnregistrer_Click"/>
+            <Button Content="Enregistrer" Background="Red" Foreground="White" FontWeight="Bold" Margin="0,0,5,0" Click="btnEnregistrer_Click"/>
             <Button Content="Annuler" Background="#E0E0E0" Margin="5,0,0,0" Click="btnAnnuler_Click"/>
         </UniformGrid>
     </Grid>

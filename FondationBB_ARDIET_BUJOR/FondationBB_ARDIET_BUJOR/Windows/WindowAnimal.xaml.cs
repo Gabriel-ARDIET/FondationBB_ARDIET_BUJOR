@@ -212,14 +212,18 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         {
             WindowAjoutComportement fenetreComportement = new WindowAjoutComportement();
             fenetreComportement.Owner = this;
+
             if (fenetreComportement.ShowDialog() == true)
             {
                 Animal animalActuel = this.DataContext as Animal;
                 if (animalActuel != null)
                 {
-                    Comportement nouveauComportement = new Comportement();
-                    nouveauComportement.Libelle = fenetreComportement.ComportementSelectionne;
-                    animalActuel.Comportements.Add(nouveauComportement);
+                    Comportement nouveauComportement = fenetreComportement.ComportementSelectionne;
+
+                    if (nouveauComportement != null)
+                    {
+                        animalActuel.Comportements.Add(nouveauComportement);
+                    }
                 }
             }
         }
