@@ -50,12 +50,16 @@
                 <Border Background="#F9F9F9" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1" Padding="20">
                     <StackPanel DataContext="{Binding SelectedItem, ElementName=dgClients}">
                         <TextBlock Text="Fiche client" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+
                         <TextBlock Text="Nom"/>
                         <TextBox Text="{Binding Nom}" Margin="0,0,0,10"/>
+
                         <TextBlock Text="Prénom"/>
                         <TextBox Text="{Binding Prenom}" Margin="0,0,0,10"/>
-                        <TextBlock Text="Adresse"/>
-                        <TextBox Text="{Binding Adresse}" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Adresse e-mail"/>
+                        <TextBox Text="{Binding Mail}" Margin="0,0,0,10"/>
+
                         <TextBlock Text="Téléphone"/>
                         <TextBox Text="{Binding Telephone}" Margin="0,0,0,10"/>
                     </StackPanel>

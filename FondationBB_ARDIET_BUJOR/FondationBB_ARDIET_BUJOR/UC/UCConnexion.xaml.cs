@@ -10,6 +10,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         public UCConnexion()
         {
             InitializeComponent();
+            this.Loaded += (s, e) => tbUserName.Focus();
         }
 
         private void btnConnexion_Click(object sender, RoutedEventArgs e)

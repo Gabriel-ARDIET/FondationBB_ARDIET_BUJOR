@@ -203,7 +203,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             if (LesAdoptions.Count != 0)
                 return;
             LesAdoptions = new ObservableCollection<Adoption>(new Adoption().FindAll());
-            ChargerAdoptions();
+            ChargerEmployes();
             ChargerAnimaux();
             ChargerPersonnes();
             foreach (Adoption a in LesAdoptions)

@@ -22,7 +22,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
         private string ville;
         private string? mail;
         private DateTime dateCreation;
-
         public Personne()
         {
         }
@@ -122,7 +121,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
-                if (value.Length == 10)
+                if (value.Length != 10)
                     throw new ArgumentOutOfRangeException("le numéro de téléphone doit faire 10 caractère");
                 this.telephone = value;
             }
@@ -248,18 +247,19 @@ namespace FondationBB_ARDIET_BUJOR.Model
                         (string)dr["nom_personne"],
                         (string)dr["prenom_personne"],
                         new DateTime((DateOnly)dr["date_naissance_personne"],TimeOnly.MinValue),
-                        (string)dr["telephone_personne"],
+                        (string)dr["numero_personne"],
                         (string)dr["rue_personne"],
                         (string)dr["cp_personne"],
                         (string)dr["ville_personne"],
-                        (string?)dr["mail_personne"],
-                        (string)dr["numero_personne"],
+                        (string)dr["telephone_personne"],
+                        (string?)dr["mail_personne"],                     
                         new DateTime((DateOnly)dr["date_creation_personne"],TimeOnly.MinValue)
                         ));
             }
             return list;
         }
-
+//public Personne(int id, string nom, string prenom, DateTime? dateNaissance, string numero, string rue, string cp, string ville, string telephone, string? mail, DateTime dateCreation)
+        
         public List<Personne> FindBySelection(string criteres)
         {
             throw new NotImplementedException();
