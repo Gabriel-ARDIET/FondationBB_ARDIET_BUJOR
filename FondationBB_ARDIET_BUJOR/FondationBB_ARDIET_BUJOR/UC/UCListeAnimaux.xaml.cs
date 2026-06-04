@@ -113,7 +113,57 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void BtnSupprimer_Click(object sender, RoutedEventArgs e)
         {
-            // Code pour la suppression à venir
+            // 1. On récupère l'animal sélectionné dans le DataGrid
+            if (dgAnimaux.SelectedItem is Animal animalSelectionne)
+            {
+                // 2. Fenêtre de confirmation pour éviter les fausses manipulations
+                MessageBoxResult result = MessageBox.Show(
+                    $"Êtes-vous sûr de vouloir supprimer définitivement l'animal '{animalSelectionne.Nom}' (ICAD: {animalSelectionne.Icad}) ?",
+                    "Confirmation de suppression",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning
+                );
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        // 3. Appel de la méthode Delete du modèle
+                        int lignesAffectees = animalSelectionne.Delete();
+
+                        if (lignesAffectees > 0)
+                        {
+                            MessageBox.Show("L'animal a bien été supprimé de la base de données.", "Suppression réussie", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                            // 4. Mise à jour de l'interface graphique
+                            if (dgAnimaux.ItemsSource is System.Collections.ObjectModel.ObservableCollection<Animal> listeObservable)
+                            {
+                                // Si votre DataGrid est lié à une ObservableCollection, le retirer suffit à rafraîchir l'écran
+                                listeObservable.Remove(animalSelectionne);
+                            }
+                            else
+                            {
+                                // Si c'est une List<Animal> classique, on recharge simplement le tableau depuis la base de données
+                                dgAnimaux.ItemsSource = new Animal().FindAll();
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Aucune ligne n'a été modifiée en base de données. L'animal a peut-être déjà été supprimé.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Gestion des erreurs (perte de connexion, contrainte SQL imprévue...)
+                        MessageBox.Show($"Une erreur est survenue lors de la suppression : {ex.Message}", "Erreur critique", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                // Si l'utilisateur clique sur le bouton sans avoir sélectionné de ligne
+                MessageBox.Show("Veuillez sélectionner un animal dans le tableau avant de cliquer sur supprimer.", "Sélection manquante", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private bool RechercheMotClefAnimal_Animal(object obj)

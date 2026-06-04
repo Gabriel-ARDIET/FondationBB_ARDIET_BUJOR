@@ -107,8 +107,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
-                if (value.Length > 50)
-                    throw new ArgumentOutOfRangeException("Le nom doit faire moins de 50 caractères");
+
                 this.nom = value;
             }
         }
@@ -433,15 +432,24 @@ namespace FondationBB_ARDIET_BUJOR.Model
                 cmdUpdate.Parameters.AddWithValue("id", this.Id);
                 return DataAccess.ExecuteSet(cmdUpdate);
             }
-        }
+        }*/
         public int Delete()
         {
-            using (var cmdUpdate = new NpgsqlCommand("delete from chiens  where idchien =@id;"))
+            // Chaîne de requêtes pour nettoyer les tables liées puis supprimer l'animal
+            string query = @"
+        DELETE FROM recoit WHERE id_animal = @id;
+        DELETE FROM animal_comportement WHERE id_animal = @id;
+        DELETE FROM animal WHERE id_animal = @id;";
+
+            using (NpgsqlCommand cmdDelete = new NpgsqlCommand(query))
             {
-                cmdUpdate.Parameters.AddWithValue("id", this.Id);
-                return DataAccess.ExecuteSet(cmdUpdate);
+                // Association du paramètre avec l'ID de l'animal actuel
+                cmdDelete.Parameters.AddWithValue("@id", this.Id);
+
+                // Utilisation de votre méthode DataAccess existante
+                return DataAccess.ExecuteSet(cmdDelete);
             }
-        }*/
+        }
         public string SoinsRecusResume
         {
             get
