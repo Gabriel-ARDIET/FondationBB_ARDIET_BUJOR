@@ -26,6 +26,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             try
             {
                 connection = new NpgsqlConnection(connectionString);
+                connection = GetConnection();
                 return true;
             }
             catch (Exception ex)
