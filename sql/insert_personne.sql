@@ -3999,3 +3999,8 @@ INSERT INTO personne (nom_personne, prenom_personne, date_naissance_personne, nu
   ('Cloutier', 'Leila', '1968-10-22', '1', 'Perrot', '22130', 'Corseul', '736287980', 'l.cloutier5659@aol.edu', '2024-06-26'),
   ('Van Assen', 'Matthias', '1980-03-26', '3', 'Rue Mili Blanc', '22560', 'Pleumeur-Bodou', '635744682', 'v_matthias9605@hotmail.net', '2019-09-12'),
   ('Proulx', 'Aurore', '2007-01-03', '14', 'Rue des Portes', '22350', 'Yvignac-la-Tour', '728680823', 'a.proulx2750@yahoo.com', '2015-12-11');
+
+UPDATE personne
+SET telephone_personne = CONCAT('0', telephone_personne) -- ou '0' || telephone_personne
+WHERE telephone_personne IS NOT NULL 
+  AND telephone_personne NOT LIKE '0%';
