@@ -22,6 +22,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
         private ObservableCollection<Recoit> lesSoinsReçus;
         private ObservableCollection<Animal_Comportement> lesComportementsDesAnimaux;
         private ObservableCollection<Comportement> lesComportements;
+        private ObservableCollection<Demande> lesDemandes;
 
         public Data()
         {
@@ -37,6 +38,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             LesSoins = new ObservableCollection<Soin>();
             LesComportementsDesAnimaux = new ObservableCollection<Animal_Comportement>();
             LesComportements = new ObservableCollection<Comportement>();
+            LesDemandes = new ObservableCollection<Demande>();
         }
 
         public ObservableCollection<Personne> LesPersonnes
@@ -193,6 +195,19 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
+        public ObservableCollection<Demande> LesDemandes
+        {
+            get
+            {
+                return this.lesDemandes;
+            }
+
+            set
+            {
+                this.lesDemandes = value;
+            }
+        }
+
         public void ChargerPersonnes()
         {
             if (LesPersonnes.Count != 0)
@@ -306,16 +321,25 @@ namespace FondationBB_ARDIET_BUJOR.Model
                 return;
             LesComportements = new ObservableCollection<Comportement>(new Comportement().FindAll());
         }
+        public void ChargerDemandes()
+        {
+            if (LesDemandes.Count != 0)
+                return;
+            LesDemandes = new ObservableCollection<Demande>(new Demande().FindAll());
+            ChargerPersonnes();
+            ChargerRaces();
+            foreach (Demande d in LesDemandes)
+            {
+                d.UnePersonne = LesPersonnes.FirstOrDefault(personne => personne.Id == d.IdPersonne);
+                d.UneRace = LesRaces.FirstOrDefault(r => r.Id == d.IdRace);
+            }
+        }
 
         public void SupprimerAnimal(Animal a)
         {
             if (a == null) return;
 
             this.LesAnimaux.Remove(a);
-
-            foreach (Adoption ad in this.LesAdoptions.ToList())
-                if (ad.IdAnimal == a.Id)
-                    this.SupprimerAdoption(ad);
 
             foreach (Recoit r in this.LesSoinsReçus.ToList())
                 if (r.IdAnimal == a.Id)
@@ -370,6 +394,12 @@ namespace FondationBB_ARDIET_BUJOR.Model
             this.LesComportementsDesAnimaux.Remove(ac);
 
             ac.Delete();
+        }
+        public void SupprimerDemande(Demande d)
+        {
+            if (d == null) return;
+            this.LesDemandes.Remove(d);
+            d.Delete();
         }
     }
 }

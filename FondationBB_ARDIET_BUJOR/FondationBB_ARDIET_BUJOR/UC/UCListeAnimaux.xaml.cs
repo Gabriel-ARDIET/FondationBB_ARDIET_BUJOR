@@ -133,19 +133,21 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             {
                 try
                 {
+                    unAnimal.IdStatut = unAnimal.UnStatut?.Id;
+                    unAnimal.IdEtat = unAnimal.UnEtat?.Id;
                     unAnimal.Id = unAnimal.Create();
                     laData.LesAnimaux.Add(unAnimal);
                     foreach (Recoit r in soins)
                     {
                         r.IdAnimal = unAnimal.Id;
                         laData.LesSoinsReçus.Add(r);
-                        //r.Create();
+                        r.Create();
                     }
                     foreach (Animal_Comportement c in comportements)
                     {
                         c.IdAnimal = unAnimal.Id;
                         laData.LesComportementsDesAnimaux.Add(c);
-                        //c.Create();
+                        c.Create();
                     }
                 }
                 catch (Exception ex)
@@ -171,12 +173,15 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     try
                     {
                         animalSelectionne.UpdateFrom(copieAnimal);
+                        animalSelectionne.IdStatut = animalSelectionne.UnStatut?.Id;
+                        animalSelectionne.IdEtat = animalSelectionne.UnEtat?.Id;
+                        animalSelectionne.Update();
                         foreach (Recoit r in copieSoins)
                         {
                             if (soins.FirstOrDefault(s => s == r) == null)
                             {
                                 laData.LesSoinsReçus.Add(r);
-                                //r.Create();
+                                r.Create();
                             }
                         }
                         foreach (Animal_Comportement c in copieComportements)
@@ -184,7 +189,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                             if (comportements.FirstOrDefault(co => co == c) == null)
                             {
                                 laData.LesComportementsDesAnimaux.Add(c);
-                                //c.Create();
+                                c.Create();
                             }
                         }
                         dgAnimaux_SelectionChanged(null, null);
@@ -215,6 +220,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     try
                     {
                         int lignesAffectees = animalSelectionne.Delete();
+                        laData.SupprimerAnimal(animalSelectionne);
                         if (lignesAffectees > 0)
                         {
                             MessageBox.Show("L'animal a bien été supprimé.", "Suppression réussie", MessageBoxButton.OK, MessageBoxImage.Information);

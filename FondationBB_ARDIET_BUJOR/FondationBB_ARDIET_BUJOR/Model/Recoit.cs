@@ -136,7 +136,21 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         public int Create()
         {
-            throw new NotImplementedException();
+            string sql = "INSERT INTO recoit (id_soin, id_animal, date_soin, date_rappel) " +
+                         "VALUES (@idSoin, @idAnimal, @dateSoin, @dateRappel);";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sql))
+            {
+                cmd.Parameters.AddWithValue("@idSoin", this.IdSoin);
+                cmd.Parameters.AddWithValue("@idAnimal", this.IdAnimal);
+                cmd.Parameters.AddWithValue("@dateSoin", DateOnly.FromDateTime(this.DateSoin));
+
+                cmd.Parameters.AddWithValue("@dateRappel", this.DateRappel.HasValue
+                    ? DateOnly.FromDateTime(this.DateRappel.Value)
+                    : DBNull.Value);
+
+                return DataAccess.ExecuteSet(cmd);
+            }
         }
 
         public void Read()
@@ -146,12 +160,35 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         public int Update()
         {
-            throw new NotImplementedException();
+            string sql = "UPDATE recoit SET date_rappel = @dateRappel " +
+                         "WHERE id_soin = @idSoin AND id_animal = @idAnimal AND date_soin = @dateSoin;";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sql))
+            {
+                cmd.Parameters.AddWithValue("@idSoin", this.IdSoin);
+                cmd.Parameters.AddWithValue("@idAnimal", this.IdAnimal);
+                cmd.Parameters.AddWithValue("@dateSoin", DateOnly.FromDateTime(this.DateSoin));
+
+                cmd.Parameters.AddWithValue("@dateRappel", this.DateRappel.HasValue
+                    ? DateOnly.FromDateTime(this.DateRappel.Value)
+                    : DBNull.Value);
+
+                return DataAccess.ExecuteSet(cmd);
+            }
         }
 
         public int Delete()
         {
-            throw new NotImplementedException();
+            string sql = "DELETE FROM recoit WHERE id_soin = @idSoin AND id_animal = @idAnimal AND date_soin = @dateSoin;";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sql))
+            {
+                cmd.Parameters.AddWithValue("@idSoin", this.IdSoin);
+                cmd.Parameters.AddWithValue("@idAnimal", this.IdAnimal);
+                cmd.Parameters.AddWithValue("@dateSoin", DateOnly.FromDateTime(this.DateSoin));
+
+                return DataAccess.ExecuteSet(cmd);
+            }
         }
 
         public List<Recoit> FindAll()
