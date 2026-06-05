@@ -4,9 +4,157 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignHeight="720" d:DesignWidth="1280"
+             d:DesignHeight="850" d:DesignWidth="1280"
              Background="#FFFFFF">
-    <Grid>
 
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,40">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Nombre de chiens" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
+                <Border BorderBrush="Black" BorderThickness="1" Background="#E0E0E0" Height="35" Grid.Column="1" Grid.Row="0" Margin="10,0,0,0">
+                    <TextBlock x:Name="TxtNbChiens" Text="0" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+
+                <Label Content="Nombre de chats" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Grid.Column="3" Grid.Row="0" Margin="20,0,0,0"/>
+                <Border BorderBrush="Black" BorderThickness="1" Background="#E0E0E0" Height="35" Grid.Column="4" Grid.Row="0" Margin="10,0,0,0">
+                    <TextBlock x:Name="TxtNbChats" Text="0" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="5">
+                    <Label Content="Demandes en attentes :" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="TxtDemandesAttente" Text="0" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="DarkRed"/>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,30">
+                <ComboBox x:Name="ComboAnnee" Width="200" Height="35" FontSize="16" FontWeight="Bold" SelectionChanged="ComboAnnee_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Margin="0,0,0,40">
+                <TextBlock Text="Nombre d'animaux adoptés cette année" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
+                <Grid Height="250" Width="900" HorizontalAlignment="Left">
+                    <Canvas x:Name="CanvasAdoptions" Background="#FAFAFA">
+                        <Line X1="40" Y1="20" X2="880" Y2="20" Stroke="#EAEAEA" StrokeThickness="1"/>
+                        <Line X1="40" Y1="53.3" X2="880" Y2="53.3" Stroke="#EAEAEA" StrokeThickness="1"/>
+                        <Line X1="40" Y1="86.6" X2="880" Y2="86.6" Stroke="#EAEAEA" StrokeThickness="1"/>
+                        <Line X1="40" Y1="120" X2="880" Y2="120" Stroke="#EAEAEA" StrokeThickness="1"/>
+                        <Line X1="40" Y1="153.3" X2="880" Y2="153.3" Stroke="#EAEAEA" StrokeThickness="1"/>
+                        <Line X1="40" Y1="186.6" X2="880" Y2="186.6" Stroke="#EAEAEA" StrokeThickness="1"/>
+
+                        <Line X1="40" Y1="10" X2="40" Y2="220" Stroke="Black" StrokeThickness="1.5"/>
+                        <TextBlock Text="30" Canvas.Left="15" Canvas.Top="12"/>
+                        <TextBlock Text="25" Canvas.Left="15" Canvas.Top="45"/>
+                        <TextBlock Text="20" Canvas.Left="15" Canvas.Top="79"/>
+                        <TextBlock Text="15" Canvas.Left="15" Canvas.Top="112"/>
+                        <TextBlock Text="10" Canvas.Left="15" Canvas.Top="145"/>
+                        <TextBlock Text="5" Canvas.Left="20" Canvas.Top="179"/>
+                        <TextBlock Text="0" Canvas.Left="20" Canvas.Top="212"/>
+
+                        <Line X1="40" Y1="220" X2="890" Y2="220" Stroke="Black" StrokeThickness="1.5"/>
+                        <TextBlock Text="Mois" Canvas.Left="855" Canvas.Top="198" FontWeight="Bold"/>
+
+                        <Polyline x:Name="PolylineAdoptions" Stroke="#F27F22" StrokeThickness="3"/>
+                    </Canvas>
+
+                    <ItemsControl x:Name="ItemsAdoptions" Margin="40,0,20,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="12" Rows="1"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding MoisNom}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,-25">
+                                        <TextBlock.RenderTransform>
+                                            <RotateTransform Angle="-45"/>
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
+                                    <Canvas VerticalAlignment="Top" Height="220">
+                                        <Ellipse Width="10" Height="10" Fill="#F27F22" Canvas.Left="30" Canvas.Top="{Binding YPosition}" ToolTip="{Binding ValeurText}"/>
+                                    </Canvas>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Margin="0,40,0,0">
+                <TextBlock Text="Nombre d'arrivées cette année" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
+                <Grid Height="250" Width="900" HorizontalAlignment="Left">
+                    <Canvas x:Name="CanvasArrivees" Background="#FAFAFA">
+                        <Line X1="40" Y1="20" X2="880" Y2="20" Stroke="#EAEAEA" StrokeThickness="1"/>
+                        <Line X1="40" Y1="53.3" X2="880" Y2="53.3" Stroke="#EAEAEA" StrokeThickness="1"/>
+                        <Line X1="40" Y1="86.6" X2="880" Y2="86.6" Stroke="#EAEAEA" StrokeThickness="1"/>
+                        <Line X1="40" Y1="120" X2="880" Y2="120" Stroke="#EAEAEA" StrokeThickness="1"/>
+                        <Line X1="40" Y1="153.3" X2="880" Y2="153.3" Stroke="#EAEAEA" StrokeThickness="1"/>
+                        <Line X1="40" Y1="186.6" X2="880" Y2="186.6" Stroke="#EAEAEA" StrokeThickness="1"/>
+
+                        <Line X1="40" Y1="10" X2="40" Y2="220" Stroke="Black" StrokeThickness="1.5"/>
+                        <TextBlock Text="30" Canvas.Left="15" Canvas.Top="12"/>
+                        <TextBlock Text="25" Canvas.Left="15" Canvas.Top="45"/>
+                        <TextBlock Text="20" Canvas.Left="15" Canvas.Top="79"/>
+                        <TextBlock Text="15" Canvas.Left="15" Canvas.Top="112"/>
+                        <TextBlock Text="10" Canvas.Left="15" Canvas.Top="145"/>
+                        <TextBlock Text="5" Canvas.Left="20" Canvas.Top="179"/>
+                        <TextBlock Text="0" Canvas.Left="20" Canvas.Top="212"/>
+
+                        <Line X1="40" Y1="220" X2="890" Y2="220" Stroke="Black" StrokeThickness="1.5"/>
+                        <TextBlock Text="Mois" Canvas.Left="855" Canvas.Top="198" FontWeight="Bold"/>
+
+                        <Polyline x:Name="PolylineArrivees" Stroke="#F27F22" StrokeThickness="3"/>
+                    </Canvas>
+
+                    <ItemsControl x:Name="ItemsArrivees" Margin="40,0,20,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="12" Rows="1"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding MoisNom}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,-25">
+                                        <TextBlock.RenderTransform>
+                                            <RotateTransform Angle="-45"/>
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
+                                    <Canvas VerticalAlignment="Top" Height="220">
+                                        <Ellipse Width="10" Height="10" Fill="#F27F22" Canvas.Left="30" Canvas.Top="{Binding YPosition}" ToolTip="{Binding ValeurText}"/>
+                                    </Canvas>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
