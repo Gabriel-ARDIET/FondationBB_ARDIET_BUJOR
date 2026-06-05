@@ -227,6 +227,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 if (this.DataContext is Animal animalActuel)
                 {
                     this.Soins.Remove(soinSelectionne);
+                    CollectionViewSource.GetDefaultView(dgComportements.ItemsSource).Refresh();
                 }
             }
             else
@@ -240,6 +241,9 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             if (dgComportements.SelectedItem is Animal_Comportement comportementSelectionne)
             {
                 if (this.DataContext is Animal animalActuel)
+                {
+                    this.Comportements.Remove(comportementSelectionne);
+                    CollectionViewSource.GetDefaultView(dgComportements.ItemsSource).Refresh();
                 {                   
                     this.Comportements.Remove(comportementSelectionne);
                 }
