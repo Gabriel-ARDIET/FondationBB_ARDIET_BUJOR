@@ -16,7 +16,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             InitializeComponent();
             dpDateSoin.SelectedDate = DateTime.Now;
 
-            // Chargement dynamique des soins depuis la base PostgreSQL
             try
             {
                 cbSoins.ItemsSource = new Soin().FindAll();
@@ -29,7 +28,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void btnEnregistrer_Click(object sender, RoutedEventArgs e)
         {
-            // Récupération directe de l'objet Soin sélectionné dans le ComboBox
             Soin soinChoisi = cbSoins.SelectedItem as Soin;
 
             if (soinChoisi == null || dpDateSoin.SelectedDate == null)
@@ -38,7 +36,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 return;
             }
 
-            // On stocke l'instance complète (avec son ID, tarif, etc.)
             SoinSelectionne = soinChoisi;
             DateSelectionnee = dpDateSoin.SelectedDate.Value;
 

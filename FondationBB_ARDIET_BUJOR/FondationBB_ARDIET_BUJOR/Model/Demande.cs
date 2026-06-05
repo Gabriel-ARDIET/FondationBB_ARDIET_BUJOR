@@ -151,11 +151,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
                 cmd.Parameters.AddWithValue("@date", DateOnly.FromDateTime(this.DateDemande));
                 cmd.Parameters.AddWithValue("@tranche", EnumConverter.ConvertTrancheAgeToString(this.UneTrancheAge));
 
-                // La race étant nullable (?):
                 cmd.Parameters.AddWithValue("@idRace", this.UneRace != null ? this.UneRace.Id : DBNull.Value);
                 cmd.Parameters.AddWithValue("@idPersonne", this.UnePersonne.Id);
-
-                // Récupération de l'ID auto-généré
                 this.Id = DataAccess.ExecuteInsert(cmd);
 
                 return this.Id > 0 ? 1 : 0;

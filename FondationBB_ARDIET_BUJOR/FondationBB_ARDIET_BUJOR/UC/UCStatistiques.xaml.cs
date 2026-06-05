@@ -11,12 +11,11 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 {
     public partial class UCStatistiques : UserControl
     {
-        // Structure pour lier les données aux points graphiques natifs
         public class DataPoint
         {
             public string MoisNom { get; set; }
-            public double YPosition { get; set; } // Position graphique calculée (0 à 220)
-            public string ValeurText { get; set; } // Affiché au survol de la souris
+            public double YPosition { get; set; } 
+            public string ValeurText { get; set; } 
         }
 
         private readonly string[] moisLabels = { "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" };
@@ -28,17 +27,10 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             RemplirSelecteurAnnee();
         }
 
-        /// <summary>
-        /// Charge les compteurs globaux du haut (Chiens, Chats, Demandes en attente)
-        /// </summary>
-        /// <summary>
-        /// Charge les compteurs globaux du haut (Chiens, Chats, Demandes en attente)
-        /// </summary>
         private void ChargerCompteursGlobaux()
         {
             try
             {
-                // 1. Nombre de chiens présents au refuge
                 string sqlChiens = @"
             SELECT COUNT(*) 
             FROM animal a 
@@ -50,8 +42,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 {
                     TxtNbChiens.Text = DataAccess.ExecuteSelectOneValue(cmdChiens);
                 }
-
-                // 2. Nombre de chats présents au refuge
                 string sqlChats = @"
             SELECT COUNT(*) 
             FROM animal a 
@@ -63,10 +53,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 {
                     TxtNbChats.Text = DataAccess.ExecuteSelectOneValue(cmdChats);
                 }
-
-                // 3. Demandes d'adoption en attente (CORRIGÉ)
-                // La table 'demande' ne contient pas de clé 'id_statut'. 
-                // On compte directement le nombre total de lignes de la table.
                 string sqlDemandes = "SELECT COUNT(*) FROM demande;";
 
                 using (NpgsqlCommand cmdDemandes = new NpgsqlCommand(sqlDemandes))
@@ -80,9 +66,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             }
         }
 
-        /// <summary>
-        /// Remplit le ComboBox avec les années disponibles (de 2020 à l'année courante)
-        /// </summary>
         private void RemplirSelecteurAnnee()
         {
             List<int> annees = new List<int>();
@@ -92,12 +75,9 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 annees.Add(i);
             }
             ComboAnnee.ItemsSource = annees;
-            ComboAnnee.SelectedIndex = 0; // Sélectionne l'année en cours par défaut
+            ComboAnnee.SelectedIndex = 0;
         }
 
-        /// <summary>
-        /// Se déclenche dès que l'utilisateur sélectionne une autre année
-        /// </summary>
         private void ComboAnnee_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComboAnnee.SelectedItem is int anneeSelectionnee)
@@ -107,9 +87,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             }
         }
 
-        /// <summary>
-        /// Calcule et trace le graphique des adoptions de l'année sélectionnée
-        /// </summary>
         private void MettreAJourGraphiqueAdoptions(int annee)
         {
             int[] valeursMensuelles = new int[12];
@@ -158,9 +135,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             PolylineAdoptions.Points = polylinePoints;
         }
 
-        /// <summary>
-        /// Calcule et trace le graphique des arrivées (nouveaux animaux) de l'année sélectionnée
-        /// </summary>
         private void MettreAJourGraphiqueArrivees(int annee)
         {
             int[] valeursMensuelles = new int[12];

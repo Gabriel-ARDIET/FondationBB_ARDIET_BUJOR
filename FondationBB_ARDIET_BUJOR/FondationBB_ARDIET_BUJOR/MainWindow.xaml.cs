@@ -6,7 +6,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 {
     public partial class MainWindow : Window
     {
-        // MODIFICATION : Remplacement du champ privé par une propriété statique publique
         public static Employe? EmployeConnecte { get; private set; }
 
         public Data laData;
@@ -25,13 +24,8 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             connexion.LoginReussi += ValiderConnexion;
             ZoneContenu.Content = connexion;
         }
-
-        /// <summary>
-        /// Méthode appelée suite à une authentification réussie
-        /// </summary>
         public void ValiderConnexion(object? sender, Employe emp)
         {
-            // MODIFICATION : On stocke l'employé dans la propriété statique
             EmployeConnecte = emp;
 
             MenuHeader.Visibility = Visibility.Visible;
@@ -64,7 +58,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     ZoneContenu.Content = new UCListeDemandes();
                     break;
                 case "btnStatistiques":
-                    // Sécurité supplémentaire : vérification du rôle via l'Enum
                     if (EmployeConnecte != null && EmployeConnecte.UnRole == Role.Bénévole)
                     {
                         MessageBox.Show(
@@ -93,8 +86,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             if (result == MessageBoxResult.Yes)
             {
                 MenuHeader.Visibility = Visibility.Collapsed;
-
-                // MODIFICATION : Réinitialisation de l'employé et appel propre de ShowConnexion
                 EmployeConnecte = null;
                 ShowConnexion();
             }

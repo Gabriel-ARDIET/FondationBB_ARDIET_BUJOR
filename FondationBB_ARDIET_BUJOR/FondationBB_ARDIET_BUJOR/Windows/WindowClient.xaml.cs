@@ -18,11 +18,9 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void btnValider_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Forcer la mise à jour des liaisons (Bindings)
             textNom.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             textPrenom.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
 
-            // AJOUT : Forcer la mise à jour de la date de naissance
             datePickerNaissance.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
 
             textNumero.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
@@ -32,11 +30,9 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             textTelephone.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             textMail.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
 
-            // 2. Réinitialisation des indicateurs d'erreurs visuels
             var bNom = textNom.GetBindingExpression(TextBox.TextProperty); if (bNom != null) Validation.ClearInvalid(bNom);
             var bPrenom = textPrenom.GetBindingExpression(TextBox.TextProperty); if (bPrenom != null) Validation.ClearInvalid(bPrenom);
 
-            // AJOUT : Nettoyage d'erreur pour la date de naissance
             var bDateNais = datePickerNaissance.GetBindingExpression(DatePicker.SelectedDateProperty); if (bDateNais != null) Validation.ClearInvalid(bDateNais);
 
             var bNumero = textNumero.GetBindingExpression(TextBox.TextProperty); if (bNumero != null) Validation.ClearInvalid(bNumero);
@@ -49,7 +45,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             List<string> erreurs = new List<string>();
             var rule = new ExceptionValidationRule();
 
-            // 3. Vérification des contraintes basées sur le Modèle Personne
             if (string.IsNullOrEmpty(textNom.Text?.Trim()))
             {
                 if (bNom != null) Validation.MarkInvalid(bNom, new ValidationError(rule, bNom, "Nom obligatoire", null));
@@ -72,7 +67,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 erreurs.Add("- Le prénom doit faire moins de 100 caractères.");
             }
 
-            // OPTIONNEL : Si vous souhaitez bloquer les dates futures par exemple :
             if (datePickerNaissance.SelectedDate.HasValue && datePickerNaissance.SelectedDate.Value > DateTime.Today)
             {
                 if (bDateNais != null) Validation.MarkInvalid(bDateNais, new ValidationError(rule, bDateNais, "Date invalide", null));
@@ -116,7 +110,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 erreurs.Add("- L'adresse e-mail doit faire moins de 100 caractères.");
             }
 
-            // 4. Traitement du résultat
             if (erreurs.Count == 0)
             {
                 _donneesValidees = true;

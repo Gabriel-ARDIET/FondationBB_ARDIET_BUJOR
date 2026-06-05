@@ -36,7 +36,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        // pour récupérer la connexion (et l'ouvrir si nécessaire)
         public static NpgsqlConnection GetConnection()
         {
 
@@ -76,8 +75,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
             return dataTable;
         }
 
-        //   pour requêtes INSERT et renvoie l'ID généré
-
         public static int ExecuteInsert(NpgsqlCommand cmd)
         {
             int nb = 0;
@@ -98,8 +95,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
 
 
-
-        //  pour requêtes UPDATE, DELETE
         public static int ExecuteSet(NpgsqlCommand cmd)
         {
             int nb = 0;
@@ -117,7 +112,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         }
 
-        // pour requêtes avec une seule valeur retour  (ex : 1 colonne, ou COUNT, SUM) 
         public static string ExecuteSelectOneValue(NpgsqlCommand cmd)
         {
             object res = null;
@@ -135,7 +129,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         }
 
-        //  Fermer la connexion 
         public static void CloseConnection()
         {
             if (connection.State == ConnectionState.Open)

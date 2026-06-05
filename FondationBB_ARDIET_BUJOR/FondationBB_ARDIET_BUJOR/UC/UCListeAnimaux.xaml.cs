@@ -20,7 +20,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             laData = (Data)Application.Current.MainWindow.DataContext;
             this.DataContext = laData;
 
-            // CRUCIAL : On applique la fonction FiltreCombine à la vue par défaut du DataGrid
             ICollectionView view = CollectionViewSource.GetDefaultView(laData.LesAnimaux);
             if (view != null)
             {
@@ -28,27 +27,19 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             }
             if (MainWindow.EmployeConnecte != null && MainWindow.EmployeConnecte.UnRole == Role.Bénévole)
             {
-                // On cache le bouton d'ajout pour les bénévoles
-                // (Remplace 'btnAjouter' par le vrai x:Name de ton bouton s'il est différent)
                 btnAjouter.Visibility = Visibility.Collapsed;
             }
         }
 
-        /// <summary>
-        /// Combine absolument tous les filtres (Nom, Race/Espèce, Sexe et Statut/Disponibilité)
-        /// </summary>
         private bool FiltreCombine(object obj)
         {
             Animal unAnimal = obj as Animal;
             if (unAnimal == null) return false;
 
-            // 1. --- FILTRE NOM ---
             if (!RechercheMotClefAnimal_Nom(unAnimal)) return false;
 
-            // 2. --- FILTRE RACE --- (Adapté selon ton souhait "Recherche de race")
             if (!RechercheMotClefAnimal_Race(unAnimal)) return false;
 
-            // 3. --- FILTRE SEXE ---
             if (rbMale.IsChecked == true)
             {
                 string sexeStr = unAnimal.UnSexe?.ToString() ?? "";
@@ -63,8 +54,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     return false;
             }
 
-            // 4. --- FILTRE STATUT / DISPONIBILITÉ ---
-            // Récupère la chaîne de caractères (Libelle ou ToString) représentant le statut
             string statutAnimal = unAnimal.UnStatut?.Libelle ?? unAnimal.UnStatut?.ToString() ?? "";
 
             if (rbAdopte.IsChecked == true)
@@ -75,7 +64,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             }
             else if (rbAuRefuge.IsChecked == true)
             {
-                // Un animal est au refuge s'il n'est pas "Adopté" et pas "Décédé" (ajuste selon tes besoins)
                 bool estAuRefuge = string.Equals(statutAnimal, "En soin", StringComparison.OrdinalIgnoreCase) ||
                                    string.Equals(statutAnimal, "Disponible", StringComparison.OrdinalIgnoreCase) ||
                                    string.Equals(statutAnimal, "Reserve", StringComparison.OrdinalIgnoreCase) ||
@@ -84,20 +72,16 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 if (!estAuRefuge) return false;
             }
 
-            // Si l'animal passe toutes les étapes, il est affiché !
             return true;
         }
 
         private void FiltreAnimal_Changed(object sender, RoutedEventArgs e)
         {
-            // Rafraîchit l'affichage dès qu'un texte change ou qu'un bouton radio est cliqué
             if (dgAnimaux.ItemsSource != null)
             {
                 CollectionViewSource.GetDefaultView(dgAnimaux.ItemsSource).Refresh();
             }
         }
-
-        // --- SOUS-FONCTIONS DE RECHERCHE TEXTUELLE ---
 
         private bool RechercheMotClefAnimal_Nom(Animal unAnimal)
         {
@@ -113,19 +97,13 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         {
             if (string.IsNullOrEmpty(txtFiltreEspece.Text))
                 return true;
-
-            // Sécurité si les objets liés sont null
             if (unAnimal.UneRace == null) return false;
-
-            // On cherche d'abord dans le libellé de la Race, sinon subsidiairement dans l'Espèce
             string raceLibelle = unAnimal.UneRace.Libelle ?? unAnimal.UneRace.ToString() ?? "";
             string especeLibelle = unAnimal.UneRace.UneEspece?.Libelle ?? unAnimal.UneRace.UneEspece?.ToString() ?? "";
 
             return raceLibelle.StartsWith(txtFiltreEspece.Text, StringComparison.OrdinalIgnoreCase) ||
                    especeLibelle.StartsWith(txtFiltreEspece.Text, StringComparison.OrdinalIgnoreCase);
         }
-
-        // --- BOUTONS D'ACTION (Ajouter, Éditer, Supprimer) ---
 
         private void BtnAjouter_Click(object sender, RoutedEventArgs e)
         {

@@ -79,8 +79,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
         {
             throw new NotImplementedException();
         }
-
-        // Permet un affichage propre par défaut si aucun DisplayMemberPath n'est défini
         public override string ToString() => Libelle;
     }
 }

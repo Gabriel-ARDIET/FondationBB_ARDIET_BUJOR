@@ -18,7 +18,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
             _demandeEnCours = uneDemande;
 
-            // 1. CORRECTION : Récupération du client si c'est une édition
             if (_demandeEnCours.IdPersonne > 0)
             {
                 _clientSelectionne = new Personne().FindAll().Find(p => p.Id == _demandeEnCours.IdPersonne);
@@ -41,11 +40,9 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
             this.DataContext = _demandeEnCours;
 
-            // Alimentation des ComboBox
             comboRace.ItemsSource = new Race().FindAll();
             comboTrancheAge.ItemsSource = Enum.GetValues(typeof(TrancheAge));
 
-            // Force l'affichage du nom et prénom du client au démarrage
             MettreAJourAffichageClient();
         }
 
@@ -80,11 +77,9 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void btnValider_Click(object sender, RoutedEventArgs e)
         {
-            // Forcer la mise à jour des liaisons
             comboRace.GetBindingExpression(ComboBox.SelectedValueProperty)?.UpdateSource();
             comboTrancheAge.GetBindingExpression(ComboBox.SelectedValueProperty)?.UpdateSource();
 
-            // Nettoyage initial des indicateurs d'erreurs
             var bClient = textClient.GetBindingExpression(TextBox.TextProperty); if (bClient != null) Validation.ClearInvalid(bClient);
             var bRace = comboRace.GetBindingExpression(ComboBox.SelectedValueProperty); if (bRace != null) Validation.ClearInvalid(bRace);
             var bTranche = comboTrancheAge.GetBindingExpression(ComboBox.SelectedValueProperty); if (bTranche != null) Validation.ClearInvalid(bTranche);
@@ -92,10 +87,8 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             List<string> erreurs = new List<string>();
             var rule = new ExceptionValidationRule();
 
-            // Validation du client
             if (_demandeEnCours.UnePersonne == null || _demandeEnCours.UnePersonne.Id == 0)
             {
-                // AJOUT ICI : Marquer le contrôle comme invalide pour afficher la bordure rouge
                 if (bClient != null) Validation.MarkInvalid(bClient, new ValidationError(rule, bClient, "Client requis", null));
                 erreurs.Add("- Vous devez associer un client demandeur valide.");
             }
@@ -116,7 +109,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             {
                 try
                 {
-                    // Lors d'une édition, on évite d'écraser la date initiale par la date du jour 
                     if (_demandeEnCours.DateDemande == default(DateTime))
                     {
                         _demandeEnCours.DateDemande = DateTime.Today;

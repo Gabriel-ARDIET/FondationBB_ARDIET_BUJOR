@@ -25,7 +25,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             dgSoins.ItemsSource = soins;
             dgComportements.ItemsSource = comportements;
 
-            // Liaison des collections aux ComboBox
             comboEspece.ItemsSource = new Espece().FindAll();
             comboRace.ItemsSource = new Race().FindAll();
             cbStatut.ItemsSource = new Statut().FindAll();
@@ -42,7 +41,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void btnValider_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Forcer la mise à jour des Bindings
             textIcad.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             textNom.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             comboEspece.GetBindingExpression(ComboBox.SelectedValueProperty)?.UpdateSource();
@@ -67,7 +65,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 }
             }
 
-            // 2. Réinitialisation des erreurs précédentes
             var bIcad = textIcad.GetBindingExpression(TextBox.TextProperty);
             if (bIcad != null) Validation.ClearInvalid(bIcad);
 
@@ -95,13 +92,10 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             var bEtat = cbEtat.GetBindingExpression(ComboBox.SelectedValueProperty);
             if (bEtat != null) Validation.ClearInvalid(bEtat);
 
-            // Pour le sexe (Border), on remet transparent
             borderSexe.Background = Brushes.Transparent;
 
             List<string> erreurs = new List<string>();
             var rule = new ExceptionValidationRule();
-
-            // 3. Vérifications des contraintes et marquage visuel
             string icadText = textIcad.Text?.Trim();
             if (string.IsNullOrEmpty(icadText) || icadText.Length != 15)
             {
@@ -167,8 +161,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 if (bEtat != null) Validation.MarkInvalid(bEtat, new ValidationError(rule, bEtat, "État obligatoire", null));
                 erreurs.Add("- L'état de santé de l'animal est obligatoire.");
             }
-
-            // 4. Traitement du résultat
             if (erreurs.Count == 0)
             {
                 _donneesValidees = true;
@@ -245,11 +237,11 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void btnSupprimerComportement_Click(object sender, RoutedEventArgs e)
         {
-            if (dgComportements.SelectedItem is Comportement comportementSelectionne)
+            if (dgComportements.SelectedItem is Animal_Comportement comportementSelectionne)
             {
                 if (this.DataContext is Animal animalActuel)
-                {
-                    //this.Comportements.Remove(comportementSelectionne);
+                {                   
+                    this.Comportements.Remove(comportementSelectionne);
                 }
             }
             else
