@@ -37,9 +37,9 @@
                 <DataGrid Grid.Row="1" x:Name="dgAdoptions" AutoGenerateColumns="False" IsReadOnly="True" 
                           VerticalScrollBarVisibility="Auto" ItemsSource="{Binding}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Nom" Binding="{Binding Adoptant.Nom}" Width="*"/>
-                        <DataGridTextColumn Header="Prénom" Binding="{Binding Adoptant.Prenom}" Width="*"/>
-                        <DataGridTextColumn Header="Nom animal adopté" Binding="{Binding UnAnimal.Nom}" Width="*"/>
+                        <DataGridTextColumn Header="Nom" Binding="{Binding Adoptant.Nom, ValidatesOnExceptions=True}" Width="*"/>
+                        <DataGridTextColumn Header="Prénom" Binding="{Binding Adoptant.Prenom, ValidatesOnExceptions=True}" Width="*"/>
+                        <DataGridTextColumn Header="Nom animal adopté" Binding="{Binding UnAnimal.Nom, ValidatesOnExceptions=True}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

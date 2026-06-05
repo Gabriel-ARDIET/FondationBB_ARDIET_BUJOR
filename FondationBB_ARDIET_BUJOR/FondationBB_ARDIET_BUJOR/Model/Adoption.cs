@@ -68,6 +68,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
             {
                 if (value >= 1000000)
                     throw new ArgumentOutOfRangeException("le tarif doit être inférieur à 1 000 000");
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("Le tarif ne peut pas être négatif");
                 this.frais = value;
             }
         }
