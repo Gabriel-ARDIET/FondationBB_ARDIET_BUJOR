@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace FondationBB_ARDIET_BUJOR.Model
 {
@@ -348,6 +349,17 @@ namespace FondationBB_ARDIET_BUJOR.Model
                 this.idAdoption = value;
             }
         }
+        public int Age
+        {
+            get
+            {
+                int age = DateTime.Now.Year - this.DateNaissance.Value.Year;
+                if (DateTime.Now.DayOfYear > this.DateNaissance.Value.DayOfYear)
+                    age--;
+                return age;
+            }
+        }
+
         public List<Animal> FindAll()
         {
             List<Animal> list = new List<Animal>();

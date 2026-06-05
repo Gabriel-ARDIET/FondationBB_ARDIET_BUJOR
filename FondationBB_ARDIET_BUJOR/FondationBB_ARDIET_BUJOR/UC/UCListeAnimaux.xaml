@@ -78,22 +78,12 @@
                 <!-- DataGrid des Animaux -->
                 <DataGrid Grid.Row="1" x:Name="dgAnimaux" ItemsSource="{Binding LesAnimaux}" AutoGenerateColumns="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto" SelectionChanged="dgAnimaux_SelectionChanged">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Image" Width="Auto">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Viewbox Width="18" Height="18" Margin="5,0">
-                                        <Canvas Width="24" Height="24">
-                                            <Path Fill="Black" Data="M19,5V19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M14.14,11.86L11.14,15.66L9,13.08L6,17H18L14.14,11.86Z" />
-                                        </Canvas>
-                                    </Viewbox>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="I-CAD" Binding="{Binding Icad}" Width="*"/>
-                        <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
-                        <DataGridTextColumn Header="Espèce" Binding="{Binding UneRace.UneEspece.Libelle}" Width="*"/>
-                        <DataGridTextColumn Header="Race" Binding="{Binding UneRace.Libelle}" Width="*"/>
-                        <DataGridTextColumn Header="Sexe" Binding="{Binding UnSexe}" Width="*"/>
+                        <DataGridTextColumn Header="I-CAD" Binding="{Binding Icad}" Width="3*"/>
+                        <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="3*"/>
+                        <DataGridTextColumn Header="Espèce" Binding="{Binding UneRace.UneEspece.Libelle}" Width="3*"/>
+                        <DataGridTextColumn Header="Race" Binding="{Binding UneRace.Libelle}" Width="3*"/>
+                        <DataGridTextColumn Header="Sexe" Binding="{Binding UnSexe}" Width="3*"/>
+                        <DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
