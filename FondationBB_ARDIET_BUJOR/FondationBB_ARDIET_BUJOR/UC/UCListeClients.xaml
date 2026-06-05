@@ -24,10 +24,10 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Margin="0,0,0,10">
-                    <TextBlock Text="Nom client" FontWeight="SemiBold"/>
+                    <TextBlock Text="Nom adoptant" FontWeight="SemiBold"/>
                     <TextBox x:Name="txtFiltreNom" Height="30" Margin="0,0,0,5" TextChanged="FiltreClient_Changed"/>
 
-                    <TextBlock Text="Prénom client" FontWeight="SemiBold"/>
+                    <TextBlock Text="Prénom adoptant" FontWeight="SemiBold"/>
                     <TextBox x:Name="txtFiltrePrenom" Height="30" TextChanged="FiltreClient_Changed"/>
                 </StackPanel>
 
@@ -49,7 +49,7 @@
 
                 <Border Background="#F9F9F9" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1" Padding="20">
                     <StackPanel DataContext="{Binding SelectedItem, ElementName=dgClients}">
-                        <TextBlock Text="Fiche client" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+                        <TextBlock Text="Fiche adoptant" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
 
                         <TextBlock Text="Nom"/>
                         <TextBox Text="{Binding Nom}" Margin="0,0,0,10" IsReadOnly="True" Background="#F0F0F0"/>
