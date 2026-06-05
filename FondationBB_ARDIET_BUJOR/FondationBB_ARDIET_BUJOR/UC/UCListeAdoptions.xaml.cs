@@ -17,8 +17,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
             laData = (Data)Application.Current.MainWindow.DataContext;
             this.DataContext = laData.LesAdoptions;
-
-            // Applique le filtre combiné sur la vue par défaut liée à la collection
             ICollectionView view = CollectionViewSource.GetDefaultView(this.DataContext);
             if (view != null)
             {
@@ -31,7 +29,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             Adoption uneAdoption = obj as Adoption;
             if (uneAdoption == null) return false;
 
-            // 1. --- FILTRE NOM CLIENT ---
             if (!string.IsNullOrEmpty(txtFiltreNom.Text))
             {
                 if (uneAdoption.Adoptant == null || uneAdoption.Adoptant.Nom == null ||
@@ -41,7 +38,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 }
             }
 
-            // 2. --- FILTRE PRÉNOM CLIENT ---
             if (!string.IsNullOrEmpty(txtFiltrePrenom.Text))
             {
                 if (uneAdoption.Adoptant == null || uneAdoption.Adoptant.Prenom == null ||
@@ -50,8 +46,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     return false;
                 }
             }
-
-            // 3. --- FILTRE NOM ANIMAL ---
             if (!string.IsNullOrEmpty(txtFiltreAnimal.Text))
             {
                 if (uneAdoption.UnAnimal == null || uneAdoption.UnAnimal.Nom == null ||
@@ -89,7 +83,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 {
                     try
                     {
-                        // Retrait de la collection observable globale
                         laData.SupprimerAdoption(adoptionSelectionnee);
                         MessageBox.Show("Le contrat d'adoption a été supprimé.", "Suppression réussie", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
@@ -109,8 +102,8 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         private void BtnAjouter_Click(object sender, RoutedEventArgs e)
         {
             Adoption nouvelleAdoption = new Adoption();
-            nouvelleAdoption.Adoptant = new Personne(); // Initialisation de l'objet imbriqué
-            nouvelleAdoption.DateAdoption = DateTime.Today; // Valeur par défaut pratique
+            nouvelleAdoption.Adoptant = new Personne();
+            nouvelleAdoption.DateAdoption = DateTime.Today; 
 
             WindowAdoption fenetreAdoption = new WindowAdoption(nouvelleAdoption);
             fenetreAdoption.Owner = Application.Current.MainWindow;
@@ -119,7 +112,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             {
                 try
                 {
-                    // Ajout direct dans la liste globale
                     laData.LesAdoptions.Add(nouvelleAdoption);
                     nouvelleAdoption.Create();
                     MessageBox.Show("Le contrat d'adoption a été créé avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -142,7 +134,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 {
                     try
                     {
-                        // Rafraîchit l'affichage du DataGrid pour répercuter les modifications
                         adoptionSelectionnee.Update();
                         CollectionViewSource.GetDefaultView(dgAdoptions.ItemsSource).Refresh();
                         MessageBox.Show("Le contrat d'adoption a été mis à jour.", "Modification enregistrée", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -161,6 +152,10 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             {
                 MessageBox.Show("Veuillez sélectionner un contrat d'adoption à modifier dans le tableau.", "Sélection manquante", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+        private void BtnTelechargerContrat_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Fonction non implémentée", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

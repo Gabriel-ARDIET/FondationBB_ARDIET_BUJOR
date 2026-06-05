@@ -4,22 +4,16 @@ using System.Windows;
 
 namespace FondationBB_ARDIET_BUJOR.Windows
 {
-    /// <summary>
-    /// Logique d'interaction pour WindowAjoutComportement.xaml
-    /// </summary>
     public partial class WindowAjoutComportement : Window
     {
-        // Propriété exposant l'objet Comportement complet sélectionné
         public Comportement ComportementSelectionne { get; private set; }
 
-        // Indicateur de validation
         private bool _donneesValidees = false;
 
         public WindowAjoutComportement()
         {
             InitializeComponent();
 
-            // Chargement dynamique des comportements depuis PostgreSQL
             try
             {
                 cbComportements.ItemsSource = new Comportement().FindAll();
@@ -32,7 +26,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void btnEnregistrer_Click(object sender, RoutedEventArgs e)
         {
-            // Récupération directe de l'objet métier sélectionné
             Comportement comportementChoisi = cbComportements.SelectedItem as Comportement;
 
             if (comportementChoisi == null)
@@ -41,16 +34,15 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 return;
             }
 
-            // Sauvegarde de l'instance sélectionnée (contient l'Id et le Libelle)
             ComportementSelectionne = comportementChoisi;
 
-            _donneesValidees = true; // Empêche le prompt de confirmation à la fermeture
+            _donneesValidees = true;
             this.DialogResult = true;
         }
 
         private void btnAnnuler_Click(object sender, RoutedEventArgs e)
         {
-            this.Close(); // Déclenchera Window_Closing
+            this.Close();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -61,7 +53,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
             if (result == MessageBoxResult.No)
             {
-                e.Cancel = true; // Bloque la fermeture de la fenêtre
+                e.Cancel = true;
             }
         }
     }

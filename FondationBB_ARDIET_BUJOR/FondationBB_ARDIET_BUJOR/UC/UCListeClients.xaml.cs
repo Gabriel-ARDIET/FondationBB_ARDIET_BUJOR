@@ -67,7 +67,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 {
                     try
                     {
-                        // Action mémoire synchrone avec ta liste globale
                         laData.LesPersonnes.Remove(clientSelectionne);
 
                         MessageBox.Show("Le client a été supprimé.", "Suppression réussie", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -96,7 +95,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             {
                 try
                 {
-                    // Ajout direct dans ta collection observable globale
                     laData.LesPersonnes.Add(nouveauClient);
 
                     MessageBox.Show("Le client a été créé avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -119,7 +117,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 {
                     try
                     {
-                        // Rafraîchit l'affichage de l'interface graphique
                         CollectionViewSource.GetDefaultView(dgClients.ItemsSource).Refresh();
 
                         MessageBox.Show("La fiche client a été mise à jour.", "Modification enregistrée", MessageBoxButton.OK, MessageBoxImage.Information);

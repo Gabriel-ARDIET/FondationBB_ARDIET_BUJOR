@@ -79,8 +79,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
-                if (value.Length > 100)
-                    throw new ArgumentOutOfRangeException("Le nom doit faire moins de 100 caractères");
+                /*if (value.Length > 100)
+                    throw new ArgumentOutOfRangeException("Le nom doit faire moins de 100 caractères");*/
                 this.nom = value;
             }
         }
@@ -225,22 +225,14 @@ namespace FondationBB_ARDIET_BUJOR.Model
             {
                 cmd.Parameters.AddWithValue("@nom", this.Nom);
                 cmd.Parameters.AddWithValue("@prenom", this.Prenom);
-
-                // Gestion du DateTime?
                 cmd.Parameters.AddWithValue("@dateNaissance", this.DateNaissance.HasValue ? DateOnly.FromDateTime(this.DateNaissance.Value) : DBNull.Value);
-
                 cmd.Parameters.AddWithValue("@telephone", this.Telephone);
                 cmd.Parameters.AddWithValue("@numero", this.Numero);
                 cmd.Parameters.AddWithValue("@rue", this.Rue);
                 cmd.Parameters.AddWithValue("@cp", this.Cp);
                 cmd.Parameters.AddWithValue("@ville", this.Ville);
-
-                // Gestion du string?
                 cmd.Parameters.AddWithValue("@mail", string.IsNullOrEmpty(this.Mail) ? DBNull.Value : this.Mail);
-
                 cmd.Parameters.AddWithValue("@dateCreation", DateOnly.FromDateTime(this.DateCreation));
-
-                // Récupération automatique de la clé primaire auto-incrémentée
                 this.Id = DataAccess.ExecuteInsert(cmd);
 
                 return this.Id > 0 ? 1 : 0;

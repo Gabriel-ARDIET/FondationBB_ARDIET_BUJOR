@@ -4,9 +4,186 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignHeight="720" d:DesignWidth="1280"
-             Background="#FFFFFF">
-    <Grid>
+             d:DesignHeight="850" d:DesignWidth="1280"
+             Background="#F8FAFC"
+             FontFamily="Segoe UI, LayoutSanity, Helvetica, Arial, sans-serif">
 
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,35">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="White" CornerRadius="12" BorderThickness="1" BorderBrush="#E2E8F0" Padding="20,15">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="15" ShadowDepth="1" Opacity="0.04" Color="#000000"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <TextBlock Text="Nombre de chiens" FontSize="14" FontWeight="SemiBold" Foreground="#64748B" Margin="0,0,0,6"/>
+                        <TextBlock x:Name="TxtNbChiens" Text="0" FontSize="32" FontWeight="Bold" Foreground="#F27F22"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Background="White" CornerRadius="12" BorderThickness="1" BorderBrush="#E2E8F0" Padding="20,15">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="15" ShadowDepth="1" Opacity="0.04" Color="#000000"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <TextBlock Text="Nombre de chats" FontSize="14" FontWeight="SemiBold" Foreground="#64748B" Margin="0,0,0,6"/>
+                        <TextBlock x:Name="TxtNbChats" Text="0" FontSize="32" FontWeight="Bold" Foreground="#F27F22"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="4" Background="#FDF2F2" CornerRadius="12" BorderThickness="1" BorderBrush="#FDE8E8" Padding="20,15">
+                    <StackPanel>
+                        <TextBlock Text="Demandes en attente" FontSize="14" FontWeight="SemiBold" Foreground="#9B1C1C" Margin="0,0,0,6"/>
+                        <TextBlock x:Name="TxtDemandesAttente" Text="0" FontSize="32" FontWeight="Bold" Foreground="#C81E1E"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,35" VerticalAlignment="Center">
+                <TextBlock Text="Année d'analyse :" FontSize="14" FontWeight="SemiBold" Foreground="#334155" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                <ComboBox x:Name="ComboAnnee" Width="150" Height="36" FontSize="14" Padding="10,6" VerticalContentAlignment="Center" SelectionChanged="ComboAnnee_SelectionChanged" Background="White" BorderBrush="#CBD5E1">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Margin="0,0,0,40">
+                <TextBlock Text="Nombre d'animaux adoptés cette année" FontSize="18" FontWeight="Bold" Foreground="#1E293B" Margin="0,0,0,4"/>
+                <TextBlock Text="Les graphiques ont été réalisés par IA" FontSize="12" FontStyle="Italic" Foreground="#94A3B8" Margin="0,0,0,15"/>
+
+                <Border Background="White" CornerRadius="12" BorderThickness="1" BorderBrush="#E2E8F0" Padding="20" HorizontalAlignment="Left">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="20" ShadowDepth="2" Opacity="0.03" Color="#000000"/>
+                    </Border.Effect>
+                    <Grid Height="250" Width="900" HorizontalAlignment="Left">
+                        <Canvas x:Name="CanvasAdoptions" Background="Transparent">
+                            <Line X1="40" Y1="20" X2="880" Y2="20" Stroke="#F1F5F9" StrokeThickness="1"/>
+                            <Line X1="40" Y1="53.3" X2="880" Y2="53.3" Stroke="#F1F5F9" StrokeThickness="1"/>
+                            <Line X1="40" Y1="86.6" X2="880" Y2="86.6" Stroke="#F1F5F9" StrokeThickness="1"/>
+                            <Line X1="40" Y1="120" X2="880" Y2="120" Stroke="#F1F5F9" StrokeThickness="1"/>
+                            <Line X1="40" Y1="153.3" X2="880" Y2="153.3" Stroke="#F1F5F9" StrokeThickness="1"/>
+                            <Line X1="40" Y1="186.6" X2="880" Y2="186.6" Stroke="#F1F5F9" StrokeThickness="1"/>
+
+                            <Line X1="40" Y1="10" X2="40" Y2="220" Stroke="#94A3B8" StrokeThickness="1.5"/>
+                            <TextBlock Text="30" Canvas.Left="15" Canvas.Top="12" FontSize="11" Foreground="#64748B"/>
+                            <TextBlock Text="25" Canvas.Left="15" Canvas.Top="45" FontSize="11" Foreground="#64748B"/>
+                            <TextBlock Text="20" Canvas.Left="15" Canvas.Top="79" FontSize="11" Foreground="#64748B"/>
+                            <TextBlock Text="15" Canvas.Left="15" Canvas.Top="112" FontSize="11" Foreground="#64748B"/>
+                            <TextBlock Text="10" Canvas.Left="15" Canvas.Top="145" FontSize="11" Foreground="#64748B"/>
+                            <TextBlock Text="5" Canvas.Left="20" Canvas.Top="179" FontSize="11" Foreground="#64748B"/>
+                            <TextBlock Text="0" Canvas.Left="20" Canvas.Top="212" FontSize="11" Foreground="#64748B"/>
+
+                            <Line X1="40" Y1="220" X2="890" Y2="220" Stroke="#94A3B8" StrokeThickness="1.5"/>
+                            <TextBlock Text="Mois" Canvas.Left="855" Canvas.Top="198" FontWeight="SemiBold" Foreground="#64748B" FontSize="11"/>
+
+                            <Polyline x:Name="PolylineAdoptions" Stroke="#F27F22" StrokeThickness="3.5" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                        </Canvas>
+
+                        <ItemsControl x:Name="ItemsAdoptions" Margin="40,0,20,0">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="12" Rows="1"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding MoisNom}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,-25" FontSize="11" Foreground="#475569" FontWeight="Medium">
+                                            <TextBlock.RenderTransform>
+                                                <RotateTransform Angle="-45"/>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                        <Canvas VerticalAlignment="Top" Height="220">
+                                            <Ellipse Width="10" Height="10" Fill="White" Stroke="#F27F22" StrokeThickness="2.5" Canvas.Left="30" Canvas.Top="{Binding YPosition}" ToolTip="{Binding ValeurText}">
+                                                <Ellipse.Effect>
+                                                    <DropShadowEffect BlurRadius="4" ShadowDepth="1" Opacity="0.15" Color="Black"/>
+                                                </Ellipse.Effect>
+                                            </Ellipse>
+                                        </Canvas>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Margin="0,20,0,0">
+                <TextBlock Text="Nombre d'arrivées cette année" FontSize="18" FontWeight="Bold" Foreground="#1E293B" Margin="0,0,0,4"/>
+                <TextBlock Text="Les graphiques ont été réalisés par IA" FontSize="12" FontStyle="Italic" Foreground="#94A3B8" Margin="0,0,0,15"/>
+
+                <Border Background="White" CornerRadius="12" BorderThickness="1" BorderBrush="#E2E8F0" Padding="20" HorizontalAlignment="Left">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="20" ShadowDepth="2" Opacity="0.03" Color="#000000"/>
+                    </Border.Effect>
+                    <Grid Height="250" Width="900" HorizontalAlignment="Left">
+                        <Canvas x:Name="CanvasArrivees" Background="Transparent">
+                            <Line X1="40" Y1="20" X2="880" Y2="20" Stroke="#F1F5F9" StrokeThickness="1"/>
+                            <Line X1="40" Y1="53.3" X2="880" Y2="53.3" Stroke="#F1F5F9" StrokeThickness="1"/>
+                            <Line X1="40" Y1="86.6" X2="880" Y2="86.6" Stroke="#F1F5F9" StrokeThickness="1"/>
+                            <Line X1="40" Y1="120" X2="880" Y2="120" Stroke="#F1F5F9" StrokeThickness="1"/>
+                            <Line X1="40" Y1="153.3" X2="880" Y2="153.3" Stroke="#F1F5F9" StrokeThickness="1"/>
+                            <Line X1="40" Y1="186.6" X2="880" Y2="186.6" Stroke="#F1F5F9" StrokeThickness="1"/>
+
+                            <Line X1="40" Y1="10" X2="40" Y2="220" Stroke="#94A3B8" StrokeThickness="1.5"/>
+                            <TextBlock Text="30" Canvas.Left="15" Canvas.Top="12" FontSize="11" Foreground="#64748B"/>
+                            <TextBlock Text="25" Canvas.Left="15" Canvas.Top="45" FontSize="11" Foreground="#64748B"/>
+                            <TextBlock Text="20" Canvas.Left="15" Canvas.Top="79" FontSize="11" Foreground="#64748B"/>
+                            <TextBlock Text="15" Canvas.Left="15" Canvas.Top="112" FontSize="11" Foreground="#64748B"/>
+                            <TextBlock Text="10" Canvas.Left="15" Canvas.Top="145" FontSize="11" Foreground="#64748B"/>
+                            <TextBlock Text="5" Canvas.Left="20" Canvas.Top="179" FontSize="11" Foreground="#64748B"/>
+                            <TextBlock Text="0" Canvas.Left="20" Canvas.Top="212" FontSize="11" Foreground="#64748B"/>
+
+                            <Line X1="40" Y1="220" X2="890" Y2="220" Stroke="#94A3B8" StrokeThickness="1.5"/>
+                            <TextBlock Text="Mois" Canvas.Left="855" Canvas.Top="198" FontWeight="SemiBold" Foreground="#64748B" FontSize="11"/>
+                            <Polyline x:Name="PolylineArrivees" Stroke="#F27F22" StrokeThickness="3.5" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                        </Canvas>
+
+                        <ItemsControl x:Name="ItemsArrivees" Margin="40,0,20,0">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="12" Rows="1"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding MoisNom}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,-25" FontSize="11" Foreground="#475569" FontWeight="Medium">
+                                            <TextBlock.RenderTransform>
+                                                <RotateTransform Angle="-45"/>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                        <Canvas VerticalAlignment="Top" Height="220">
+                                            <Ellipse Width="10" Height="10" Fill="White" Stroke="#F27F22" StrokeThickness="2.5" Canvas.Left="30" Canvas.Top="{Binding YPosition}" ToolTip="{Binding ValeurText}">
+                                                <Ellipse.Effect>
+                                                    <DropShadowEffect BlurRadius="4" ShadowDepth="1" Opacity="0.15" Color="Black"/>
+                                                </Ellipse.Effect>
+                                            </Ellipse>
+                                        </Canvas>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

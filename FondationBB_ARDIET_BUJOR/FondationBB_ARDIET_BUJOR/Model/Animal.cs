@@ -390,8 +390,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
         public int Create()
         {
             int nb = 0;
-
-            // On prépare la requête d'insertion en récupérant l'ID auto-généré
             string sql = "INSERT INTO animal (nom_animal, date_naissance_animal, i_cad_animal, sexe_animal, annotation_animal, date_arrivee_animal, poids_animal, id_race, id_employe, id_statut, id_etat) " +
                          "VALUES (@nom, @dateNaissance, @icad, @sexe, @annotation, @dateArrivee, @poids, @idRace, @idCreateur, @idStatut, @idEtat) " +
                          "RETURNING id_animal;";
@@ -409,8 +407,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
                 cmd.Parameters.AddWithValue("@idCreateur", this.IdCreateur);
                 cmd.Parameters.AddWithValue("@idStatut", this.IdStatut.HasValue ? this.IdStatut.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@idEtat", this.IdEtat.HasValue ? this.IdEtat.Value : DBNull.Value);
-
-                // Exécution et récupération de la clé primaire
                 nb = DataAccess.ExecuteInsert(cmd);
             }
             this.Id = nb;

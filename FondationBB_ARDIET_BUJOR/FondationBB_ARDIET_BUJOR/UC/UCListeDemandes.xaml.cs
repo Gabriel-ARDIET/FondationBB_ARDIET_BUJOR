@@ -12,7 +12,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         public UCListeDemandes()
         {
             InitializeComponent();
-            // On attend que l'élément soit complètement chargé pour assigner le filtre
             this.Loaded += UCListeDemandes_Loaded;
         }
 
@@ -25,23 +24,19 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             }
         }
 
-        // Logique de filtrage calquée sur WindowAdoption
         private bool ModeleFiltreDemande(object item)
         {
-            // Sécurité si l'élément n'est pas conforme
             if (!(item is Demande deman)) return true;
 
             bool nomOk = true;
             bool prenomOk = true;
 
-            // Filtrage sur le Nom du client
             if (!string.IsNullOrWhiteSpace(txtFiltreNomClient.Text))
             {
                 nomOk = deman.UnePersonne != null &&
                         deman.UnePersonne.Nom.Contains(txtFiltreNomClient.Text, StringComparison.OrdinalIgnoreCase);
             }
 
-            // Filtrage sur le Prénom du client
             if (!string.IsNullOrWhiteSpace(txtFiltrePrenomClient.Text))
             {
                 prenomOk = deman.UnePersonne != null &&
@@ -57,7 +52,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             {
                 ICollectionView view = CollectionViewSource.GetDefaultView(dgDemandes.ItemsSource);
 
-                // Si le filtre n'est pas encore lié suite à une réaffectation d'ItemsSource
                 if (view.Filter == null)
                 {
                     view.Filter = ModeleFiltreDemande;
@@ -67,8 +61,110 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             }
         }
 
-        private void BtnAjouter_Click(object sender, RoutedEventArgs e) { }
-        private void BtnEditer_Click(object sender, RoutedEventArgs e) { }
-        private void BtnSupprimer_Click(object sender, RoutedEventArgs e) { }
+        private void BtnAjouter_Click(object sender, RoutedEventArgs e) 
+        {
+            try
+            {
+                var laData = (Data)Application.Current.MainWindow.DataContext;
+
+                Demande nouvelleDemande = new Demande();
+
+                WindowDemande fenetreSaisie = new WindowDemande(nouvelleDemande);
+                fenetreSaisie.Owner = Application.Current.MainWindow;
+
+                if (fenetreSaisie.ShowDialog() == true)
+                {
+                    nouvelleDemande.Create();
+                    laData.LesDemandes.Add(nouvelleDemande);
+
+                    MessageBox.Show("La demande d'adoption a été enregistrée avec succès.",
+                                    "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de la création de la demande : {ex.Message}",
+                                "Erreur technique", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void BtnEditer_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgDemandes.SelectedItem is Demande demandeSelectionnee)
+            {
+                try
+                {
+                    WindowDemande fenetreEdition = new WindowDemande(demandeSelectionnee);
+                    fenetreEdition.Owner = Application.Current.MainWindow;
+
+                    if (fenetreEdition.ShowDialog() == true)
+                    {
+                        demandeSelectionnee.Update();
+
+                        var laData = (Data)Application.Current.MainWindow.DataContext;
+                        System.ComponentModel.ICollectionView view = CollectionViewSource.GetDefaultView(laData.LesDemandes);
+                        view?.Refresh();
+
+                        MessageBox.Show("Le dossier de demande a été mis à jour.",
+                                        "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erreur lors de la modification de la demande : {ex.Message}",
+                                    "Erreur technique", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Veuillez sélectionner une demande dans la liste avant de cliquer sur Modifier.",
+                                "Sélection requise", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+        private void BtnSupprimer_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgDemandes.SelectedItem is Demande demandeASupprimer)
+            {
+                string messageConfirmation = $"Êtes-vous sûr de vouloir supprimer définitivement la demande de " +
+                                             $"{demandeASupprimer.UnePersonne.Nom} {demandeASupprimer.UnePersonne.Prenom} " +
+                                             $"pour la race {demandeASupprimer.UneRace.Libelle} ?";
+
+                MessageBoxResult result = MessageBox.Show(messageConfirmation,
+                                                          "Confirmation de suppression",
+                                                          MessageBoxButton.YesNo,
+                                                          MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        demandeASupprimer.Delete();
+
+                        var laData = (Data)Application.Current.MainWindow.DataContext;
+                        laData.LesDemandes.Remove(demandeASupprimer);
+
+                        MessageBox.Show("La demande a été supprimée avec succès.",
+                                        "Suppression effectuée", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erreur lors de la suppression de la demande : {ex.Message}",
+                                        "Erreur technique", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Veuillez sélectionner la demande à supprimer dans la liste.",
+                                "Sélection requise", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+        private void BtnComparer_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Fonction non implémentée", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }

@@ -11,18 +11,15 @@ namespace FondationBB_ARDIET_BUJOR.Windows
     {
         private Data laData;
 
-        // Propriété publique pour stocker et renvoyer le client choisi
         public Personne ClientSelectionne { get; private set; }
 
         public WindowAjoutClientAdoption()
         {
             InitializeComponent();
 
-            // Récupération des données globales
             laData = (Data)Application.Current.MainWindow.DataContext;
             this.DataContext = laData.LesPersonnes;
 
-            // Application du filtre combiné sur la vue par défaut
             ICollectionView view = CollectionViewSource.GetDefaultView(laData.LesPersonnes);
             if (view != null)
             {
@@ -63,7 +60,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             if (dgClients.SelectedItem is Personne clientChoisi)
             {
                 ClientSelectionne = clientChoisi;
-                DialogResult = true; // Ferme la fenêtre en indiquant un succès
+                DialogResult = true;
             }
             else
             {
