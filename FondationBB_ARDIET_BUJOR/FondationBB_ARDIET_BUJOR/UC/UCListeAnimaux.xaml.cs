@@ -190,12 +190,26 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                                 r.Create();
                             }
                         }
+                        foreach (Recoit r in soins)
+                        {
+                            if (copieSoins.Find(s => s == r) == null)
+                            {
+                                laData.SupprimerRecoit(r);
+                            }
+                        }
                         foreach (Animal_Comportement c in copieComportements)
                         {
                             if (comportements.FirstOrDefault(co => co == c) == null)
                             {
                                 laData.LesComportementsDesAnimaux.Add(c);
                                 c.Create();
+                            }
+                        }
+                        foreach (Animal_Comportement c in comportements)
+                        {
+                            if (copieComportements.Find(co => co == c) == null)
+                            {
+                                laData.SupprimerAnimalComportement(c);
                             }
                         }
                         dgAnimaux_SelectionChanged(null, null);
