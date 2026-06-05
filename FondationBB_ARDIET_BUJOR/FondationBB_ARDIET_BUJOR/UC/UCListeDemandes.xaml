@@ -29,16 +29,14 @@
                     <TextBox x:Name="txtFiltreNomClient" Height="30" Margin="0,0,0,5" TextChanged="FiltreDemande_Changed"/>
 
                     <TextBlock Text="Prénom client" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtFiltrePrenomClient" Height="30" Margin="0,0,0,5" TextChanged="FiltreDemande_Changed"/>
-
-                    <TextBlock Text="Nom animal" FontWeight="SemiBold"/>
-                    <TextBox x:Name="txtFiltreNomAnimal" Height="30" TextChanged="FiltreDemande_Changed"/>
+                    <TextBox x:Name="txtFiltrePrenomClient" Height="30" TextChanged="FiltreDemande_Changed"/>
                 </StackPanel>
 
                 <DataGrid Grid.Row="1" x:Name="dgDemandes" ItemsSource="{Binding LesDemandes}" AutoGenerateColumns="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Nom" Binding="{Binding ClientNom}" Width="*"/>
-                        <DataGridTextColumn Header="Prénom" Binding="{Binding ClientPrenom}" Width="*"/>
+                        <DataGridTextColumn Header="Nom" Binding="{Binding UnePersonne.Nom}" Width="*"/>
+                        <DataGridTextColumn Header="Prénom" Binding="{Binding UnePersonne.Prenom}" Width="*"/>
+                        <DataGridTextColumn Header="Date Demande" Binding="{Binding DateDemande, StringFormat=\{0:dd/MM/yyyy\}}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
@@ -60,9 +58,8 @@
                                     <ColumnDefinition Width="110"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
@@ -85,25 +82,22 @@
                                 </Grid.Resources>
 
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Nom"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ClientNom}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding UnePersonne.Nom, Mode=OneWay}"/>
 
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Prénom"/>
-                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ClientPrenom}"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding UnePersonne.Prenom, Mode=OneWay}"/>
 
                                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Demande"/>
-                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding StatutDemande}"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DateDemande, StringFormat=\{0:dd/MM/yyyy\}, Mode=OneWay}"/>
 
                                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Adresse"/>
-                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding AdresseEmail}" Foreground="#0056B3" TextDecorations="Underline"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding UnePersonne.Mail, Mode=OneWay}" Foreground="#0056B3" TextDecorations="Underline"/>
 
                                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Téléphone"/>
-                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Telephone}"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding UnePersonne.Telephone, Mode=OneWay}"/>
 
-                                <TextBlock Grid.Row="5" Grid.Column="0" Text="Race"/>
-                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding RaceSouhaitee}"/>
-
-                                <TextBlock Grid.Row="6" Grid.Column="0" Text="Tranche dâge"/>
-                                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding TrancheAge}"/>
+                                <TextBlock Grid.Row="5" Grid.Column="0" Text="Tranche d'âge"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding UneTrancheAge, Mode=OneWay}"/>
                             </Grid>
                         </StackPanel>
                     </ScrollViewer>

@@ -60,6 +60,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     ZoneContenu.Content = new UCListeAdoptions();
                     break;
                 case "btnDemandes":
+                    laData.ChargerDemandes();
                     ZoneContenu.Content = new UCListeDemandes();
                     break;
                 case "btnStatistiques":
