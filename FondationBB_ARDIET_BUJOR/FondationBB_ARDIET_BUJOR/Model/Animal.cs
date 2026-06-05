@@ -132,7 +132,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
-
+                if (value.Length > 50)
+                    throw new ArgumentOutOfRangeException("Le nom doit faire moins de 50 caractères");
                 this.nom = value;
             }
         }
@@ -159,7 +160,8 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             set
             {
-                
+                if (value.Length != 15)
+                    throw new ArgumentOutOfRangeException("L'icad doit faire 15 caractères");
                 this.icad = value;
             }
         }
