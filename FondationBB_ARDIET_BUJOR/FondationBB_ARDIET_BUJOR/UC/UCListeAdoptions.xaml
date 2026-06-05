@@ -54,16 +54,18 @@
                 <Border Background="#F9F9F9" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1" Padding="20">
                     <StackPanel DataContext="{Binding SelectedItem, ElementName=dgAdoptions}">
                         <TextBlock Text="Contrat d'adoption" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+
                         <TextBlock Text="Nom"/>
-                        <TextBox Text="{Binding Nom}" Margin="0,0,0,10"/>
+                        <TextBox Text="{Binding Adoptant.Nom, Mode=OneWay}" Margin="0,0,0,10"/>
+
                         <TextBlock Text="Prénom"/>
-                        <TextBox Text="{Binding Prenom}" Margin="0,0,0,10"/>
+                        <TextBox Text="{Binding Adoptant.Prenom, Mode=OneWay}" Margin="0,0,0,10"/>
+
                         <TextBlock Text="Date d'adoption"/>
-                        <TextBox Text="{Binding DateAdoption}" Margin="0,0,0,10"/>
+                        <TextBox Text="{Binding DateAdoption, StringFormat=\{0:dd/MM/yyyy\}}" Margin="0,0,0,10"/>
+
                         <TextBlock Text="Montant des frais versés"/>
-                        <TextBox Text="{Binding MontantFrais}" Margin="0,0,0,10"/>
-                        <TextBlock Text="Contrat signé"/>
-                        <TextBox Text="{Binding ContratSigne}" Margin="0,0,0,20"/>
+                        <TextBox Text="{Binding Frais}" Margin="0,0,0,10"/>
 
                         <Button Content="Télécharger le contrat ⬇" Padding="10"/>
                     </StackPanel>
