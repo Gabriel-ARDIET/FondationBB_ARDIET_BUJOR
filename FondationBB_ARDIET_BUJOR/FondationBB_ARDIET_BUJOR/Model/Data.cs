@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Animation;
 
 namespace FondationBB_ARDIET_BUJOR.Model
 {
@@ -21,6 +22,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
         private ObservableCollection<Recoit> lesSoinsReçus;
         private ObservableCollection<Animal_Comportement> lesComportementsDesAnimaux;
         private ObservableCollection<Comportement> lesComportements;
+        private ObservableCollection<Demande> lesDemandes;
 
         public Data()
         {
@@ -36,6 +38,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             LesSoins = new ObservableCollection<Soin>();
             LesComportementsDesAnimaux = new ObservableCollection<Animal_Comportement>();
             LesComportements = new ObservableCollection<Comportement>();
+            LesDemandes = new ObservableCollection<Demande>();
         }
 
         public ObservableCollection<Personne> LesPersonnes
@@ -192,6 +195,19 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
+        public ObservableCollection<Demande> LesDemandes
+        {
+            get
+            {
+                return this.lesDemandes;
+            }
+
+            set
+            {
+                this.lesDemandes = value;
+            }
+        }
+
         public void ChargerPersonnes()
         {
             if (LesPersonnes.Count != 0)
@@ -304,6 +320,86 @@ namespace FondationBB_ARDIET_BUJOR.Model
             if (LesComportements.Count != 0)
                 return;
             LesComportements = new ObservableCollection<Comportement>(new Comportement().FindAll());
+        }
+        public void ChargerDemandes()
+        {
+            if (LesDemandes.Count != 0)
+                return;
+            LesDemandes = new ObservableCollection<Demande>(new Demande().FindAll());
+            ChargerPersonnes();
+            ChargerRaces();
+            foreach (Demande d in LesDemandes)
+            {
+                d.UnePersonne = LesPersonnes.FirstOrDefault(personne => personne.Id == d.IdPersonne);
+                d.UneRace = LesRaces.FirstOrDefault(r => r.Id == d.IdRace);
+            }
+        }
+
+        public void SupprimerAnimal(Animal a)
+        {
+            if (a == null) return;
+
+            this.LesAnimaux.Remove(a);
+
+            foreach (Recoit r in this.LesSoinsReçus.ToList())
+                if (r.IdAnimal == a.Id)
+                    this.SupprimerRecoit(r);
+
+            foreach (Animal_Comportement ac in this.LesComportementsDesAnimaux.ToList())
+                if (ac.IdAnimal == a.Id)
+                    this.SupprimerAnimalComportement(ac);
+
+            a.Delete();
+        }
+
+        public void SupprimerPersonne(Personne p)
+        {
+            if (p == null) return;
+
+            this.LesPersonnes.Remove(p);
+
+            foreach (Adoption ad in this.LesAdoptions.ToList())
+            {
+                if (ad.IdAdoptant == p.Id)
+                {
+                    this.SupprimerAdoption(ad);
+                }
+            }
+
+            p.Delete();
+        }
+
+        public void SupprimerAdoption(Adoption ad)
+        {
+            if (ad == null) return;
+
+            this.LesAdoptions.Remove(ad);
+
+            ad.Delete();
+        }
+
+        public void SupprimerRecoit(Recoit r)
+        {
+            if (r == null) return;
+
+            this.LesSoinsReçus.Remove(r);
+
+            r.Delete();
+        }
+
+        public void SupprimerAnimalComportement(Animal_Comportement ac)
+        {
+            if (ac == null) return;
+
+            this.LesComportementsDesAnimaux.Remove(ac);
+
+            ac.Delete();
+        }
+        public void SupprimerDemande(Demande d)
+        {
+            if (d == null) return;
+            this.LesDemandes.Remove(d);
+            d.Delete();
         }
     }
 }

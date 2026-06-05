@@ -15,7 +15,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
         Male,
         Femelle
     }
-    public class Animal
+    public class Animal : ICrud<Animal>
     {
         private int id;
         private string nom;
@@ -30,8 +30,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
         private Statut? unStatut;
         private Etat? unEtat;
         private Adoption? uneAdoption;
-        private ObservableCollection<Comportement> comportements;
-        private ObservableCollection<Recoit> soinReçus;
         private int idRace;
         private int idCreateur;
         private int? idStatut;
@@ -40,13 +38,11 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         public Animal()
         {
-            this.Comportements = new ObservableCollection<Comportement>();
-            this.SoinReçus = new ObservableCollection<Recoit>();
             this.DateArrivee = DateTime.Today;
         }
 
         public Animal(int id, string nom, DateTime? dateNaissance, string? icad, Sexe unSexe, string? annotation, DateTime dateArrivee, decimal poids, Race uneRace, Employe? employeCreateur,
-            Statut? unStatut, Etat? unEtat, ObservableCollection<Comportement> comportements, ObservableCollection<Recoit> soinReçus, Adoption uneAdoption)
+            Statut? unStatut, Etat? unEtat, Adoption uneAdoption)
         {
             this.Id = id;
             this.Nom = nom;
@@ -57,12 +53,15 @@ namespace FondationBB_ARDIET_BUJOR.Model
             this.DateArrivee = dateArrivee;
             this.Poids = poids;
             this.UneRace = uneRace;
+            this.IdRace = uneRace.Id;
             this.EmployeCreateur = employeCreateur;
+            this.IdCreateur = employeCreateur.Id;
             this.UnStatut = unStatut;
+            this.IdStatut = unStatut.Id;
             this.UnEtat = unEtat;
+            this.IdEtat = unEtat.Id;
             this.UneAdoption = uneAdoption;
-            this.Comportements = comportements;
-            this.SoinReçus = soinReçus;
+            this.IdAdoption = uneAdoption?.Id;
         }
 
         public Animal(int id, string nom, DateTime dateNaissance, string icad, Sexe unSexe, string annotation,
@@ -76,13 +75,38 @@ namespace FondationBB_ARDIET_BUJOR.Model
             this.Annotation = annotation;
             this.DateArrivee = dateArrivee;
             this.Poids = poids;
-            this.Comportements = new ObservableCollection<Comportement>();
-            this.SoinReçus = new ObservableCollection<Recoit>();
             this.IdCreateur = idCreateur;
             this.IdStatut = idStatut;
             this.IdEtat = idEtat;
             this.IdRace = idRace;
             this.IdAdoption = idAdoption;
+        }
+        public Animal Copy()
+        {
+            Animal autre = (Animal)this.MemberwiseClone();
+            autre.DateNaissance = new DateTime(this.DateNaissance.Value.Ticks);
+            autre.DateArrivee = new DateTime(this.DateArrivee.Ticks);
+            return autre;
+        }
+        public void UpdateFrom(Animal a)
+        {
+            this.Nom = a.Nom;
+            this.DateNaissance = a.DateNaissance;
+            this.Icad = a.Icad;
+            this.UnSexe = a.UnSexe;
+            this.Annotation = a.Annotation;
+            this.DateArrivee = a.DateArrivee;
+            this.Poids = a.Poids;
+            this.IdCreateur = a.IdCreateur;
+            this.EmployeCreateur = a.EmployeCreateur;
+            this.IdStatut = a.IdStatut;
+            this.UnStatut = a.UnStatut;
+            this.IdEtat = a.IdEtat;
+            this.UnEtat = a.UnEtat;
+            this.IdRace = a.IdRace;
+            this.UneRace = a.UneRace;
+            this.IdAdoption = a.IdAdoption;
+            this.UneAdoption = a.UneAdoption;
         }
 
         public int Id
@@ -234,32 +258,6 @@ namespace FondationBB_ARDIET_BUJOR.Model
             }
         }
 
-        public ObservableCollection<Comportement> Comportements
-        {
-            get
-            {
-                return this.comportements;
-            }
-
-            set
-            {
-                this.comportements = value;
-            }
-        }
-
-        public ObservableCollection<Recoit> SoinReçus
-        {
-            get
-            {
-                return this.soinReçus;
-            }
-
-            set
-            {
-                this.soinReçus = value;
-            }
-        }
-
         public Race UneRace
         {
             get
@@ -363,55 +361,49 @@ namespace FondationBB_ARDIET_BUJOR.Model
                         new DateTime((DateOnly)dr["date_naissance_animal"], TimeOnly.MinValue),
                         (string)dr["i_cad_animal"],
                         EnumConverter.ConvertStringToSexe((string)dr["sexe_animal"]),
-                        dr["annotation_animal"].ToString(),
+                        dr["annotation_animal"] is DBNull ? null : (string?)dr["annotation_animal"],
                         new DateTime((DateOnly)dr["date_arrivee_animal"], TimeOnly.MinValue),
                         (decimal)dr["poids_animal"],
                         (int)dr["id_employe"],
                         (int?)dr["id_statut"],
                         (int?)dr["id_etat"],
                         (int)dr["id_race"],
-                        dr["id_adoption"] is System.DBNull ? null : (int?)dr["id_adoption"]
+                        dr["id_adoption"] is DBNull ? null : (int?)dr["id_adoption"]
                         ));
             }
             return list;
         }
         public int Create()
         {
-            // MODIFICATION : Ajout de la colonne id_employe et de son paramètre @id_employe
-            string query = @"INSERT INTO animal 
-                     (id_statut, id_race, id_etat, id_employe, nom_animal, date_naissance_animal, i_cad_animal, sexe_animal, date_arrivee_animal, poids_animal) 
-                     VALUES 
-                     (@id_statut, @id_race, @id_etat, @id_employe, @nom_animal, @date_naissance, @i_cad, @sexe, @date_arrivee, @poids) 
-                     RETURNING id_animal;";
+            int nb = 0;
 
-            using (NpgsqlCommand cmd = new NpgsqlCommand(query))
+            // On prépare la requête d'insertion en récupérant l'ID auto-généré
+            string sql = "INSERT INTO animal (nom_animal, date_naissance_animal, i_cad_animal, sexe_animal, annotation_animal, date_arrivee_animal, poids_animal, id_race, id_employe, id_statut, id_etat) " +
+                         "VALUES (@nom, @dateNaissance, @icad, @sexe, @annotation, @dateArrivee, @poids, @idRace, @idCreateur, @idStatut, @idEtat) " +
+                         "RETURNING id_animal;";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sql))
             {
-                // 1. Récupération des IDs depuis les objets associés (avec sécurité anti-null)
-                cmd.Parameters.AddWithValue("@id_statut", UnStatut != null ? (object)UnStatut.Id : DBNull.Value);
-                cmd.Parameters.AddWithValue("@id_race", UneRace != null ? (object)UneRace.Id : DBNull.Value);
-                cmd.Parameters.AddWithValue("@id_etat", UnEtat != null ? (object)UnEtat.Id : DBNull.Value);
+                cmd.Parameters.AddWithValue("@nom", this.Nom);
+                cmd.Parameters.AddWithValue("@dateNaissance", this.DateNaissance.HasValue ? DateOnly.FromDateTime(this.DateNaissance.Value) : DBNull.Value);
+                cmd.Parameters.AddWithValue("@icad", string.IsNullOrEmpty(this.Icad) ? DBNull.Value : this.Icad);
+                cmd.Parameters.AddWithValue("@sexe", EnumConverter.ConvertSexeToString((Sexe)this.UnSexe));
+                cmd.Parameters.AddWithValue("@annotation", string.IsNullOrEmpty(this.Annotation) ? DBNull.Value : this.Annotation);
+                cmd.Parameters.AddWithValue("@dateArrivee", DateOnly.FromDateTime(this.DateArrivee));
+                cmd.Parameters.AddWithValue("@poids", this.Poids.HasValue ? this.Poids.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@idRace", this.IdRace);
+                cmd.Parameters.AddWithValue("@idCreateur", this.IdCreateur);
+                cmd.Parameters.AddWithValue("@idStatut", this.IdStatut.HasValue ? this.IdStatut.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@idEtat", this.IdEtat.HasValue ? this.IdEtat.Value : DBNull.Value);
 
-                // MODIFICATION : Liaison du paramètre SQL avec la propriété IdCreateur de l'objet
-                cmd.Parameters.AddWithValue("@id_employe", IdCreateur != 0 ? (object)IdCreateur : DBNull.Value);
-
-                // 2. Mapping des autres propriétés de l'animal
-                cmd.Parameters.AddWithValue("@nom_animal", Nom ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@date_naissance", DateNaissance.HasValue ? (object)DateNaissance.Value : DBNull.Value);
-                cmd.Parameters.AddWithValue("@i_cad", Icad ?? (object)DBNull.Value);
-
-                // Convertit l'enum Sexe en 'M' ou 'F' comme attendu dans ta base
-                cmd.Parameters.AddWithValue("@sexe", UnSexe == Sexe.Male ? "M" : "F");
-
-                cmd.Parameters.AddWithValue("@date_arrivee", DateArrivee);
-                cmd.Parameters.AddWithValue("@poids", Poids);
-
-                // Exécution de la requête via ton DataAccess (renvoie l'id_animal généré)
-                return DataAccess.ExecuteInsert(cmd);
+                // Exécution et récupération de la clé primaire
+                nb = DataAccess.ExecuteInsert(cmd);
             }
+            this.Id = nb;
+            return nb;
         }
         public int Delete()
         {
-            // Chaîne de requêtes pour nettoyer les tables liées puis supprimer l'animal
             string query = @"
         DELETE FROM recoit WHERE id_animal = @id;
         DELETE FROM animal_comportement WHERE id_animal = @id;
@@ -419,31 +411,46 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
             using (NpgsqlCommand cmdDelete = new NpgsqlCommand(query))
             {
-                // Association du paramètre avec l'ID de l'animal actuel
                 cmdDelete.Parameters.AddWithValue("@id", this.Id);
 
-                // Utilisation de votre méthode DataAccess existante
                 return DataAccess.ExecuteSet(cmdDelete);
             }
         }
-        public string SoinsRecusResume
+
+        public void Read()
         {
-            get
+            throw new NotImplementedException();
+        }
+
+        public int Update()
+        {
+            string sql = "UPDATE animal SET nom_animal = @nom, date_naissance_animal = @dateNaissance, i_cad_animal = @icad, " +
+                         "sexe_animal = @sexe, annotation_animal = @annotation, date_arrivee_animal = @dateArrivee, poids_animal = @poids, " +
+                         "id_race = @idRace, id_employe = @idCreateur, id_statut = @idStatut, id_etat = @idEtat " +
+                         "WHERE id_animal = @id;";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sql))
             {
-                if (SoinReçus == null || !SoinReçus.Any()) return "Aucun soin enregistré";
-                // Joint les libellés des soins avec leur date
-                return string.Join(Environment.NewLine, SoinReçus.Select(s => $"- {s.UnSoin?.Libelle} ({s.DateSoin:dd/MM/yyyy})"));
+                cmd.Parameters.AddWithValue("@id", this.Id);
+                cmd.Parameters.AddWithValue("@nom", this.Nom);
+                cmd.Parameters.AddWithValue("@dateNaissance", this.DateNaissance.HasValue ? DateOnly.FromDateTime(this.DateNaissance.Value) : DBNull.Value);
+                cmd.Parameters.AddWithValue("@icad", string.IsNullOrEmpty(this.Icad) ? DBNull.Value : this.Icad);
+                cmd.Parameters.AddWithValue("@sexe", EnumConverter.ConvertSexeToString((Sexe)this.UnSexe));
+                cmd.Parameters.AddWithValue("@annotation", string.IsNullOrEmpty(this.Annotation) ? DBNull.Value : this.Annotation);
+                cmd.Parameters.AddWithValue("@dateArrivee", DateOnly.FromDateTime(this.DateArrivee));
+                cmd.Parameters.AddWithValue("@poids", this.Poids.HasValue ? this.Poids.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@idRace", this.IdRace);
+                cmd.Parameters.AddWithValue("@idCreateur", this.IdCreateur);
+                cmd.Parameters.AddWithValue("@idStatut", this.IdStatut.HasValue ? this.IdStatut.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@idEtat", this.IdEtat.HasValue ? this.IdEtat.Value : DBNull.Value);
+
+                return DataAccess.ExecuteSet(cmd);
             }
         }
 
-        public string ComportementsResume
+        public List<Animal> FindBySelection(string criteres)
         {
-            get
-            {
-                if (Comportements == null || !Comportements.Any()) return "Aucun comportement enregistré";
-                // À ajuster selon la structure de ta classe Comportement (supposons qu'elle possède une propriété 'Libelle')
-                return string.Join(", ", Comportements.Select(c => c.Libelle));
-            }
+            throw new NotImplementedException();
         }
     }
 }

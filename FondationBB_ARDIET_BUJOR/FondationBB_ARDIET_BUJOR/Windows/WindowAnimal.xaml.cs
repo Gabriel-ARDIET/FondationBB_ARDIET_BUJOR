@@ -11,11 +11,19 @@ namespace FondationBB_ARDIET_BUJOR.Windows
     public partial class WindowAnimal : Window
     {
         private bool _donneesValidees = false;
+        private Animal UnAnimal;
+        private List<Recoit> Soins;
+        private List<Animal_Comportement> Comportements;
 
-        public WindowAnimal(object unAnimal)
+        public WindowAnimal(Animal unAnimal, List<Recoit>soins, List<Animal_Comportement>comportements)
         {
             InitializeComponent();
+            this.UnAnimal = unAnimal;
+            this.Soins = soins;
+            this.Comportements = comportements;
             this.DataContext = unAnimal;
+            dgSoins.ItemsSource = soins;
+            dgComportements.ItemsSource = comportements;
 
             // Liaison des collections aux ComboBox
             comboEspece.ItemsSource = new Espece().FindAll();
@@ -23,11 +31,11 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             cbStatut.ItemsSource = new Statut().FindAll();
             cbEtat.ItemsSource = new Etat().FindAll();
 
-            if (unAnimal is Animal animalActuel && animalActuel.UnSexe.HasValue)
+            if (((Animal)unAnimal).UnSexe.HasValue)
             {
-                if (animalActuel.UnSexe == Sexe.Male)
+                if (UnAnimal.UnSexe == Sexe.Male)
                     radioMale.IsChecked = true;
-                else if (animalActuel.UnSexe == Sexe.Femelle)
+                else if (UnAnimal.UnSexe == Sexe.Femelle)
                     radioFemelle.IsChecked = true;
             }
         }
@@ -43,21 +51,19 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             dateNaissancePicker.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
             dateArriveePicker.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
 
-            Animal animalActuel = this.DataContext as Animal;
-
-            if (animalActuel != null)
+            if (UnAnimal != null)
             {
-                animalActuel.UnStatut = cbStatut.SelectedItem as Statut;
-                animalActuel.UnEtat = cbEtat.SelectedItem as Etat;
-                animalActuel.UneRace = comboRace.SelectedItem as Race;
+                UnAnimal.UnStatut = cbStatut.SelectedItem as Statut;
+                UnAnimal.UnEtat = cbEtat.SelectedItem as Etat;
+                UnAnimal.UneRace = comboRace.SelectedItem as Race;
 
                 if (MainWindow.EmployeConnecte != null)
                 {
-                    animalActuel.IdCreateur = MainWindow.EmployeConnecte.Id;
+                    UnAnimal.IdCreateur = MainWindow.EmployeConnecte.Id;
                 }
                 if (comboEspece.SelectedItem != null)
                 {
-                    animalActuel.UneRace.UneEspece = comboEspece.SelectedItem as Espece;
+                    UnAnimal.UneRace.UneEspece = comboEspece.SelectedItem as Espece;
                 }
             }
 
@@ -197,13 +203,11 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             fenetreSoins.Owner = this;
             if (fenetreSoins.ShowDialog() == true)
             {
-                Animal animalActuel = this.DataContext as Animal;
-                if (animalActuel != null)
+                if (UnAnimal != null)
                 {
-                    Recoit nouveauSoinRecu = new Recoit();
-                    nouveauSoinRecu.UnSoin = fenetreSoins.SoinSelectionne;
-                    nouveauSoinRecu.DateSoin = fenetreSoins.DateSelectionnee;
-                    animalActuel.SoinReçus.Add(nouveauSoinRecu);
+                    Recoit nouveauSoinRecu = new Recoit(fenetreSoins.SoinSelectionne, UnAnimal, fenetreSoins.DateSelectionnee);
+                    Soins.Add(nouveauSoinRecu);
+                    CollectionViewSource.GetDefaultView(dgSoins.ItemsSource).Refresh();
                 }
             }
         }
@@ -215,15 +219,11 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
             if (fenetreComportement.ShowDialog() == true)
             {
-                Animal animalActuel = this.DataContext as Animal;
-                if (animalActuel != null)
+                if (UnAnimal != null)
                 {
-                    Comportement nouveauComportement = fenetreComportement.ComportementSelectionne;
-
-                    if (nouveauComportement != null)
-                    {
-                        animalActuel.Comportements.Add(nouveauComportement);
-                    }
+                    Animal_Comportement nouveauComportement = new Animal_Comportement(fenetreComportement.ComportementSelectionne, UnAnimal);
+                    Comportements.Add(nouveauComportement);
+                    CollectionViewSource.GetDefaultView(dgComportements.ItemsSource).Refresh();
                 }
             }
         }
@@ -234,7 +234,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             {
                 if (this.DataContext is Animal animalActuel)
                 {
-                    animalActuel.SoinReçus.Remove(soinSelectionne);
+                    this.Soins.Remove(soinSelectionne);
                 }
             }
             else
@@ -249,7 +249,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             {
                 if (this.DataContext is Animal animalActuel)
                 {
-                    animalActuel.Comportements.Remove(comportementSelectionne);
+                    //this.Comportements.Remove(comportementSelectionne);
                 }
             }
             else

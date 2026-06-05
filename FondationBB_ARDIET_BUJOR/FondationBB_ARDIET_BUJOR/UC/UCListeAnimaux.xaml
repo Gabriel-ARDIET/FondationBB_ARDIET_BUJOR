@@ -179,7 +179,8 @@
                                         AutoGenerateColumns="False" 
                                         CanUserAddRows="False" HeadersVisibility="Column"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                        ItemsSource="{Binding SoinReçus, ValidatesOnExceptions=True}">
+                                        ItemsSource="{Binding SoinReçus, ValidatesOnExceptions=True}"
+                                        Margin="0,0,0,5">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Soin" Binding="{Binding UnSoin.Libelle}" Width="2*"/>
                                         <DataGridTextColumn Header="Date de soin" Binding="{Binding DateSoin, StringFormat=\{0:dd/MM/yyyy\}}" Width="1*"/>
@@ -189,8 +190,20 @@
                                 <TextBlock Grid.Row="9" Grid.Column="0" Text="Annotations" TextWrapping="Wrap"/>
                                 <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Annotation}"/>
 
-                                <TextBlock Grid.Row="10" Grid.Column="0" Text="Comprtement" TextWrapping="Wrap"/>
-                                <TextBox Grid.Row="10" Grid.Column="1" Height="40" VerticalContentAlignment="Top" Padding="5,2" AcceptsReturn="True" Text="{Binding ComportementsResume, Mode=OneWay}"/>
+                                <TextBlock Grid.Row="10" Grid.Column="0" Text="Comportement" TextWrapping="Wrap"/>
+                                <DataGrid x:Name="dgComportements"
+                                            Grid.Row="10"
+                                            Grid.Column="1" 
+                                            Background="#E0E0E0"
+                                            AutoGenerateColumns="False" 
+                                            CanUserAddRows="False" HeadersVisibility="None"
+                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                            ItemsSource="{Binding Animal_Comportement, ValidatesOnExceptions=True}"
+                                            Margin="0,0,0,5">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Comportement" Binding="{Binding UnComportement.Libelle}" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
 
                                 <TextBlock Grid.Row="11" Grid.Column="0" Text="Statut"/>
                                 <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding UnStatut.Libelle}"/>

@@ -11,7 +11,8 @@ namespace FondationBB_ARDIET_BUJOR.Windows
     public partial class UCListeAnimaux : UserControl
     {
         private Data laData;
-
+        private List<Recoit> soins;
+        private List<Animal_Comportement> comportements;
         public UCListeAnimaux()
         {
             InitializeComponent();
@@ -129,15 +130,31 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         private void BtnAjouter_Click(object sender, RoutedEventArgs e)
         {
             Animal unAnimal = new Animal();
-            WindowAnimal wAnimal = new WindowAnimal(unAnimal);
+            this.soins = new List<Recoit>();
+            this.comportements = new List<Animal_Comportement>();
+            WindowAnimal wAnimal = new WindowAnimal(unAnimal, soins, comportements);
             bool? result = wAnimal.ShowDialog();
 
             if (result == true)
             {
                 try
                 {
+                    unAnimal.IdStatut = unAnimal.UnStatut?.Id;
+                    unAnimal.IdEtat = unAnimal.UnEtat?.Id;
                     unAnimal.Id = unAnimal.Create();
-                    ((Data)this.DataContext).LesAnimaux.Add(unAnimal);
+                    laData.LesAnimaux.Add(unAnimal);
+                    foreach (Recoit r in soins)
+                    {
+                        r.IdAnimal = unAnimal.Id;
+                        laData.LesSoinsReçus.Add(r);
+                        r.Create();
+                    }
+                    foreach (Animal_Comportement c in comportements)
+                    {
+                        c.IdAnimal = unAnimal.Id;
+                        laData.LesComportementsDesAnimaux.Add(c);
+                        c.Create();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -150,19 +167,38 @@ namespace FondationBB_ARDIET_BUJOR.Windows
         {
             if (dgAnimaux.SelectedItem is Animal animalSelectionne)
             {
-                // Ouvre la fenêtre d'édition en lui passant l'animal sélectionné
-                WindowAnimal wAnimal = new WindowAnimal(animalSelectionne);
+                Animal copieAnimal = animalSelectionne.Copy();
+                List<Recoit> copieSoins = this.soins.Select(s => s).ToList();
+                List<Animal_Comportement> copieComportements = this.comportements.Select(c => c).ToList();
+
+                WindowAnimal wAnimal = new WindowAnimal(copieAnimal, copieSoins, copieComportements);
                 bool? result = wAnimal.ShowDialog();
 
                 if (result == true)
                 {
                     try
                     {
-                        // Option A : Si tu as une méthode SQL pour sauvegarder les modifs, décommente la ligne suivante :
-                        // animalSelectionne.Update(); 
-
-                        // Option B : Si la modification en base de données est gérée directement à l'intérieur de 'WindowAnimal',
-                        // il suffit de forcer le rafraîchissement de l'affichage ici :
+                        animalSelectionne.UpdateFrom(copieAnimal);
+                        animalSelectionne.IdStatut = animalSelectionne.UnStatut?.Id;
+                        animalSelectionne.IdEtat = animalSelectionne.UnEtat?.Id;
+                        animalSelectionne.Update();
+                        foreach (Recoit r in copieSoins)
+                        {
+                            if (soins.FirstOrDefault(s => s == r) == null)
+                            {
+                                laData.LesSoinsReçus.Add(r);
+                                r.Create();
+                            }
+                        }
+                        foreach (Animal_Comportement c in copieComportements)
+                        {
+                            if (comportements.FirstOrDefault(co => co == c) == null)
+                            {
+                                laData.LesComportementsDesAnimaux.Add(c);
+                                c.Create();
+                            }
+                        }
+                        dgAnimaux_SelectionChanged(null, null);
                         FiltreAnimal_Changed(null, null);
                     }
                     catch (Exception ex)
@@ -190,13 +226,11 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     try
                     {
                         int lignesAffectees = animalSelectionne.Delete();
+                        laData.SupprimerAnimal(animalSelectionne);
                         if (lignesAffectees > 0)
                         {
                             MessageBox.Show("L'animal a bien été supprimé.", "Suppression réussie", MessageBoxButton.OK, MessageBoxImage.Information);
-                            if (this.DataContext is ObservableCollection<Animal> listeObservable)
-                            {
-                                listeObservable.Remove(animalSelectionne);
-                            }
+                            laData.SupprimerAnimal(animalSelectionne);
                         }
                     }
                     catch (Exception ex)
@@ -213,15 +247,25 @@ namespace FondationBB_ARDIET_BUJOR.Windows
 
         private void dgAnimaux_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<Recoit>soins = new List<Recoit>();
-            foreach (Recoit r in ((Data)DataContext).LesSoinsReçus)
+            soins = UpdateDataGridFiche(((Data)DataContext).LesSoinsReçus, dgSoins);
+            comportements = UpdateDataGridFiche(((Data)DataContext).LesComportementsDesAnimaux, dgComportements);
+        }
+        private List<T> UpdateDataGridFiche<T>(ObservableCollection<T> values, DataGrid dg)
+        {
+            List<T> result = new List<T>();
+            foreach (T v in values)
             {
-                if (dgAnimaux.SelectedItem != null)
-                    if (r.IdAnimal == ((Animal)dgAnimaux.SelectedItem).Id)
-                        soins.Add(r);
+                if ((Animal)dgAnimaux.SelectedItem != null)
+                {
+                    if (v is Recoit r && r.IdAnimal == ((Animal)dgAnimaux.SelectedItem).Id)
+                        result.Add(v);
+                    else if (v is Animal_Comportement c && c.IdAnimal == ((Animal)dgAnimaux.SelectedItem).Id)
+                        result.Add(v);
+                }
             }
-            dgSoins.ItemsSource = soins;
-            CollectionViewSource.GetDefaultView(dgSoins.ItemsSource).Refresh();
+            dg.ItemsSource = result;
+            CollectionViewSource.GetDefaultView(dg.ItemsSource).Refresh();
+            return result;
         }
     }
 }

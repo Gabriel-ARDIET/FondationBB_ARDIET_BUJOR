@@ -169,11 +169,11 @@
               Background="#E0E0E0"
               AutoGenerateColumns="False" 
               CanUserAddRows="False" 
-              HeadersVisibility="Column"
+              HeadersVisibility="None"
               ScrollViewer.VerticalScrollBarVisibility="Auto"
               ItemsSource="{Binding Comportements, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Comportement" Binding="{Binding Libelle}" Width="*"/>
+                            <DataGridTextColumn Header="Comportement" Binding="{Binding UnComportement.Libelle}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
 

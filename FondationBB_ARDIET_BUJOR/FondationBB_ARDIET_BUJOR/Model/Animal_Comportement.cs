@@ -22,7 +22,9 @@ namespace FondationBB_ARDIET_BUJOR.Model
         public Animal_Comportement(Comportement unComportement, Animal unAnimal)
         {
             this.UnComportement = unComportement;
+            this.IdComportement = unComportement.Id;
             this.UnAnimal = unAnimal;
+            this.IdAnimal = unAnimal.Id;
         }
 
         public Animal_Comportement(int idComportement, int idAnimal)
@@ -85,12 +87,29 @@ namespace FondationBB_ARDIET_BUJOR.Model
 
         public int Create()
         {
-            throw new NotImplementedException();
+            string sql = "INSERT INTO animal_comportement (id_comportement, id_animal) " +
+                         "VALUES (@idComportement, @idAnimal);";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sql))
+            {
+                cmd.Parameters.AddWithValue("@idComportement", this.IdComportement);
+                cmd.Parameters.AddWithValue("@idAnimal", this.IdAnimal);
+
+                return DataAccess.ExecuteSet(cmd);
+            }
         }
 
         public int Delete()
         {
-            throw new NotImplementedException();
+            string sql = "DELETE FROM animal_comportement WHERE id_comportement = @idComportement AND id_animal = @idAnimal;";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sql))
+            {
+                cmd.Parameters.AddWithValue("@idComportement", this.IdComportement);
+                cmd.Parameters.AddWithValue("@idAnimal", this.IdAnimal);
+
+                return DataAccess.ExecuteSet(cmd);
+            }
         }
 
         public List<Animal_Comportement> FindAll()
