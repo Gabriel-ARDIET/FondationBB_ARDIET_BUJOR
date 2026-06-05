@@ -85,8 +85,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             comboTrancheAge.GetBindingExpression(ComboBox.SelectedValueProperty)?.UpdateSource();
 
             // Nettoyage initial des indicateurs d'erreurs
-            var bClient = textClient.GetBindingExpression(TextBox.TextProperty);
-            // Note: Comme textClient n'a plus de binding direct, on valide manuellement via l'objet
+            var bClient = textClient.GetBindingExpression(TextBox.TextProperty); if (bClient != null) Validation.ClearInvalid(bClient);
             var bRace = comboRace.GetBindingExpression(ComboBox.SelectedValueProperty); if (bRace != null) Validation.ClearInvalid(bRace);
             var bTranche = comboTrancheAge.GetBindingExpression(ComboBox.SelectedValueProperty); if (bTranche != null) Validation.ClearInvalid(bTranche);
 
@@ -96,6 +95,8 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             // Validation du client
             if (_demandeEnCours.UnePersonne == null || _demandeEnCours.UnePersonne.Id == 0)
             {
+                // AJOUT ICI : Marquer le contrôle comme invalide pour afficher la bordure rouge
+                if (bClient != null) Validation.MarkInvalid(bClient, new ValidationError(rule, bClient, "Client requis", null));
                 erreurs.Add("- Vous devez associer un client demandeur valide.");
             }
 

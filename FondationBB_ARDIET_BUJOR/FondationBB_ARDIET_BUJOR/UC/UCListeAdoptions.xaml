@@ -67,7 +67,7 @@
                         <TextBlock Text="Montant des frais versés"/>
                         <TextBox Text="{Binding Frais}" Margin="0,0,0,10"/>
 
-                        <Button Content="Télécharger le contrat ⬇" Padding="10"/>
+                        <Button Content="Télécharger le contrat ⬇" Padding="10" Click="BtnTelechargerContrat_Click"/>
                     </StackPanel>
                 </Border>
             </StackPanel>

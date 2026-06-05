@@ -40,7 +40,8 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="textClient" Grid.Column="0" Height="25" IsReadOnly="True" Background="#F5F5F5" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="textClient" Grid.Column="0" Height="25" IsReadOnly="True" Background="#F5F5F5" VerticalContentAlignment="Center"
+         Text="{Binding IdPersonne, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
                 <Button x:Name="btnChoisirClient" Content="Choisir..." Grid.Column="1" Width="80" Margin="10,0,0,0" Height="25" Click="btnChoisirClient_Click"/>
             </Grid>
 

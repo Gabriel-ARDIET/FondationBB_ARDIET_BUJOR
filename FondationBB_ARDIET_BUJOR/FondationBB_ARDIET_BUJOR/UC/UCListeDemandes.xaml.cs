@@ -187,5 +187,9 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                                 "Sélection requise", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+        private void BtnComparer_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Fonction non implémentée", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }
