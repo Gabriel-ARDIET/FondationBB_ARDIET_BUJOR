@@ -90,7 +90,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     try
                     {
                         // Retrait de la collection observable globale
-                        laData.LesAdoptions.Remove(adoptionSelectionnee);
+                        laData.SupprimerAdoption(adoptionSelectionnee);
                         MessageBox.Show("Le contrat d'adoption a été supprimé.", "Suppression réussie", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     catch (Exception ex)
@@ -121,6 +121,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 {
                     // Ajout direct dans la liste globale
                     laData.LesAdoptions.Add(nouvelleAdoption);
+                    nouvelleAdoption.Create();
                     MessageBox.Show("Le contrat d'adoption a été créé avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
@@ -142,6 +143,7 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     try
                     {
                         // Rafraîchit l'affichage du DataGrid pour répercuter les modifications
+                        adoptionSelectionnee.Update();
                         CollectionViewSource.GetDefaultView(dgAdoptions.ItemsSource).Refresh();
                         MessageBox.Show("Le contrat d'adoption a été mis à jour.", "Modification enregistrée", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
