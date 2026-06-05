@@ -1,0 +1,89 @@
+﻿<Window x:Class="FondationBB_ARDIET_BUJOR.Windows.WindowAdoption"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FondationBB_ARDIET_BUJOR.Windows"
+        mc:Ignorable="d"
+        Title="Contrat d'adoption" Height="400" Width="650"
+        WindowStartupLocation="CenterScreen"
+        Closing="Window_Closing">
+
+    <Window.Resources>
+        <ControlTemplate x:Key="ValidationTemplate">
+            <DockPanel>
+                <Border BorderBrush="#EF5350" BorderThickness="1.5" CornerRadius="3">
+                    <AdornedElementPlaceholder x:Name="ControlCherche"/>
+                </Border>
+            </DockPanel>
+        </ControlTemplate>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationTemplate}"/>
+        </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationTemplate}"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Contrat d'adoption" Grid.Row="0" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+
+        <Border Grid.Row="1" Background="#F9F9F9" CornerRadius="8" Padding="15" BorderBrush="#E0E0E0" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Client *" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,8"/>
+                <Grid Grid.Row="0" Grid.Column="1" Margin="0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="65"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="textClient" Grid.Column="0" Height="28" VerticalContentAlignment="Center" IsReadOnly="True" Background="#F0F0F0"
+                             Text="{Binding Adoptant.Nom, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button x:Name="btnChoisirClient" Content="Choisir" Grid.Column="1" Margin="5,0,0,0" Height="28" Click="btnChoisirClient_Click"/>
+                </Grid>
+
+                <Label Content="Animal *" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,8"/>
+                <Grid Grid.Row="1" Grid.Column="1" Margin="0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="65"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="textAnimal" Grid.Column="0" Height="28" VerticalContentAlignment="Center" IsReadOnly="True" Background="#F0F0F0"
+                             Text="{Binding UnAnimal.Nom, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button x:Name="btnChoisirAnimal" Content="Choisir" Grid.Column="1" Margin="5,0,0,0" Height="28" Click="btnChoisirAnimal_Click"/>
+                </Grid>
+
+                <Label Content="Date d'adoption *" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,8"/>
+                <DatePicker x:Name="datePickerAdoption" Grid.Row="2" Grid.Column="1" Margin="0,8" Height="28" VerticalContentAlignment="Center"
+                            SelectedDate="{Binding DateAdoption, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Montant des frais versés *" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,8"/>
+                <TextBox x:Name="textMontant" Grid.Row="3" Grid.Column="1" Margin="0,8" Height="28" VerticalContentAlignment="Center"
+                         Text="{Binding Frais, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Button x:Name="btnValider" Content="Valider" Width="150" Height="32" Margin="0,0,20,0" Background="#E0E0E0" IsDefault="True" Click="btnValider_Click"/>
+            <Button x:Name="btnAnnuler" Content="Annuler" Width="150" Height="32" Background="#E0E0E0" IsCancel="True" Click="btnAnnuler_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

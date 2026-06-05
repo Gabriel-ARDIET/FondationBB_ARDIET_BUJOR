@@ -63,7 +63,20 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                     ZoneContenu.Content = new UCListeDemandes();
                     break;
                 case "btnStatistiques":
-                    ZoneContenu.Content = new UCStatistiques();
+                    // Sécurité supplémentaire : vérification du rôle via l'Enum
+                    if (EmployeConnecte != null && EmployeConnecte.UnRole == Role.Bénévole)
+                    {
+                        MessageBox.Show(
+                            "Accès refusé : Les bénévoles n'ont pas accès aux statistiques.",
+                            "Sécurité",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning
+                        );
+                    }
+                    else
+                    {
+                        ZoneContenu.Content = new UCStatistiques();
+                    }
                     break;
             }
         }

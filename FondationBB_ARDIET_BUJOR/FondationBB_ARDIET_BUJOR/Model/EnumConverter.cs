@@ -74,7 +74,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
                 value = "Sénior";
             return value;
         }
-        public static Role ConvertRoleToString(string value)
+        public static Role ConvertStringToRole(string value)
         {
             Role role;
             if (value == "Responsable")
@@ -83,7 +83,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
                 role = Role.Bénévole;
             return role;
         }
-        public static string ConvertStringToRole(Role role)
+        public static string ConvertRoleToString(Role role)
         {
             string value;
             if (role == Role.Responsable)

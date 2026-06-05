@@ -25,6 +25,12 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             {
                 view.Filter = FiltreCombine;
             }
+            if (MainWindow.EmployeConnecte != null && MainWindow.EmployeConnecte.UnRole == Role.Bénévole)
+            {
+                // On cache le bouton d'ajout pour les bénévoles
+                // (Remplace 'btnAjouter' par le vrai x:Name de ton bouton s'il est différent)
+                btnAjouter.Visibility = Visibility.Collapsed;
+            }
         }
 
         /// <summary>

@@ -26,9 +26,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             }
         }
 
-        /// <summary>
-        /// Filtre combinant les critères de recherche : Nom adoptant, Prénom adoptant et Nom de l'animal.
-        /// </summary>
         private bool FiltreCombineAdoption(object obj)
         {
             Adoption uneAdoption = obj as Adoption;
@@ -64,13 +61,9 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 }
             }
 
-            // Si le contrat d'adoption valide tous les critères actifs
             return true;
         }
 
-        /// <summary>
-        /// Déclenché à chaque saisie utilisateur dans l'un des trois champs de texte
-        /// </summary>
         private void FiltreAdoption_Changed(object sender, TextChangedEventArgs e)
         {
             if (dgAdoptions.ItemsSource != null)
@@ -79,8 +72,93 @@ namespace FondationBB_ARDIET_BUJOR.Windows
             }
         }
 
-        private void BtnSupprimer_Click(object sender, RoutedEventArgs e) { }
-        private void BtnAjouter_Click(object sender, RoutedEventArgs e) { }
-        private void BtnEditer_Click(object sender, RoutedEventArgs e) { }
+        private void BtnSupprimer_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgAdoptions.SelectedItem is Adoption adoptionSelectionnee)
+            {
+                string nomAdoptant = adoptionSelectionnee.Adoptant?.Nom ?? "Inconnu";
+                string nomAnimal = adoptionSelectionnee.UnAnimal?.Nom ?? "l'animal";
+
+                MessageBoxResult confirmation = MessageBox.Show(
+                    $"Êtes-vous sûr de vouloir supprimer définitivement le contrat d'adoption de {nomAnimal} par {nomAdoptant} ?",
+                    "Confirmation de suppression",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (confirmation == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        // Retrait de la collection observable globale
+                        laData.LesAdoptions.Remove(adoptionSelectionnee);
+                        MessageBox.Show("Le contrat d'adoption a été supprimé.", "Suppression réussie", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Impossible de supprimer cette adoption.\n\nDétails : " + ex.Message,
+                                        "Erreur de contrainte", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Veuillez sélectionner une adoption à supprimer.", "Sélection manquante", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void BtnAjouter_Click(object sender, RoutedEventArgs e)
+        {
+            Adoption nouvelleAdoption = new Adoption();
+            nouvelleAdoption.Adoptant = new Personne(); // Initialisation de l'objet imbriqué
+            nouvelleAdoption.DateAdoption = DateTime.Today; // Valeur par défaut pratique
+
+            WindowAdoption fenetreAdoption = new WindowAdoption(nouvelleAdoption);
+            fenetreAdoption.Owner = Application.Current.MainWindow;
+
+            if (fenetreAdoption.ShowDialog() == true)
+            {
+                try
+                {
+                    // Ajout direct dans la liste globale
+                    laData.LesAdoptions.Add(nouvelleAdoption);
+                    MessageBox.Show("Le contrat d'adoption a été créé avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erreur lors de l'enregistrement :\n" + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void BtnEditer_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgAdoptions.SelectedItem is Adoption adoptionSelectionnee)
+            {
+                WindowAdoption fenetreAdoption = new WindowAdoption(adoptionSelectionnee);
+                fenetreAdoption.Owner = Application.Current.MainWindow;
+
+                if (fenetreAdoption.ShowDialog() == true)
+                {
+                    try
+                    {
+                        // Rafraîchit l'affichage du DataGrid pour répercuter les modifications
+                        CollectionViewSource.GetDefaultView(dgAdoptions.ItemsSource).Refresh();
+                        MessageBox.Show("Le contrat d'adoption a été mis à jour.", "Modification enregistrée", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erreur lors de la mise à jour :\n" + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    CollectionViewSource.GetDefaultView(dgAdoptions.ItemsSource).Refresh();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Veuillez sélectionner un contrat d'adoption à modifier dans le tableau.", "Sélection manquante", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
     }
 }

@@ -123,7 +123,7 @@ namespace FondationBB_ARDIET_BUJOR.Model
             {
                 DataTable dt = DataAccess.ExecuteSelect(cmdSelect);
                 foreach (DataRow dr in dt.Rows)
-                    lesEmployes.Add(new Employe((int)dr["id_employe"], (string)dr["nom_employe"], (string)dr["prenom_employe"],(string)dr["login_employe"], Role.Responsable));
+                    lesEmployes.Add(new Employe((int)dr["id_employe"], (string)dr["nom_employe"], (string)dr["prenom_employe"],(string)dr["login_employe"], EnumConverter.ConvertStringToRole((string)dr["role_employe"])));
             }
             return lesEmployes;
         }
