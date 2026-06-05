@@ -244,8 +244,6 @@ namespace FondationBB_ARDIET_BUJOR.Windows
                 {
                     this.Comportements.Remove(comportementSelectionne);
                     CollectionViewSource.GetDefaultView(dgComportements.ItemsSource).Refresh();
-                {                   
-                    this.Comportements.Remove(comportementSelectionne);
                 }
             }
             else
